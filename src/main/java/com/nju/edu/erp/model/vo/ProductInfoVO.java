@@ -1,6 +1,7 @@
 package com.nju.edu.erp.model.vo;
 
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class ProductInfoVO {
     /**
      * 商品id
      */
+    @Excel(name = "商品id", width = 25)
     private String id;
 
     /**
@@ -38,22 +40,22 @@ public class ProductInfoVO {
     private Integer quantity;
 
     /**
-     *  进价
+     * 进价
      */
     private BigDecimal purchasePrice;
 
     /**
-     *  零售价
+     * 零售价
      */
     private BigDecimal retailPrice;
 
     /**
-     *  最近进价
+     * 最近进价
      */
     private BigDecimal recentPp;
 
     /**
-     *  最近零售价
+     * 最近零售价
      */
     private BigDecimal recentRp;
 }
