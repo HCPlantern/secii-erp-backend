@@ -1,4 +1,4 @@
-package com.nju.edu.erp.web;
+package com.nju.edu.erp.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

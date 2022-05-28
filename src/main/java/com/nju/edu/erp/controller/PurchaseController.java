@@ -1,4 +1,4 @@
-package com.nju.edu.erp.web.controller;
+package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.enums.Role;
@@ -6,7 +6,7 @@ import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import com.nju.edu.erp.service.PurchaseService;
-import com.nju.edu.erp.web.Response;
+import com.nju.edu.erp.common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

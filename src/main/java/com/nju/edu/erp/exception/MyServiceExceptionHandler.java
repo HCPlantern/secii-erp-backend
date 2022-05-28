@@ -1,6 +1,6 @@
 package com.nju.edu.erp.exception;
 
-import com.nju.edu.erp.web.Response;
+import com.nju.edu.erp.common.Response;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

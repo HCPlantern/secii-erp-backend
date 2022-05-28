@@ -153,7 +153,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
             if(effectLines == 0) throw new RuntimeException("状态更新失败");
             if(state.equals(PurchaseReturnsSheetState.SUCCESS)) {
                 // TODO 审批完成, 修改一系列状态
-                // 进货退货单id， 关联的进货单id 【   进货退货单id->进货单id->入库单id->批次id】
+                // 进货退货单id， 关联的进货单id 【进货退货单id->进货单id->入库单id->批次id】
                 Integer batchId = purchaseReturnsSheetDao.findBatchId(purchaseReturnsSheetId);
 
                 //- 进货退货单id-pid， quantity 【批次id+pid -> 定位到库存的一个条目->库存减去quantity】

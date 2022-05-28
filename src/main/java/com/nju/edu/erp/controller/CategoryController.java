@@ -1,14 +1,18 @@
-package com.nju.edu.erp.web.controller;
+package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.service.CategoryService;
-import com.nju.edu.erp.web.Response;
+import com.nju.edu.erp.common.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping(path = "/category")
+@Api(tags = "CategoryController")
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -18,15 +22,20 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+
+    @ApiOperation("创建商品分类")
     @GetMapping("/create")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    @ResponseBody
     public Response createCategory(@RequestParam(value = "parentId") int parentId,
                                @RequestParam(value = "name") String name) {
         return Response.buildSuccess(categoryService.createCategory(parentId, name));
     }
 
+    @ApiOperation("查询商品分类")
     @GetMapping("/queryAll")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    @ResponseBody
     public Response queryAllCategory() {
         return Response.buildSuccess(categoryService.queryAllCategory());
     }

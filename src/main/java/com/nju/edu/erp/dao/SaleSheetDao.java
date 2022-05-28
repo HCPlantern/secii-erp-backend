@@ -6,6 +6,7 @@ import com.nju.edu.erp.model.po.SaleSheetContentPO;
 import com.nju.edu.erp.model.po.SaleSheetPO;
 import com.nju.edu.erp.model.po.CustomerPurchaseAmountPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -39,6 +40,10 @@ public interface SaleSheetDao {
      */
     List<SaleSheetPO> findAllSheet();
 
+
+    List<SaleSheetPO> findAllByState(@Param("state") SaleSheetState state);
+
+
     /**
      * 查找指定id的销售单
      * @param id
@@ -59,6 +64,9 @@ public interface SaleSheetDao {
      * @return
      */
     int updateSheetState(String sheetId, SaleSheetState state);
+
+
+
 
     /**
      * 根据当前状态更新销售单状态

@@ -1,4 +1,4 @@
-package com.nju.edu.erp.web.controller;
+package com.nju.edu.erp.controller;
 
 
 import com.nju.edu.erp.auth.Authorized;
@@ -6,12 +6,16 @@ import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.model.vo.CreateProductVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.service.ProductService;
-import com.nju.edu.erp.web.Response;
+import com.nju.edu.erp.common.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping(path = "/product")
+@Api(tags = "ProductController",description = "产品")
 public class ProductController {
 
     private final ProductService productService;
@@ -21,6 +25,7 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @ApiOperation("创建商品")
     @PostMapping("/create")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
     public Response createProduct(@RequestBody CreateProductVO createProductVO) {
