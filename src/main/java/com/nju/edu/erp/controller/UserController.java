@@ -1,10 +1,10 @@
-package com.nju.edu.erp.web.controller;
+package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.config.JwtConfig;
 import com.nju.edu.erp.dao.UserDao;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.UserService;
-import com.nju.edu.erp.web.Response;
+import com.nju.edu.erp.common.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

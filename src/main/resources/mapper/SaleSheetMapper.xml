@@ -24,6 +24,10 @@
         set state = #{state}
         where id = #{sheetId} and state = #{prev}
     </update>
+    <update id="updateSheetStateV2">
+        update sale_sheet
+        set state
+    </update>
 
     <select id="getLatestSheet" resultType="com.nju.edu.erp.model.po.SaleSheetPO">
         select * from sale_sheet order by id desc limit 0,1 ;
@@ -49,6 +53,9 @@
         group by s.supplier
         order by total_final_amount
         limit 1;
+    </select>
+    <select id="findAllByState" resultType="com.nju.edu.erp.model.po.SaleSheetPO">
+        select * from sale_sheet where state=#{state}
     </select>
 
     <resultMap id="CustomerPurchaseAmountPO" type="com.nju.edu.erp.model.po.CustomerPurchaseAmountPO">

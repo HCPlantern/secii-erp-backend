@@ -18,6 +18,7 @@ import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.SaleService;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.utils.IdGenerator;
+import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,37 @@ public class SaleServiceImpl implements SaleService {
         // TODO
         // 需要持久化销售单（SaleSheet）和销售单content（SaleSheetContent），其中总价或者折后价格的计算需要在后端进行
         // 需要的service和dao层相关方法均已提供，可以不用自己再实现一遍
+        SaleSheetPO saleSheetPO=new SaleSheetPO();
+        BeanUtils.copyProperties(saleSheetVO,saleSheetPO);
+        // 此处根据制定单据人员确定操作员和salesman
+        saleSheetPO.setOperator(userVO.getName());
+        saleSheetPO.setSalesman("xiaoshoujingli");
+        // 设置生成时间
+        saleSheetPO.setCreateTime(new Date());
+        // 设置状态(等待一级审批)
+        saleSheetPO.setState(SaleSheetState.PENDING_LEVEL_1);
+        // 设置Id
+        SaleSheetPO latest=saleSheetDao.getLatestSheet();
+        String id=IdGenerator.generateSheetId(latest==null?null:latest.getId(),"XSD");
+        saleSheetPO.setId(id);
+        // 得到销售内容
+        List<SaleSheetContentVO> saleSheetContentVOS=saleSheetVO.getSaleSheetContent();
+        BigDecimal rawTotalAmount=BigDecimal.ZERO;
+        List<SaleSheetContentPO> saleSheetContentPOS=new ArrayList<>();
+        for(SaleSheetContentVO saleSheetContentVO:saleSheetContentVOS){
+            SaleSheetContentPO saleSheetContentPO=new SaleSheetContentPO();
+            BeanUtils.copyProperties(saleSheetContentVO,saleSheetContentPO);
+            saleSheetContentPO.setSaleSheetId(id);
+            saleSheetContentPO.setTotalPrice(saleSheetContentVO.getUnitPrice().multiply(BigDecimal.valueOf(saleSheetContentVO.getQuantity())));
+            rawTotalAmount=rawTotalAmount.add(saleSheetContentPO.getTotalPrice());
+            saleSheetContentPOS.add(saleSheetContentPO);
+        }
+        saleSheetPO.setRawTotalAmount(rawTotalAmount);
+        BigDecimal finalAmount=saleSheetPO.getRawTotalAmount().multiply(saleSheetPO.getDiscount()).subtract(saleSheetPO.getVoucherAmount());
+        saleSheetPO.setFinalAmount(finalAmount);
+        // 保存
+        saleSheetDao.saveBatchSheetContent(saleSheetContentPOS);
+        saleSheetDao.saveSheet(saleSheetPO);
     }
 
     @Override
@@ -70,7 +102,27 @@ public class SaleServiceImpl implements SaleService {
         // TODO
         // 根据单据状态获取销售单（注意：VO包含SaleSheetContent）
         // 依赖的dao层部分方法未提供，需要自己实现
-        return null;
+        List<SaleSheetVO> res=new ArrayList<>();
+        List<SaleSheetPO> all;
+        if(state==null){
+            all=saleSheetDao.findAllSheet();
+        }else {
+            all=saleSheetDao.findAllByState(state);
+        }
+        for(SaleSheetPO saleSheetPO:all){
+            SaleSheetVO saleSheetVO=new SaleSheetVO();
+            BeanUtils.copyProperties(saleSheetPO,saleSheetVO);
+            List<SaleSheetContentPO> saleSheetContentPOS=saleSheetDao.findContentBySheetId(saleSheetPO.getId());
+            List<SaleSheetContentVO> saleSheetContentVOS=new ArrayList<>();
+            for(SaleSheetContentPO saleSheetContentPO:saleSheetContentPOS){
+                SaleSheetContentVO saleSheetContentVO=new SaleSheetContentVO();
+                BeanUtils.copyProperties(saleSheetContentPO,saleSheetContentVO);
+                saleSheetContentVOS.add(saleSheetContentVO);
+            }
+            saleSheetVO.setSaleSheetContent(saleSheetContentVOS);
+            res.add(saleSheetVO);
+        }
+        return res;
     }
 
     /**
@@ -93,6 +145,62 @@ public class SaleServiceImpl implements SaleService {
                  4. 新建出库草稿
             2. 一级审批状态不能直接到审批完成状态； 二级审批状态不能回到一级审批状态
          */
+        if(state.equals(SaleSheetState.FAILURE)){
+            SaleSheetPO saleSheetPO=saleSheetDao.findSheetById(saleSheetId);
+            if(saleSheetPO.getState()==SaleSheetState.SUCCESS) {
+                throw new RuntimeException("状态更新失败");
+            }
+            int effectLines=saleSheetDao.updateSheetState(saleSheetId,state);
+            if(effectLines==0){
+                throw new RuntimeException("状态更新失败");
+            }
+        }else {
+            SaleSheetState prevState;
+            if(state.equals(SaleSheetState.SUCCESS)){
+                prevState=SaleSheetState.PENDING_LEVEL_2;
+            }else if(state.equals(SaleSheetState.PENDING_LEVEL_2)){
+                prevState=SaleSheetState.PENDING_LEVEL_1;
+            }else {
+                throw new RuntimeException("状态更新失败");
+            }
+            int effectiveLines=saleSheetDao.updateSheetStateOnPrev(saleSheetId,prevState,state);
+            if(effectiveLines==0){
+                throw new RuntimeException("状态更新失败");
+            }
+            // 更新2级审批
+            if(state.equals(SaleSheetState.SUCCESS)){
+//                更新商品列表和出库草稿
+//                首先得到内容
+                List<SaleSheetContentPO> saleSheetContentPOS=saleSheetDao.findContentBySheetId(saleSheetId);
+                List<WarehouseOutputFormContentVO> warehouseOutputFormContentVOS=new ArrayList<>();
+                for(SaleSheetContentPO saleSheetContentPO:saleSheetContentPOS){
+                    ProductInfoVO productInfoVO=new ProductInfoVO();
+                    productInfoVO.setId(saleSheetContentPO.getPid());
+                    productInfoVO.setRecentRp(saleSheetContentPO.getUnitPrice());
+                    productService.updateProduct(productInfoVO);
+
+                    WarehouseOutputFormContentVO wOFormContentVO=new WarehouseOutputFormContentVO();
+                    wOFormContentVO.setPid(saleSheetContentPO.getPid());
+                    wOFormContentVO.setQuantity(saleSheetContentPO.getQuantity());
+                    wOFormContentVO.setSalePrice(saleSheetContentPO.getUnitPrice());
+                    wOFormContentVO.setRemark(saleSheetContentPO.getRemark());
+
+                    warehouseOutputFormContentVOS.add(wOFormContentVO);
+                }
+//                更新用户
+                SaleSheetPO saleSheetPO=saleSheetDao.findSheetById(saleSheetId);
+                CustomerPO customerPO=customerService.findCustomerById(saleSheetPO.getSupplier());
+                customerPO.setReceivable(customerPO.getReceivable().add(saleSheetPO.getFinalAmount()));
+                customerService.updateCustomer(customerPO);
+
+//                新建出库草稿
+                WarehouseOutputFormVO warehouseOutputFormVO=new WarehouseOutputFormVO();
+                warehouseOutputFormVO.setList(warehouseOutputFormContentVOS);
+                warehouseOutputFormVO.setOperator(null);
+                warehouseOutputFormVO.setSaleSheetId(saleSheetId);
+                warehouseService.productOutOfWarehouse(warehouseOutputFormVO);
+            }
+        }
     }
 
     /**
