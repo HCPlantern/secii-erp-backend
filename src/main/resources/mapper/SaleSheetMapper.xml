@@ -24,10 +24,6 @@
         set state = #{state}
         where id = #{sheetId} and state = #{prev}
     </update>
-    <update id="updateSheetStateV2">
-        update sale_sheet
-        set state
-    </update>
 
     <select id="getLatestSheet" resultType="com.nju.edu.erp.model.po.SaleSheetPO">
         select * from sale_sheet order by id desc limit 0,1 ;

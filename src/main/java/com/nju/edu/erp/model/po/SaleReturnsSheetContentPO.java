@@ -6,37 +6,36 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseInputSheetContentPO {
+public class SaleReturnsSheetContentPO {
     /**
-     * 入库商品列表id
+     * 自增id
      */
     private Integer id;
     /**
-     * 入库单编号
+     * 进货退货单id
      */
-    private String warehouseInputSheetId;
+    private String saleReturnsSheetId;
     /**
      * 商品id
      */
     private String pid;
     /**
-     * 商品数量
+     * 数量
      */
     private Integer quantity;
     /**
      * 单价
      */
-    private BigDecimal purchasePrice;
+    private BigDecimal unitPrice;
     /**
-     * 出厂日期
+     * 总金额
      */
-    private Date productionDate;
+    private BigDecimal totalPrice;
     /**
      * 备注
      */

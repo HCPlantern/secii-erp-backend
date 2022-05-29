@@ -37,7 +37,7 @@ public class ProductTests {
     void createProductTest() {
         CreateProductVO createProductVO = CreateProductVO.builder()
                 .name("test")
-                .categoryId(9)
+                .categoryId(5)
                 .purchasePrice(new BigDecimal(1.0))
                 .retailPrice(new BigDecimal(2.0))
                 .type("unknown")

@@ -1,24 +1,27 @@
-package com.nju.edu.erp.model.vo.Sale;
+package com.nju.edu.erp.model.vo.saleReturns;
 
+import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
+import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
+import com.nju.edu.erp.model.vo.Sale.SaleSheetContentVO;
+import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class SaleSheetVO {
+public class SaleReturnsSheetVO {
 
     /**
-     * 销售单单据编号（格式为：XSD-yyyyMMdd-xxxxx), 新建单据时前端传null
+     * 销售退货单单据编号（格式为：XSTHD-yyyyMMdd-xxxxx), 新建单据时前端传null
      */
     private String id;
     /**
@@ -58,7 +61,8 @@ public class SaleSheetVO {
      */
     private BigDecimal voucherAmount;
     /**
-     * 进货单具体内容
+     * 销售单具体内容
      */
-    List<SaleSheetContentVO> saleSheetContent;
+    List<SaleReturnsSheetContentVO> saleReturnsSheetContent;
+
 }

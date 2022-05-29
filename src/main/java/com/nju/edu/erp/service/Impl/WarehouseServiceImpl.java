@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +78,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                 purchasePrice = productPO.getPurchasePrice();
             }
             WarehouseInputSheetContentPO warehouseInputSheetContentPO = WarehouseInputSheetContentPO.builder()
-                    .wiId(toSave.getId())
+                    .warehouseInputSheetId(toSave.getId())
                     .pid(item.getPid())
                     .quantity(item.getQuantity())
                     .purchasePrice(purchasePrice)
@@ -134,7 +132,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             }
 
             WarehouseOutputSheetContentPO warehouseOutputSheetContentPO = WarehouseOutputSheetContentPO.builder()
-                    .woId(toSave.getId())
+                    .warehouseOutputSheetId(toSave.getId())
                     .pid(item.getPid())
                     .quantity(item.getQuantity())
                     .salePrice(salePrice)

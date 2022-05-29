@@ -8,6 +8,13 @@
             (#{item.pid},#{item.quantity},#{item.purchasePrice},#{item.batchId},#{item.productionDate})
         </foreach>
     </insert>
+
+    <update id="addQuantity">
+        UPDATE warehouse
+        SET quantity = (quantity + #{quantity})
+        WHERE batch_id = #{batchId} AND pid = #{pid}
+    </update>
+
     <update id="deductQuantity" parameterType="WarehousePO">
         update warehouse set quantity = (quantity - #{quantity})
         where batch_id = #{batchId} and pid = #{pid};

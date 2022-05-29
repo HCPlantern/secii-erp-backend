@@ -7,7 +7,7 @@
     </insert>
 
     <delete id="deleteContent">
-        delete from warehouse_output_sheet_content where wo_id = #{sheetId} ;
+        delete from warehouse_output_sheet_content where warehouse_output_sheet_id = #{sheetId} ;
     </delete>
 
     <select id="getLatest" resultMap="WarehouseOutputSheetPO">
@@ -15,9 +15,9 @@
     </select>
 
     <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id">
-        insert into warehouse_output_sheet_content (wo_id, pid, quantity, sale_price, remark, batch_id) values
+        insert into warehouse_output_sheet_content (warehouse_output_sheet_id, pid, quantity, sale_price, remark, batch_id) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.woId},#{item.pid},#{item.quantity},#{item.salePrice},#{item.remark},#{item.batchId})
+            (#{item.warehouseOutputSheetId},#{item.pid},#{item.quantity},#{item.salePrice},#{item.remark},#{item.batchId})
         </foreach>
     </insert>
 
@@ -35,7 +35,7 @@
     2.出库单状态必须为"审批完成",才算是完成一次出库操作
     -->
     <select id="getWarehouseOutputProductQuantityByTime" resultType="java.lang.Integer">
-        select sum(quantity) from warehouse_output_sheet_content where wo_id in(
+        select sum(quantity) from warehouse_output_sheet_content where warehouse_output_sheet_id in(
         select id from warehouse_output_sheet where create_time between #{beginTime} and #{endTime} and state='审批完成' );
     </select>
 
@@ -53,7 +53,7 @@
     </select>
 
     <select id="getAllContentById" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
-        select * from warehouse_output_sheet_content where wo_id = #{sheetId};
+        select * from warehouse_output_sheet_content where warehouse_output_sheet_id = #{sheetId};
     </select>
 
     <resultMap id="WarehouseOutputSheetPO" type="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">

@@ -292,7 +292,7 @@ VALUES (61, 'JHD-20220524-00002', '0000000000400001', 400, 2700.00, 1080000.00, 
 DROP TABLE IF EXISTS `sale_sheet`;
 CREATE TABLE `sale_sheet`
 (
-    `id`               varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '销售单单据编号（格式为：JHD-yyyyMMdd-xxxxx',
+    `id`               varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '销售单单据编号（格式为：XSD-yyyyMMdd-xxxxx',
     `supplier`         int(11)                                                       NULL DEFAULT NULL COMMENT '供应商',
     `operator`         varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '操作员',
     `remark`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
@@ -493,13 +493,13 @@ VALUES ('RKD-20220524-00000', 3, 'kucun', '2022-05-24 01:02:31', '审批完成',
 DROP TABLE IF EXISTS `warehouse_input_sheet_content`;
 CREATE TABLE `warehouse_input_sheet_content`
 (
-    `id`              int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `wi_id`           varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '入库单编号',
-    `pid`             char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NOT NULL COMMENT '商品id',
-    `quantity`        int(11)                                                       NOT NULL COMMENT '商品数量',
-    `purchase_price`  decimal(10, 2)                                                NOT NULL COMMENT '单价',
-    `production_date` datetime(0)                                                   NULL DEFAULT NULL COMMENT '出厂日期',
-    `remark`          varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    `id`                       int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `warehouse_input_sheet_id` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '入库单编号',
+    `pid`                      char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NOT NULL COMMENT '商品id',
+    `quantity`                 int(11)                                                       NOT NULL COMMENT '商品数量',
+    `purchase_price`           decimal(10, 2)                                                NOT NULL COMMENT '单价',
+    `production_date`          datetime(0)                                                   NULL DEFAULT NULL COMMENT '出厂日期',
+    `remark`                   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 54
@@ -558,13 +558,13 @@ VALUES ('CKD-20220524-00002', 'kucun', '2022-05-24 00:45:38', 'XSD-20220524-0000
 DROP TABLE IF EXISTS `warehouse_output_sheet_content`;
 CREATE TABLE `warehouse_output_sheet_content`
 (
-    `id`         int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '出库商品列表id',
-    `pid`        char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NOT NULL COMMENT '商品id',
-    `wo_id`      varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '出库单单据编号',
-    `batch_id`   int(11)                                                       NULL DEFAULT NULL COMMENT '批次',
-    `quantity`   int(11)                                                       NOT NULL COMMENT '数量',
-    `sale_price` decimal(10, 2)                                                NOT NULL COMMENT '对应批次的单价',
-    `remark`     varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    `id`                        int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '出库商品列表id',
+    `pid`                       char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NOT NULL COMMENT '商品id',
+    `warehouse_output_sheet_id` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL COMMENT '出库单单据编号',
+    `batch_id`                  int(11)                                                       NULL DEFAULT NULL COMMENT '批次',
+    `quantity`                  int(11)                                                       NOT NULL COMMENT '数量',
+    `sale_price`                decimal(10, 2)                                                NOT NULL COMMENT '对应批次的单价',
+    `remark`                    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 39
@@ -598,31 +598,54 @@ VALUES (38, '0000000000400001', 'CKD-20220524-00002', 2, 100, 4200.00, NULL);
 DROP TABLE IF EXISTS `sale_returns_sheet`;
 CREATE TABLE `sale_returns_sheet`
 (
-    `id`            varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '销售退货单id',
-    `sale_sheet_id` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '关联的销售单id',
-    `operator`      varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '操作员',
-    `state`         varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '单据状态',
-    `create_time`   datetime(0)                                                   NULL DEFAULT NULL COMMENT '创建时间',
-    `total_amount`  decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '退货的总金额',
-    `remark`        varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注'
+    `id`               varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '销售退货单id',
+    `sale_sheet_id`    varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '关联的销售单id',
+    `supplier`         int(11)                                                       NULL DEFAULT NULL COMMENT '供应商',
+    `operator`         varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '操作员',
+    `remark`           varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    `state`            varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '单据状态',
+    `create_time`      datetime(0)                                                   NULL DEFAULT NULL COMMENT '创建时间',
+    `salesman`         varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '业务员',
+    `raw_total_amount` decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折让前总金额',
+    `discount`         decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折扣',
+    `final_amount`     decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折让后金额',
+    `voucher_amount`   decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '代金券金额'
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220523-00000', 'XSD-20220523-00000', 2, 'xiaoshoujingli', '卖卖卖', '审批失败', '2022-05-23 23:46:12', 'xiaoshoujingli', 1300000.00,
+        0.80, 1039800.00, 200.00);
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220524-00000', 'XSD-20220524-00000', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:04:37', 'xiaoshoujingli', 4200000.00,
+        0.80, 3359800.00, 200.00);
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220524-00001', 'XSD-20220524-00001', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:32:41', 'xiaoshoujingli', 620000.00,
+        0.80, 495800.00, 200.00);
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220524-00002', 'XSD-20220524-00002', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:45:25', 'xiaoshoujingli', 720000.00,
+        0.80, 575800.00, 200.00);
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220524-00003', 'XSD-20220524-00003', 2, 'xiaoshoujingli', NULL, '待二级审批', '2022-05-24 01:05:15', 'xiaoshoujingli', 660000.00,
+        0.80, 527700.00, 300.00);
+INSERT INTO `sale_returns_sheet`
+VALUES ('XSTHD-20220524-00004', 'XSD-20220524-00004', 2, 'xiaoshoujingli', NULL, '待一级审批', '2022-05-24 01:07:23', 'xiaoshoujingli', 2900000.00,
+        0.90, 2609800.00, 200.00);
 -- ----------------------------
 -- Table structure for sale_returns_sheet_content
 -- ----------------------------
 DROP TABLE IF EXISTS `sale_returns_sheet_content`;
 CREATE TABLE `sale_returns_sheet_content`
 (
-    `id`                        int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '自增id',
+    `id`                    int(11)                                                       NOT NULL AUTO_INCREMENT COMMENT '自增id',
     `sale_returns_sheet_id` varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL DEFAULT NULL COMMENT '销售退货单id',
-    `pid`                       char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NULL DEFAULT NULL COMMENT '商品id',
-    `quantity`                  int(11)                                                       NULL DEFAULT NULL COMMENT '数量',
-    `total_price`               decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '该商品的总金额',
-    `unit_price`                decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '该商品的单价',
-    `remark`                    varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+    `pid`                   char(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NULL DEFAULT NULL COMMENT '商品id',
+    `quantity`              int(11)                                                       NULL DEFAULT NULL COMMENT '数量',
+    `total_price`           decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '该商品的总金额',
+    `unit_price`            decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '该商品的单价',
+    `remark`                varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 33
@@ -630,4 +653,48 @@ CREATE TABLE `sale_returns_sheet_content`
   COLLATE = utf8mb4_general_ci
   ROW_FORMAT = Dynamic;
 
+
+
+-- ----------------------------
+-- Records of sale_returns_sheet_content
+-- ----------------------------
+INSERT INTO `sale_returns_sheet_content`
+VALUES (23, 'XSTHD-20220523-00000', '0000000000400000', 500, 600000.00, 1200.00, 'b');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (24, 'XSTHD-20220523-00000', '0000000000400001', 100, 200000.00, 2000.00, 'b');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (25, 'XSTHD-20220523-00001', '0000000000400000', 500, 500000.00, 1000.00, 'a');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (26, 'XSTHD-20220523-00002', '0000000000400000', 100, 100000.00, 1000.00, 'a');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (27, 'XSTHD-20220523-00003', '0000000000400000', 200, 200000.00, 1000.00, 'a');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (28, 'XSTHD-20220523-00004', '0000000000400000', 200, 200000.00, 1000.00, 'a');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (29, 'XSTHD-20220524-00000', '0000000000400000', 50, 60000.00, 1200.00, 'b');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (30, 'XSTHD-20220524-00000', '0000000000400001', 50, 100000.00, 2000.00, 'b');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (31, 'XSTHD-20220524-00001', '0000000000400000', 0, 0.00, 1300.00, 'c');
+INSERT INTO `sale_returns_sheet_content`
+VALUES (32, 'XSTHD-20220524-00001', '0000000000400001', 50, 140000.00, 2800.00, 'c');
+
 SET FOREIGN_KEY_CHECKS = 1;
+
+SELECT wosc.batch_id
+FROM sale_returns_sheet srs
+         LEFT JOIN warehouse_output_sheet wos USING (sale_sheet_id)
+         LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
+WHERE srs.id = "XSTHD-20220524-00000"
+  AND wosc.pid = "0000000000400000";
+
+SELECT *
+FROM sale_returns_sheet
+ORDER BY create_time DESC
+LIMIT 1;
+
+SELECT wosc.batch_id
+FROM warehouse_output_sheet wos
+LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
+    WHERE wos.sale_sheet_id = "XSD-20220524-00000" AND wosc.pid = "0000000000400000"
+ORDER BY sale_price;

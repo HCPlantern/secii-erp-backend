@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +23,7 @@ public class WarehouseOutputSheetContentPO {
     /**
      * 出库单编号
      */
-    private String woId;
+    private String warehouseOutputSheetId;
     /**
      * 批次
      */
