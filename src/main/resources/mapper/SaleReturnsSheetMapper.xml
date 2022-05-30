@@ -61,12 +61,5 @@
         FROM sale_returns_sheet_content
         WHERE sale_returns_sheet_id = #{saleReturnsSheetId}
     </select>
-    <select id="findBatchBySaleSheetIdAndPId"
-            resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
-        SELECT wosc.id, wosc.pid, wosc.warehouse_output_sheet_id, wosc.batch_id, wosc.quantity, wosc.sale_price, wosc.remark
-        FROM warehouse_output_sheet wos
-                 LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
-        WHERE wos.sale_sheet_id = #{saleSheetId} AND wosc.pid = #{pid};
-    </select>
 
 </mapper>

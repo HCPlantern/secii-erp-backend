@@ -3,6 +3,7 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.SaleReturnsSheetDao;
 import com.nju.edu.erp.dao.SaleSheetDao;
 import com.nju.edu.erp.dao.WarehouseDao;
+import com.nju.edu.erp.dao.WarehouseOutputSheetDao;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -27,6 +28,8 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
 
     SaleSheetDao ssDao;
 
+    WarehouseOutputSheetDao wosDao;
+
     ProductService productService;
 
     WarehouseDao warehouseDao;
@@ -35,21 +38,21 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
 
 
     @Autowired
-    SaleReturnsServiceImpl (SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService) {
+    SaleReturnsServiceImpl (SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, WarehouseOutputSheetDao wosDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService) {
         this.srsDao = srsDao;
         this.ssDao = ssDao;
+        this.wosDao = wosDao;
         this.productService = productService;
         this.warehouseDao = warehouseDao;
         this.customerService = customerService;
     }
 
-    // TODO : 处理优惠券相关逻辑 目前采取的方法是退 总价*折扣 优惠券金额不考虑 这样会多退钱
-
     /**
      * 制定销售退货单<br>
      * 需要设置新id 操作人员 状态 创建时间<br>
      * 具体销售退货单内容中的单价设定和总金额设定需要结合对应销售单中的商品单价和商品数量<br>
-     * 具体优惠券金额该如何处理还未确定
+     * 因为前端VO传进来的销售退货单内容不一定可靠，需要这里再查询销售单<br>
+     * 优惠券部分，因为支持部分退货，所以优惠券也要按照比例考虑
      * @param userVO             操作人员
      * @param srsVO 销售退货单
      */
@@ -98,6 +101,8 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         }
         srsPO.setRawTotalAmount(totalAmount);
         srsPO.setFinalAmount(totalAmount.multiply(srsPO.getDiscount()));
+        // 计算该退货单的商品在销售时占销售单所使用优惠券的金额大小
+        srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount())));
         srsDao.save(srsPO);
         srsDao.saveBatch(srscPOList);
     }
@@ -133,13 +138,13 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
             if (state.equals(SaleReturnsSheetState.SUCCESS)) {
                 List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(saleReturnsSheetId);
-                BigDecimal payableToAdd = BigDecimal.ZERO;
+//                BigDecimal payableToAdd = BigDecimal.ZERO;
 
                 for (SaleReturnsSheetContentPO srscPO : srscPOList) {
                     String pid = srscPO.getPid();
                     Integer quantity = srscPO.getQuantity();
                     // 找到出货时对应的商品信息（主要包括批次）
-                    List<WarehouseOutputSheetContentPO> woscPOList = srsDao.findBatchBySaleSheetIdAndPId(srsPO.getSaleSheetId(), srscPO.getPid());
+                    List<WarehouseOutputSheetContentPO> woscPOList = wosDao.findBatchBySaleSheetIdAndPId(srsPO.getSaleSheetId(), srscPO.getPid());
                     // 按照价格从低到高返回不同批次的商品
                     for (WarehouseOutputSheetContentPO woscPO : woscPOList) {
                         Integer batchQuantity = woscPO.getQuantity();
@@ -155,7 +160,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                         productInfoVO.setQuantity(productInfoVO.getQuantity() + returnQuantity);
                         productService.updateProduct(productInfoVO);
                         // 单价乘数量乘折扣
-                        payableToAdd = payableToAdd.add(srscPO.getUnitPrice().multiply(BigDecimal.valueOf(returnQuantity)).multiply(srsPO.getDiscount()));
+//                        payableToAdd = payableToAdd.add(srscPO.getUnitPrice().multiply(BigDecimal.valueOf(returnQuantity)).multiply(srsPO.getDiscount()));
 
                         quantity -= returnQuantity;
                         if (quantity <= 0) break;
@@ -166,7 +171,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                 Integer supplier = saleSheetPO.getSupplier();
                 CustomerPO customerPO = customerService.findCustomerById(supplier);
 
-                customerPO.setPayable(customerPO.getPayable().add(payableToAdd));
+                customerPO.setPayable(customerPO.getPayable().add(srsPO.getFinalAmount().subtract(srsPO.getVoucherAmount())));
                 customerService.updateCustomer(customerPO);
             }
         }
