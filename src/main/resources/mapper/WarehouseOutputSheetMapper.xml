@@ -55,6 +55,13 @@
     <select id="getAllContentById" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
         select * from warehouse_output_sheet_content where warehouse_output_sheet_id = #{sheetId};
     </select>
+    <select id="findBatchBySaleSheetIdAndPId"
+            resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
+        SELECT wosc.id, wosc.pid, wosc.warehouse_output_sheet_id, wosc.batch_id, wosc.quantity, wosc.sale_price, wosc.remark
+        FROM warehouse_output_sheet wos
+                 LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
+        WHERE wos.sale_sheet_id = #{saleSheetId} AND wosc.pid = #{pid};
+    </select>
 
     <resultMap id="WarehouseOutputSheetPO" type="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
         <id column="id" property="id"></id>

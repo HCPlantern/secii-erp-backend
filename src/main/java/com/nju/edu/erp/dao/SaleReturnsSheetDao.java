@@ -72,7 +72,7 @@ public interface SaleReturnsSheetDao {
      * 通过SaleReturnsSheetId找到对应条目
      *
      * @param saleReturnsSheetId 销售退货单id
-     * @return
+     * @return 销售退货单PO
      */
     SaleReturnsSheetPO findOneById(String saleReturnsSheetId);
 
@@ -80,15 +80,8 @@ public interface SaleReturnsSheetDao {
      * 通过SaleReturnsSheetId找到对应的content条目
      *
      * @param saleReturnsSheetId 销售退货单id
-     * @return
+     * @return 销售退货单内容POList
      */
     List<SaleReturnsSheetContentPO> findContentBySaleReturnsSheetId(String saleReturnsSheetId);
 
-    /**
-     * 通过销售单ID和商品ID找到所有的出库单内容
-     * @param saleSheetId 销售单ID
-     * @param pid 商品ID
-     * @return 出库单内容List
-     */
-    List<WarehouseOutputSheetContentPO> findBatchBySaleSheetIdAndPId(String saleSheetId, String pid);
 }

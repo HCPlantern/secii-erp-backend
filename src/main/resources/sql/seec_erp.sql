@@ -609,7 +609,7 @@ CREATE TABLE `sale_returns_sheet`
     `raw_total_amount` decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折让前总金额',
     `discount`         decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折扣',
     `final_amount`     decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '折让后金额',
-    `voucher_amount`   decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '代金券金额'
+    `voucher_amount`   decimal(10, 2)                                                NULL DEFAULT NULL COMMENT '该销售退货单商品在销售时总共使用的代金券金额'
 ) ENGINE = InnoDB
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci
@@ -681,20 +681,20 @@ VALUES (32, 'XSTHD-20220524-00001', '0000000000400001', 50, 140000.00, 2800.00, 
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-SELECT wosc.batch_id
-FROM sale_returns_sheet srs
-         LEFT JOIN warehouse_output_sheet wos USING (sale_sheet_id)
-         LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
-WHERE srs.id = "XSTHD-20220524-00000"
-  AND wosc.pid = "0000000000400000";
-
-SELECT *
-FROM sale_returns_sheet
-ORDER BY create_time DESC
-LIMIT 1;
-
-SELECT wosc.batch_id
-FROM warehouse_output_sheet wos
-LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
-    WHERE wos.sale_sheet_id = "XSD-20220524-00000" AND wosc.pid = "0000000000400000"
-ORDER BY sale_price;
+# SELECT wosc.batch_id
+# FROM sale_returns_sheet srs
+#          LEFT JOIN warehouse_output_sheet wos USING (sale_sheet_id)
+#          LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
+# WHERE srs.id = "XSTHD-20220524-00000"
+#   AND wosc.pid = "0000000000400000";
+#
+# SELECT *
+# FROM sale_returns_sheet
+# ORDER BY create_time DESC
+# LIMIT 1;
+#
+# SELECT wosc.batch_id
+# FROM warehouse_output_sheet wos
+# LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
+#     WHERE wos.sale_sheet_id = "XSD-20220524-00000" AND wosc.pid = "0000000000400000"
+# ORDER BY sale_price;

@@ -21,7 +21,6 @@ public interface WarehouseOutputSheetDao {
     /**
      * 存入一条出库单记录
      * @param toSave 一条出库单记录
-     * @return
      */
     void save(WarehouseOutputSheetPO toSave);
 
@@ -33,43 +32,51 @@ public interface WarehouseOutputSheetDao {
 
     /**
      * 获取所有出库单记录
-     * @return
+     * @return 所有出库单记录
      */
     List<WarehouseOutputSheetPO> getAllSheets();
 
     /**
      * 获取指定状态的出库单记录
-     * @param state
-     * @return
+     * @param state 出库单状态
+     * @return 所有指定状态的出库单
      */
     List<WarehouseOutputSheetPO> getDraftSheets(WarehouseOutputSheetState state);
 
     /**
      * 根据id获取单据
-     * @param sheetId
-     * @return
+     * @param sheetId 出库单Id
+     * @return 对应的出库单
      */
     WarehouseOutputSheetPO getSheet(String sheetId);
 
     /**
      * 更新PO
-     * @param warehouseOutputSheetPO
+     * @param warehouseOutputSheetPO 出库单
      */
     void updateById(WarehouseOutputSheetPO warehouseOutputSheetPO);
 
     /**
      * 获取出库单具体内容
-     * @param sheetId
-     * @return
+     * @param sheetId 出库单Id
+     * @return 出库单具体内容
      */
     List<WarehouseOutputSheetContentPO> getAllContentById(String sheetId);
 
 
     /**
      * 删除无批次的初始内容
-     * @param sheetId
+     * @param sheetId 出库单Id
      */
     void deleteContent(String sheetId);
 
     Integer getWarehouseOutputProductQuantityByTime(Date beginTime,Date endTime);
+
+    /**
+     * 通过销售单ID和商品ID找到所有的出库单内容
+     * @param saleSheetId 销售单ID
+     * @param pid 商品ID
+     * @return 出库单内容List
+     */
+    List<WarehouseOutputSheetContentPO> findBatchBySaleSheetIdAndPId(String saleSheetId, String pid);
 }
