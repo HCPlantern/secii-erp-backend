@@ -46,4 +46,20 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerPO findCustomerById(Integer supplier) {
         return customerDao.findOneById(supplier);
     }
+
+  /**
+   * 增加客户
+   * @param customerPO 客户类型
+   */
+   @Override
+   public void createCustomer(CustomerPO customerPO){
+     customerDao.createCustomer(customerPO);
+  }
+  /**
+   * 删除客户
+   * @param
+   */
+  public void deleteCustomer(Integer supplier){
+    customerDao.deleteById(supplier);
+  }
 }

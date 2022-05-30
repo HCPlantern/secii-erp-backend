@@ -22,4 +22,16 @@ public interface CustomerService {
 
 
     CustomerPO findCustomerById(Integer supplier);
+
+  /**
+   * 增加客户
+   * @param customerPO 客户类型
+   */
+    void createCustomer(CustomerPO customerPO);
+
+  /**
+   * 删除客户
+   * @param
+   */
+    void deleteCustomer(Integer supplier);
 }
