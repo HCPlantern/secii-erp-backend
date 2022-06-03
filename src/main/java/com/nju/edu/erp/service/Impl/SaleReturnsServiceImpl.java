@@ -109,9 +109,9 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
             totalAmount = totalAmount.add(totalPrice);
         }
         srsPO.setRawTotalAmount(totalAmount);
-        srsPO.setFinalAmount(totalAmount.multiply(srsPO.getDiscount()));
         // 计算该退货单的商品在销售时占销售单所使用优惠券的金额大小
         srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount(),6, RoundingMode.HALF_DOWN)));
+        srsPO.setFinalAmount(totalAmount.multiply(srsPO.getDiscount()).subtract(srsPO.getVoucherAmount()));
         srsDao.save(srsPO);
         srsDao.saveBatch(srscPOList);
     }
@@ -147,8 +147,6 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
             if (state.equals(SaleReturnsSheetState.SUCCESS)) {
                 List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(saleReturnsSheetId);
-//                BigDecimal payableToAdd = BigDecimal.ZERO;
-
                 for (SaleReturnsSheetContentPO srscPO : srscPOList) {
                     String pid = srscPO.getPid();
                     Integer quantity = srscPO.getQuantity();
@@ -169,7 +167,6 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                         productInfoVO.setQuantity(productInfoVO.getQuantity() + returnQuantity);
                         productService.updateProduct(productInfoVO);
                         // 单价乘数量乘折扣
-//                        payableToAdd = payableToAdd.add(srscPO.getUnitPrice().multiply(BigDecimal.valueOf(returnQuantity)).multiply(srsPO.getDiscount()));
 
                         quantity -= returnQuantity;
                         if (quantity <= 0) break;
@@ -180,7 +177,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                 Integer supplier = saleSheetPO.getSupplier();
                 CustomerPO customerPO = customerService.findCustomerById(supplier);
 
-                customerPO.setPayable(customerPO.getPayable().add(srsPO.getFinalAmount().subtract(srsPO.getVoucherAmount())));
+                customerPO.setPayable(customerPO.getPayable().add(srsPO.getFinalAmount()));
                 customerService.updateCustomer(customerPO);
             }
         }
