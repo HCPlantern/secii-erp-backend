@@ -71,13 +71,15 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "XSTHD");
         srsPO.setId(id);
         srsPO.setOperator(userVO.getName());
+        srsPO.setSalesman(userVO.getName());
         srsPO.setState(SaleReturnsSheetState.PENDING_LEVEL_1);
         srsPO.setCreateTime(new Date());
 
         System.out.println(srsPO);
 
-        // 设置销售退货单的折扣
+        // 设置销售退货单的折扣和客户
         SaleSheetPO ssPO = ssDao.findSheetById(srsPO.getSaleSheetId());
+        srsPO.setSupplier(ssPO.getSupplier());
         srsPO.setDiscount(ssPO.getDiscount());
 
 
