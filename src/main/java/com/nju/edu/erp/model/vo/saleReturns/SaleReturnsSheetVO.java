@@ -50,7 +50,7 @@ public class SaleReturnsSheetVO {
     /**
      * 单据状态, 新建单据时前端传null
      */
-    private SaleSheetState state;
+    private SaleReturnsSheetState state;
     /**
      * 折让后总额, 新建单据时前端传null
      */
@@ -63,6 +63,7 @@ public class SaleReturnsSheetVO {
      * 使用代金券总额
      */
     private BigDecimal voucherAmount;
+
 
     private Date createTime;
     /**

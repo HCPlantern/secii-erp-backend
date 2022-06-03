@@ -66,8 +66,8 @@ public class SaleServiceImpl implements SaleService {
         SaleSheetPO saleSheetPO = new SaleSheetPO();
         BeanUtils.copyProperties(saleSheetVO, saleSheetPO);
         // 此处根据制定单据人员确定操作员和salesman
-        saleSheetPO.setOperator(userVO.getName());
-        saleSheetPO.setSalesman("xiaoshoujingli");
+        saleSheetPO.setOperator(saleSheetVO.getOperator());
+        saleSheetPO.setSalesman(saleSheetVO.getSalesman());
         // 设置生成时间
         saleSheetPO.setCreateTime(new Date());
         // 设置状态(等待一级审批)

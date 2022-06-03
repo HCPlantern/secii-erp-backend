@@ -67,8 +67,8 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         System.out.println(purchaseReturnsSheetPO);
 
         // 此处根据制定单据人员确定操作员
-        purchaseReturnsSheetPO.setOperator(userVO.getName());
         purchaseReturnsSheetPO.setCreateTime(new Date());
+        purchaseReturnsSheetPO.setOperator(purchaseReturnsSheetVO.getOperator());
         PurchaseReturnsSheetPO latest = purchaseReturnsSheetDao.getLatest();
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "JHTHD");
         purchaseReturnsSheetPO.setId(id);
