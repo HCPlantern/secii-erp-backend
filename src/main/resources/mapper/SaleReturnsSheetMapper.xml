@@ -5,16 +5,14 @@
         INSERT INTO sale_returns_sheet (id, sale_sheet_id, supplier, operator, remark, state, create_time,
                                         salesman,
                                         raw_total_amount, discount, final_amount, voucher_amount)
-        VALUES (#{id}, #{saleSheetId}, #{supplier}, #{operator}, #{remark}, #{state}, #{create_time},
-                #{salesman},
-                #{rawTotalAmount}.#{discount}, #{finalAmount}, #{state}, #{createTime});
+        VALUES (#{id}, #{saleSheetId}, #{supplier}, #{operator}, #{remark}, #{state}, #{createTime},#{salesman},#{rawTotalAmount},#{discount}, #{finalAmount},#{voucherAmount});
     </insert>
 
     <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sale_returns_sheet_content (id, sale_returns_sheet_id, pid, quantity, total_price, unit_price, remark)
+        INSERT INTO sale_returns_sheet_content (sale_returns_sheet_id, pid, quantity, total_price, unit_price, remark)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.saleReturnsSheetId},#{item.pid},#{item.quantity},#{item.totalPrice},#{item.unitPrice},#{item.remark})
+            (#{item.saleReturnsSheetId},#{item.pid},#{item.quantity},#{item.totalPrice},#{item.unitPrice},#{item.remark})
         </foreach>
     </insert>
 
@@ -44,9 +42,7 @@
     </select>
 
     <select id="findAllByState" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
-        SELECT *
-        FROM sale_returns_sheet
-        WHERE state = #{state}
+        select * from sale_returns_sheet where state = #{state}
     </select>
 
     <select id="findOneById" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">

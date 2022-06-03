@@ -13,6 +13,16 @@ import java.math.BigDecimal;
 @Builder
 public class SaleSheetContentVO {
     /**
+     * 自增Id
+     */
+
+    private Integer id;
+    /**
+     * 销售单id
+     */
+    private String saleSheetId;
+
+    /**
      * 商品id
      */
     private String pid;

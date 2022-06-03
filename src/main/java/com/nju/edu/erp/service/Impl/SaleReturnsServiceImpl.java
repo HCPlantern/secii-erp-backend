@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -61,6 +62,10 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
     public void makeSaleReturnSheet(UserVO userVO, SaleReturnsSheetVO srsVO) {
         SaleReturnsSheetPO srsPO = new SaleReturnsSheetPO();
         BeanUtils.copyProperties(srsVO, srsPO);
+
+        System.out.println(srsPO);
+
+
         // Get prev id and generate new id
         SaleReturnsSheetPO latest = srsDao.getLatest();
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "XSTHD");
@@ -69,9 +74,13 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         srsPO.setState(SaleReturnsSheetState.PENDING_LEVEL_1);
         srsPO.setCreateTime(new Date());
 
+        System.out.println(srsPO);
+
         // 设置销售退货单的折扣
         SaleSheetPO ssPO = ssDao.findSheetById(srsPO.getSaleSheetId());
         srsPO.setDiscount(ssPO.getDiscount());
+
+
         // 获取销售单内容
         List<SaleSheetContentPO> sscPOList = ssDao.findContentBySheetId(srsPO.getSaleSheetId());
         // 创建新销售退货单内容POList 以及获取 传入的销售退货单内容VOList
@@ -102,7 +111,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         srsPO.setRawTotalAmount(totalAmount);
         srsPO.setFinalAmount(totalAmount.multiply(srsPO.getDiscount()));
         // 计算该退货单的商品在销售时占销售单所使用优惠券的金额大小
-        srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount())));
+        srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount(),6, RoundingMode.HALF_DOWN)));
         srsDao.save(srsPO);
         srsDao.saveBatch(srscPOList);
     }

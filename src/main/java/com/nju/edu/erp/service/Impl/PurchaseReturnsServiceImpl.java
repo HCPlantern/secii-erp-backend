@@ -63,6 +63,9 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
     public void makePurchaseReturnsSheet(UserVO userVO, PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
         PurchaseReturnsSheetPO purchaseReturnsSheetPO = new PurchaseReturnsSheetPO();
         BeanUtils.copyProperties(purchaseReturnsSheetVO, purchaseReturnsSheetPO);
+
+        System.out.println(purchaseReturnsSheetPO);
+
         // 此处根据制定单据人员确定操作员
         purchaseReturnsSheetPO.setOperator(userVO.getName());
         purchaseReturnsSheetPO.setCreateTime(new Date());
