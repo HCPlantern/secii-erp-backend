@@ -70,8 +70,6 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         SaleReturnsSheetPO latest = srsDao.getLatest();
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "XSTHD");
         srsPO.setId(id);
-        srsPO.setOperator(srsVO.getOperator());
-        srsPO.setSalesman(srsVO.getOperator());
         srsPO.setState(SaleReturnsSheetState.PENDING_LEVEL_1);
         srsPO.setCreateTime(new Date());
 
@@ -168,7 +166,6 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                         ProductInfoVO productInfoVO = productService.getOneProductByPid(pid);
                         productInfoVO.setQuantity(productInfoVO.getQuantity() + returnQuantity);
                         productService.updateProduct(productInfoVO);
-                        // 单价乘数量乘折扣
 
                         quantity -= returnQuantity;
                         if (quantity <= 0) break;

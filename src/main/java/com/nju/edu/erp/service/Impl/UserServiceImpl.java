@@ -13,9 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -63,5 +61,19 @@ public class UserServiceImpl implements UserService {
                 .role(Role.valueOf(claims.get("role").as(String.class)))
                 .build();
         return userVO;
+    }
+
+    @Override
+    public List<String> findAllSalesMan() {
+        HashSet<String> set = new HashSet<>();
+        List<String> users;
+        List<String> roles = new ArrayList<>();
+        roles.add("SALE_MANAGER");
+        roles.add("SALE_STAFF");
+        for (String role : roles) {
+            users = userDao.findUserNameByRole(role);
+            set.addAll(users);
+        }
+        return new ArrayList<>(set);
     }
 }

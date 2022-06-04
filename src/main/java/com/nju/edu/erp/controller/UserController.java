@@ -41,4 +41,10 @@ public class UserController {
     public Response userAuth(@RequestParam(name = "token") String token) {
         return Response.buildSuccess(userService.auth(token));
     }
+
+    @GetMapping("/findAllSalesMan")
+    public Response findAllSalesMan() {
+        return Response.buildSuccess(userService.findAllSalesMan());
+    }
+
 }

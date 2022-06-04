@@ -63,7 +63,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         PurchaseSheetPO purchaseSheetPO = new PurchaseSheetPO();
         BeanUtils.copyProperties(purchaseSheetVO, purchaseSheetPO);
         // 此处根据制定单据人员确定操作员
-        purchaseSheetPO.setOperator(userVO.getName());
         purchaseSheetPO.setCreateTime(new Date());
         PurchaseSheetPO latest = purchaseSheetDao.getLatest();
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "JHD");
