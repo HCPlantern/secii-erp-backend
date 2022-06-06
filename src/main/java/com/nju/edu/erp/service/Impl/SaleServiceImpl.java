@@ -5,6 +5,8 @@ import com.nju.edu.erp.dao.ProductDao;
 import com.nju.edu.erp.dao.SaleSheetDao;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
+import com.nju.edu.erp.model.vo.CustomerVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.Sale.SaleSheetContentVO;
 import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
@@ -208,7 +210,7 @@ public class SaleServiceImpl implements SaleService {
      * @param endDateStr   结束时间字符串
      * @return
      */
-    public CustomerPurchaseAmountPO getMaxAmountCustomerOfSalesmanByTime(String salesman, String beginDateStr, String endDateStr) {
+    public CustomerPurchaseAmountVO getMaxAmountCustomerOfSalesmanByTime(String salesman, String beginDateStr, String endDateStr) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date beginTime = dateFormat.parse(beginDateStr);
@@ -216,7 +218,19 @@ public class SaleServiceImpl implements SaleService {
             if (beginTime.compareTo(endTime) > 0) {
                 return null;
             } else {
-                return saleSheetDao.getMaxAmountCustomerOfSalesmanByTime(salesman, beginTime, endTime);
+                CustomerPurchaseAmountPO po = saleSheetDao.getMaxAmountCustomerOfSalesmanByTime(salesman, beginTime, endTime);
+                if (po == null) {
+                    return null;
+                }
+                CustomerPO customerPO = po.getCustomerPO();
+                CustomerPurchaseAmountVO vo = new CustomerPurchaseAmountVO();
+                CustomerVO customerVO = new CustomerVO();
+
+                BeanUtils.copyProperties(customerPO, customerVO);
+                customerVO.setType(customerPO.getType().getValue());
+                vo.setCustomerVO(customerVO);
+                vo.setTotalFinalAmount(po.getTotalFinalAmount());
+                return vo;
             }
         } catch (ParseException e) {
             e.printStackTrace();

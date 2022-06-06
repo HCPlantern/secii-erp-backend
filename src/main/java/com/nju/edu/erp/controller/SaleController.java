@@ -4,7 +4,7 @@ package com.nju.edu.erp.controller;
 import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
-import com.nju.edu.erp.model.po.CustomerPurchaseAmountPO;
+import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.SaleService;
@@ -85,7 +85,7 @@ public class SaleController {
     @GetMapping("/maxAmountCustomer")
     @Authorized(roles = {Role.SALE_MANAGER,Role.GM, Role.ADMIN})
     public Response getMaxAmountCustomerOfSalesmanByTime(@RequestParam String salesman, @RequestParam String beginDateStr, @RequestParam String endDateStr){
-        CustomerPurchaseAmountPO ans=saleService.getMaxAmountCustomerOfSalesmanByTime(salesman,beginDateStr,endDateStr);
+        CustomerPurchaseAmountVO ans=saleService.getMaxAmountCustomerOfSalesmanByTime(salesman,beginDateStr,endDateStr);
         return Response.buildSuccess(ans);
     }
 

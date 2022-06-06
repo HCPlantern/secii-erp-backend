@@ -1,13 +1,11 @@
 package com.nju.edu.erp.service;
 
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
-import com.nju.edu.erp.model.po.CustomerPurchaseAmountPO;
+import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,7 +39,7 @@ public interface SaleService {
      * @param endDateStr 结束时间字符串
      * @return
      */
-    CustomerPurchaseAmountPO getMaxAmountCustomerOfSalesmanByTime(String salesman,String beginDateStr,String endDateStr);
+    CustomerPurchaseAmountVO getMaxAmountCustomerOfSalesmanByTime(String salesman, String beginDateStr, String endDateStr);
 
     /**
      * 根据销售单Id搜索销售单信息

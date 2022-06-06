@@ -82,6 +82,8 @@ INSERT INTO `customer`
 VALUES (1, '供应商', 1, 'yzh', '12306', '南京大学', '123456', '654321@abc.com', 0.00, 0.00, 6500000.00, 'uncln');
 INSERT INTO `customer`
 VALUES (2, '销售商', 1, 'lxs', '12580', '南哪儿大学', '123457', '12121@cba.com', 20000000.00, 4431400.00, 0.00, 'uncln');
+INSERT INTO `customer`
+VALUES (3, '供应商', 1, 'hjb', '120', '东南大学', '123456', '23333@nju.com', 0.00, 100.00, 0.00, 'uncln');
 
 -- ----------------------------
 -- Table structure for product
