@@ -12,9 +12,13 @@ import java.util.List;
 public interface CustomerDao {
     int updateOne(CustomerPO customerPO);
 
+
+
     CustomerPO findOneById(Integer supplier);
 
     List<CustomerPO> findAllByType(CustomerType type);
+
+    List<CustomerPO> findAll();
 
     void createCustomer(CustomerPO customerPO);
 

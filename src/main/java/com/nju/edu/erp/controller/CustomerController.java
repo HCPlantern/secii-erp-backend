@@ -25,20 +25,20 @@ public class CustomerController {
 
     @ApiOperation("查询顾客")
     @GetMapping("/findByType")
-    public Response findByType(@RequestParam CustomerType type) {
+    public Response findByType(@RequestParam(required = false) CustomerType type) {
         return Response.buildSuccess(customerService.getCustomersByType(type));
     }
 
    @ApiOperation("新增客户")
    @PostMapping("/createCustomer")
-   public Response createCustomer(@RequestParam CustomerVO customerVO) {
+   public Response createCustomer(@RequestBody CustomerVO customerVO) {
       customerService.createCustomer(customerVO);
       return Response.buildSuccess();
    }
 
   @ApiOperation("修改客户的信息")
   @PostMapping("/updateCustomer")
-  public Response updateCustomer(@RequestParam CustomerPO customerPO) {
+  public Response updateCustomer(@RequestBody CustomerPO customerPO) {
     customerService.updateCustomer(customerPO);
     return Response.buildSuccess();
   }
