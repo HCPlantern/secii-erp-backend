@@ -51,6 +51,7 @@
 -->
 <!--@wpp: union all相比union不去重-->
     <select id="getWarehouseIODetailByTime" resultType="com.nju.edu.erp.model.po.WarehouseIODetailPO">
+select * from (
         (select 'warehouse_input' as type, warehouse_input_sheet.id as sheet_id,product.name as product_name,category.name as category_name,warehouse_input_sheet_content.quantity as quantity,
             warehouse_input_sheet_content.purchase_price as unit_price,warehouse_input_sheet_content.quantity*warehouse_input_sheet_content.purchase_price as total_price,warehouse_input_sheet.create_time as create_time
             from warehouse_input_sheet,warehouse_input_sheet_content,product,category
@@ -61,7 +62,8 @@ union all
                 warehouse_output_sheet_content.sale_price as unit_price,warehouse_output_sheet_content.quantity*warehouse_output_sheet_content.sale_price as total_price,warehouse_output_sheet.create_time as create_time
          from warehouse_output_sheet,warehouse_output_sheet_content,product,category
          where warehouse_output_sheet.create_time between #{beginTime} and #{endTime} and warehouse_output_sheet.state='审批完成'
-           and warehouse_output_sheet.id=warehouse_output_sheet_content.warehouse_output_sheet_id and warehouse_output_sheet_content.pid = product.id and product.category_id = category.id);
+           and warehouse_output_sheet.id=warehouse_output_sheet_content.warehouse_output_sheet_id and warehouse_output_sheet_content.pid = product.id and product.category_id = category.id)
+    )as WarehouseIODetailByTime order by create_time desc;
     </select>
 
 
