@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerService {
     /**
      * 根据id更新客户信息
-     * @param customerPO 客户信息
+     * @param customerVO 客户信息
      */
     void updateCustomer(CustomerVO customerVO);
 
