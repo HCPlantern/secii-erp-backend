@@ -1,9 +1,6 @@
 package com.nju.edu.erp.service.Impl;
 
-import com.nju.edu.erp.dao.ProductDao;
-import com.nju.edu.erp.dao.PurchaseReturnsSheetDao;
-import com.nju.edu.erp.dao.PurchaseSheetDao;
-import com.nju.edu.erp.dao.WarehouseDao;
+import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -38,15 +35,18 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
 
     CustomerService customerService;
 
+    CustomerDao customerDao;
+
     WarehouseService warehouseService;
 
     WarehouseDao warehouseDao;
 
     @Autowired
-    public PurchaseReturnsServiceImpl(PurchaseReturnsSheetDao purchaseReturnsSheetDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService, ProductDao productDao, PurchaseSheetDao purchaseSheetDao, WarehouseDao warehouseDao) {
+    public PurchaseReturnsServiceImpl(PurchaseReturnsSheetDao purchaseReturnsSheetDao, ProductService productService, CustomerService customerService, CustomerDao customerDao, WarehouseService warehouseService, ProductDao productDao, PurchaseSheetDao purchaseSheetDao, WarehouseDao warehouseDao) {
         this.purchaseReturnsSheetDao = purchaseReturnsSheetDao;
         this.productService = productService;
         this.customerService = customerService;
+        this.customerDao = customerDao;
         this.warehouseService = warehouseService;
         this.productDao = productDao;
         this.purchaseSheetDao = purchaseSheetDao;
@@ -194,7 +194,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
                 CustomerPO customer = customerService.findCustomerById(supplier);
 
                 customer.setPayable(customer.getPayable().subtract(payableToDeduct));
-                customerService.updateCustomer(customer);
+                customerDao.updateOne(customer);
             }
         }
     }

@@ -47,7 +47,7 @@
     </update>
 
     <select id="findOneById" resultType="com.nju.edu.erp.model.po.CustomerPO">
-        select * from customer where id=#{supplier}
+        select * from customer where id=#{id}
     </select>
 
     <select id="findAllByType" resultType="com.nju.edu.erp.model.po.CustomerPO">

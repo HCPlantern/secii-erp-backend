@@ -2,6 +2,7 @@ package com.nju.edu.erp.dao;
 
 import com.nju.edu.erp.enums.CustomerType;
 import com.nju.edu.erp.model.po.CustomerPO;
+import com.nju.edu.erp.model.vo.CustomerVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +13,7 @@ import java.util.List;
 public interface CustomerDao {
     int updateOne(CustomerPO customerPO);
 
-
-
-    CustomerPO findOneById(Integer supplier);
+    CustomerPO findOneById(Integer id);
 
     List<CustomerPO> findAllByType(CustomerType type);
 
@@ -22,5 +21,5 @@ public interface CustomerDao {
 
     void createCustomer(CustomerPO customerPO);
 
-    void deleteById(Integer supplier);
+    void deleteById(Integer id);
 }

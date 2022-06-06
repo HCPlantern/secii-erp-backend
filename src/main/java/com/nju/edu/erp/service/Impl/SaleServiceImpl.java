@@ -190,7 +190,7 @@ public class SaleServiceImpl implements SaleService {
                 SaleSheetPO saleSheetPO = saleSheetDao.findSheetById(saleSheetId);
                 CustomerPO customerPO = customerService.findCustomerById(saleSheetPO.getSupplier());
                 customerPO.setReceivable(customerPO.getReceivable().add(saleSheetPO.getFinalAmount()));
-                customerService.updateCustomer(customerPO);
+                customerDao.updateOne(customerPO);
 
 //                新建出库草稿
                 WarehouseOutputFormVO warehouseOutputFormVO = new WarehouseOutputFormVO();
@@ -227,7 +227,7 @@ public class SaleServiceImpl implements SaleService {
                 CustomerVO customerVO = new CustomerVO();
 
                 BeanUtils.copyProperties(customerPO, customerVO);
-                customerVO.setType(customerPO.getType().getValue());
+                customerVO.setType(customerPO.getType());
                 vo.setCustomerVO(customerVO);
                 vo.setTotalFinalAmount(po.getTotalFinalAmount());
                 return vo;

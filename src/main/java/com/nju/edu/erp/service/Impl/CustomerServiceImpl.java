@@ -27,11 +27,13 @@ public class CustomerServiceImpl implements CustomerService {
     /**
      * 根据id更新客户信息
      *
-     * @param customerPO 客户信息
+     * @param customerVO 客户信息
      */
     @Override
     @Transactional
-    public void updateCustomer(CustomerPO customerPO) {
+    public void updateCustomer(CustomerVO customerVO) {
+        CustomerPO customerPO = new CustomerPO();
+        BeanUtils.copyProperties(customerVO, customerPO);
         customerDao.updateOne(customerPO);
     }
 
@@ -53,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public CustomerPO findCustomerById(Integer supplier) {
-        return customerDao.findOneById(supplier);
+    public CustomerPO findCustomerById(Integer id) {
+        return customerDao.findOneById(id);
     }
 
   /**
@@ -72,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
    * @param
    */
   @Transactional
-  public void deleteCustomer(Integer supplier){
-    customerDao.deleteById(supplier);
+  public void deleteCustomer(Integer id){
+    customerDao.deleteById(id);
   }
 }

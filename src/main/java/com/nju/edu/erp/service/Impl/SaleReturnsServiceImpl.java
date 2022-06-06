@@ -1,9 +1,6 @@
 package com.nju.edu.erp.service.Impl;
 
-import com.nju.edu.erp.dao.SaleReturnsSheetDao;
-import com.nju.edu.erp.dao.SaleSheetDao;
-import com.nju.edu.erp.dao.WarehouseDao;
-import com.nju.edu.erp.dao.WarehouseOutputSheetDao;
+import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -37,15 +34,18 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
 
     CustomerService customerService;
 
+    CustomerDao customerDao;
+
 
     @Autowired
-    SaleReturnsServiceImpl (SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, WarehouseOutputSheetDao wosDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService) {
+    SaleReturnsServiceImpl (SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, WarehouseOutputSheetDao wosDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService, CustomerDao customerDao) {
         this.srsDao = srsDao;
         this.ssDao = ssDao;
         this.wosDao = wosDao;
         this.productService = productService;
         this.warehouseDao = warehouseDao;
         this.customerService = customerService;
+        this.customerDao = customerDao;
     }
 
     /**
@@ -177,7 +177,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
                 CustomerPO customerPO = customerService.findCustomerById(supplier);
 
                 customerPO.setPayable(customerPO.getPayable().add(srsPO.getFinalAmount()));
-                customerService.updateCustomer(customerPO);
+                customerDao.updateOne(customerPO);
             }
         }
     }

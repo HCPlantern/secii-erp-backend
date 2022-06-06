@@ -38,8 +38,8 @@ public class CustomerController {
 
   @ApiOperation("修改客户的信息")
   @PostMapping("/updateCustomer")
-  public Response updateCustomer(@RequestBody CustomerPO customerPO) {
-    customerService.updateCustomer(customerPO);
+  public Response updateCustomer(@RequestBody CustomerVO customerVO) {
+    customerService.updateCustomer(customerVO);
     return Response.buildSuccess();
   }
 }

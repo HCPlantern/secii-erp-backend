@@ -1,5 +1,6 @@
 package com.nju.edu.erp.service.Impl;
 
+import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.ProductDao;
 import com.nju.edu.erp.dao.PurchaseSheetDao;
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
@@ -39,15 +40,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     ProductDao productDao;
 
-    CustomerService customerService;
+    CustomerDao customerDao;
 
     WarehouseService warehouseService;
 
     @Autowired
-    public PurchaseServiceImpl(PurchaseSheetDao purchaseSheetDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService,ProductDao productDao) {
+    public PurchaseServiceImpl(PurchaseSheetDao purchaseSheetDao, ProductService productService, CustomerDao customerDao, WarehouseService warehouseService,ProductDao productDao) {
         this.purchaseSheetDao = purchaseSheetDao;
         this.productService = productService;
-        this.customerService = customerService;
+        this.customerDao = customerDao;
         this.warehouseService = warehouseService;
         this.productDao = productDao;
     }
@@ -169,9 +170,9 @@ public class PurchaseServiceImpl implements PurchaseService {
                 // 更新客户表(更新应付字段)
                     // 更新应付 payable
                 PurchaseSheetPO purchaseSheet = purchaseSheetDao.findOneById(purchaseSheetId);
-                CustomerPO customerPO = customerService.findCustomerById(purchaseSheet.getSupplier());
+                CustomerPO customerPO = customerDao.findOneById(purchaseSheet.getSupplier());
                 customerPO.setPayable(customerPO.getPayable().add(purchaseSheet.getTotalAmount()));
-                customerService.updateCustomer(customerPO);
+                customerDao.updateOne(customerPO);
 
                 // 制定入库单草稿(在这里关联进货单)
                     // 调用创建入库单的方法
