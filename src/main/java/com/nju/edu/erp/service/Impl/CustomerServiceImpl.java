@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
      * @param customerPO 客户信息
      */
     @Override
+    @Transactional
     public void updateCustomer(CustomerPO customerPO) {
         customerDao.updateOne(customerPO);
     }
@@ -40,12 +42,14 @@ public class CustomerServiceImpl implements CustomerService {
      * @return 客户列表
      */
     @Override
+    @Transactional
     public List<CustomerPO> getCustomersByType(CustomerType type) {
 
         return customerDao.findAllByType(type);
     }
 
     @Override
+    @Transactional
     public CustomerPO findCustomerById(Integer supplier) {
         return customerDao.findOneById(supplier);
     }
@@ -64,6 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
    * 删除客户
    * @param
    */
+  @Transactional
   public void deleteCustomer(Integer supplier){
     customerDao.deleteById(supplier);
   }

@@ -49,16 +49,16 @@
 1.结果集与WarehouseIODetailPO对应，格式为：type(有"warehouse_input"和"warehouse_output"两个值),sheet_id,product_name,category_name,quantity,unit_price,total_price,create_time
 2.出入库单状态必须为"审批完成",才算是完成一次出库或者入库操作
 -->
-<!--@wpp: sheet_content_id 的目的是为了防止被去重（只能想到这个解决办法）-->
+<!--@wpp: union all相比union不去重-->
     <select id="getWarehouseIODetailByTime" resultType="com.nju.edu.erp.model.po.WarehouseIODetailPO">
         (select 'warehouse_input' as type, warehouse_input_sheet.id as sheet_id,product.name as product_name,category.name as category_name,warehouse_input_sheet_content.quantity as quantity,
-            warehouse_input_sheet_content.purchase_price as unit_price,warehouse_input_sheet_content.quantity*warehouse_input_sheet_content.purchase_price as total_price,warehouse_input_sheet.create_time as create_time,warehouse_input_sheet_content.id as sheet_content_id
+            warehouse_input_sheet_content.purchase_price as unit_price,warehouse_input_sheet_content.quantity*warehouse_input_sheet_content.purchase_price as total_price,warehouse_input_sheet.create_time as create_time
             from warehouse_input_sheet,warehouse_input_sheet_content,product,category
             where warehouse_input_sheet.create_time between #{beginTime} and #{endTime} and warehouse_input_sheet.state='审批完成'
               and warehouse_input_sheet.id=warehouse_input_sheet_content.warehouse_input_sheet_id and warehouse_input_sheet_content.pid = product.id and product.category_id = category.id)
-union
+union all
         (select 'warehouse_output' as type, warehouse_output_sheet.id as sheet_id,product.name as product_name,category.name as category_name,warehouse_output_sheet_content.quantity as quantity,
-                warehouse_output_sheet_content.sale_price as unit_price,warehouse_output_sheet_content.quantity*warehouse_output_sheet_content.sale_price as total_price,warehouse_output_sheet.create_time as create_time,warehouse_output_sheet_content.id as sheet_content_id
+                warehouse_output_sheet_content.sale_price as unit_price,warehouse_output_sheet_content.quantity*warehouse_output_sheet_content.sale_price as total_price,warehouse_output_sheet.create_time as create_time
          from warehouse_output_sheet,warehouse_output_sheet_content,product,category
          where warehouse_output_sheet.create_time between #{beginTime} and #{endTime} and warehouse_output_sheet.state='审批完成'
            and warehouse_output_sheet.id=warehouse_output_sheet_content.warehouse_output_sheet_id and warehouse_output_sheet_content.pid = product.id and product.category_id = category.id);

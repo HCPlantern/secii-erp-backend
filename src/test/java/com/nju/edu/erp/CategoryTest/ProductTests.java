@@ -42,6 +42,10 @@ public class ProductTests {
                 .retailPrice(new BigDecimal(2.0))
                 .type("unknown")
                 .build();
-        productService.createProduct(createProductVO);
+        try {
+            productService.createProduct(createProductVO);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

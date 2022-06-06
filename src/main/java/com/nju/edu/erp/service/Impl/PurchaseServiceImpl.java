@@ -63,7 +63,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         PurchaseSheetPO purchaseSheetPO = new PurchaseSheetPO();
         BeanUtils.copyProperties(purchaseSheetVO, purchaseSheetPO);
         // 此处根据制定单据人员确定操作员
-        purchaseSheetPO.setOperator(userVO.getName());
         purchaseSheetPO.setCreateTime(new Date());
         PurchaseSheetPO latest = purchaseSheetDao.getLatest();
         String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "JHD");
@@ -148,7 +147,6 @@ public class PurchaseServiceImpl implements PurchaseService {
             int effectLines = purchaseSheetDao.updateStateV2(purchaseSheetId, prevState, state);
             if(effectLines == 0) throw new RuntimeException("状态更新失败");
             if(state.equals(PurchaseSheetState.SUCCESS)) {
-                // TODO 审批完成, 修改一系列状态
                 // 更新商品表的最新进价
                     // 根据purchaseSheetId查到对应的content -> 得到商品id和单价
                     // 根据商品id和单价更新商品最近进价recentPp

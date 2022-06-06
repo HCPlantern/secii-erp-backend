@@ -3,6 +3,7 @@ package com.nju.edu.erp.service;
 import com.nju.edu.erp.model.vo.UserVO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,6 +27,8 @@ public interface UserService {
      * @param token
      */
     UserVO auth(String token);
+
+    List<String> findAllSalesMan();
 
 
 }

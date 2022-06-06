@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.po;
 
+import com.nju.edu.erp.enums.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class CustomerPO { // 客户PO
     /**
      * 分类(供应商\销售商)
      */
-	private String type;
+	private CustomerType type;
     /**
      * 级别（五级，一级普通用户，五级VIP客户）
      */

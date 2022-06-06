@@ -24,6 +24,9 @@ public class SaleReturnsSheetVO {
      * 销售退货单单据编号（格式为：XSTHD-yyyyMMdd-xxxxx), 新建单据时前端传null
      */
     private String id;
+//    关联的销售单
+
+    private String saleSheetId;
     /**
      * 供应商id
      */
@@ -47,7 +50,7 @@ public class SaleReturnsSheetVO {
     /**
      * 单据状态, 新建单据时前端传null
      */
-    private SaleSheetState state;
+    private SaleReturnsSheetState state;
     /**
      * 折让后总额, 新建单据时前端传null
      */
@@ -60,6 +63,9 @@ public class SaleReturnsSheetVO {
      * 使用代金券总额
      */
     private BigDecimal voucherAmount;
+
+
+    private Date createTime;
     /**
      * 销售单具体内容
      */
