@@ -34,6 +34,7 @@
                 <set>
                     <if test = "type != null">`type` = #{type}, </if>
                     <if test = "level != null">`level` = #{level}, </if>
+                    <if test=  "name  !=null">`name` = #{name}, </if>
                     <if test = "phone != null">`phone` = #{phone}, </if>
                     <if test = "address != null">`address` = #{address}, </if>
                     <if test = "zipcode != null">`zipcode` = #{zipcode}, </if>
@@ -52,6 +53,9 @@
     <select id="findAllByType" resultType="com.nju.edu.erp.model.po.CustomerPO">
         select * from customer where type = #{type}
     </select>
+    <select id="findAll" resultType="com.nju.edu.erp.model.po.CustomerPO">
+        select * from customer
+    </select>
 
     <resultMap id="CustomerPO" type="com.nju.edu.erp.model.po.CustomerPO">
         <id column="id" property="id"></id>
@@ -69,8 +73,8 @@
     </resultMap>
 
   <insert id="createCustomer" parameterType="CustomerPO" useGeneratedKeys="true" keyProperty="id">
-          insert into customer (`name`, parent_id, is_leaf, item_count, item_index)
-          values (#{name}, #{parentId}, #{isLeaf}, #{itemCount}, #{itemIndex})
+          insert into customer (type, level, name, phone, address,zipcode,email,line_of_credit,operator)
+          values (#{type}, #{level}, #{name}, #{phone}, #{address},#{zipcode},#{email},#{lineOfCredit},#{operator})
       </insert>
 
       <delete id="deleteById">

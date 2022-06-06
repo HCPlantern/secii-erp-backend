@@ -44,6 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public List<CustomerPO> getCustomersByType(CustomerType type) {
+        if(type==null){
+            return customerDao.findAll();
+        }
 
         return customerDao.findAllByType(type);
     }
