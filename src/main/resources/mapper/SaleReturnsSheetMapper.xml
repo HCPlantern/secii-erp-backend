@@ -18,7 +18,7 @@
     <update id="updateState">
         UPDATE sale_returns_sheet
         SET state = #{state}
-        WHERE id = #{sheetId}
+        WHERE id = #{SaleReturnsSheetId}
     </update>
 
     <update id="updateStateV2">
