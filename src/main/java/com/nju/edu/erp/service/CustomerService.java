@@ -27,7 +27,7 @@ public interface CustomerService {
    * 增加客户
    * @param customerPO 客户类型
    */
-    void createCustomer(CustomerPO customerPO);
+    void createCustomer(CustomerVO customerVO);
 
   /**
    * 删除客户

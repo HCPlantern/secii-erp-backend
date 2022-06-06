@@ -1,11 +1,14 @@
 package com.nju.edu.erp.service.Impl;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.enums.CustomerType;
 import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.vo.CustomerVO;
 import com.nju.edu.erp.service.CustomerService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,10 +52,12 @@ public class CustomerServiceImpl implements CustomerService {
 
   /**
    * 增加客户
-   * @param customerPO 客户类型
+   * @param customerVO 客户类型
    */
    @Override
-   public void createCustomer(CustomerPO customerPO){
+   public void createCustomer(CustomerVO customerVO){
+     CustomerPO customerPO = new CustomerPO();
+     BeanUtils.copyProperties(customerVO, customerPO);
      customerDao.createCustomer(customerPO);
   }
   /**
