@@ -32,7 +32,7 @@ public class CustomerController {
    @ApiOperation("新增客户")
    @PostMapping("/createCustomer")
    public Response createCustomer(@RequestBody CustomerVO customerVO) {
-      customerService.createCustomer(customerVO);
+       customerService.createCustomer(customerVO);
       return Response.buildSuccess();
    }
 
@@ -41,5 +41,12 @@ public class CustomerController {
   public Response updateCustomer(@RequestBody CustomerVO customerVO) {
     customerService.updateCustomer(customerVO);
     return Response.buildSuccess();
+  }
+
+  @ApiOperation("删除客户的信息")
+  @GetMapping("/deleteCustomer")
+  public Response deleteCustomer(@RequestParam(value = "id") int id){
+        customerService.deleteCustomer(id);
+        return Response.buildSuccess();
   }
 }

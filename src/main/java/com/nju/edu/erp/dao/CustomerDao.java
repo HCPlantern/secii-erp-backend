@@ -21,5 +21,5 @@ public interface CustomerDao {
 
     void createCustomer(CustomerPO customerPO);
 
-    void deleteById(Integer id);
+    int deleteById(Integer id);
 }

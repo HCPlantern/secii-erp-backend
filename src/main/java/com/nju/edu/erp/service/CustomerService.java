@@ -33,5 +33,5 @@ public interface CustomerService {
    * 删除客户
    * @param
    */
-    void deleteCustomer(Integer supplier);
+    int deleteCustomer(Integer id);
 }

@@ -73,8 +73,9 @@ public class CustomerServiceImpl implements CustomerService {
    * 删除客户
    * @param
    */
+  @Override
   @Transactional
-  public void deleteCustomer(Integer id){
-    customerDao.deleteById(id);
+  public int deleteCustomer(Integer id){
+    return customerDao.deleteById(id);
   }
 }
