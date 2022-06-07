@@ -23,7 +23,7 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @ApiOperation("查询顾客")
+    @ApiOperation("根据客户类型查询客户")
     @GetMapping("/findByType")
     public Response findByType(@RequestParam(required = false) CustomerType type) {
         return Response.buildSuccess(customerService.getCustomersByType(type));
@@ -43,7 +43,7 @@ public class CustomerController {
     return Response.buildSuccess();
   }
 
-  @ApiOperation("删除客户的信息")
+  @ApiOperation("删除客户")
   @GetMapping("/deleteCustomer")
   public Response deleteCustomer(@RequestParam(value = "id") int id){
         customerService.deleteCustomer(id);

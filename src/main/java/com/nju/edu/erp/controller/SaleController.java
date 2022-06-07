@@ -9,11 +9,14 @@ import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.SaleService;
 import com.nju.edu.erp.common.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/sale")
+@Api(tags = "SaleController")
 public class SaleController {
 
     private final SaleService saleService;
@@ -26,6 +29,7 @@ public class SaleController {
     /**
      * 销售人员制定销售单
      */
+    @ApiOperation("销售人员制定销售单")
     @Authorized (roles = {Role.SALE_STAFF, Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     @PostMapping(value = "/sheet-make")
     public Response makePurchaseOrder(UserVO userVO, @RequestBody SaleSheetVO saleSheetVO)  {
@@ -36,6 +40,7 @@ public class SaleController {
     /**
      * 根据状态查看销售单
      */
+    @ApiOperation("根据状态查看销售单")
     @GetMapping(value = "/sheet-show")
     public Response showSheetByState(@RequestParam(value = "state", required = false) SaleSheetState state)  {
         return Response.buildSuccess(saleService.getSaleSheetByState(state));
@@ -46,6 +51,7 @@ public class SaleController {
      * @param saleSheetId 进货单id
      * @param state 修改后的状态("审批失败"/"待二级审批")
      */
+    @ApiOperation("销售经理审批")
     @GetMapping(value = "/first-approval")
     @Authorized (roles = {Role.SALE_MANAGER, Role.ADMIN})
     public Response firstApproval(@RequestParam("saleSheetId") String saleSheetId,
@@ -63,6 +69,7 @@ public class SaleController {
      * @param saleSheetId 进货单id
      * @param state 修改后的状态("审批失败"/"审批完成")
      */
+    @ApiOperation("总经理审批")
     @Authorized (roles = {Role.GM, Role.ADMIN})
     @GetMapping(value = "/second-approval")
     public Response secondApproval(@RequestParam("saleSheetId") String saleSheetId,
@@ -82,6 +89,7 @@ public class SaleController {
      * @param endDateStr 结束时间字符串 格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
      * @return
      */
+    @ApiOperation("获取某个销售人员某段时间内消费总金额最大的客户")
     @GetMapping("/maxAmountCustomer")
     @Authorized(roles = {Role.SALE_MANAGER,Role.GM, Role.ADMIN})
     public Response getMaxAmountCustomerOfSalesmanByTime(@RequestParam String salesman, @RequestParam String beginDateStr, @RequestParam String endDateStr){
@@ -94,6 +102,7 @@ public class SaleController {
      * @param id 销售单Id
      * @return 销售单全部信息
      */
+    @ApiOperation("根据销售单Id搜索销售单信息")
     @GetMapping(value = "/find-sheet")
     public Response findBySheetId(@RequestParam(value = "id") String id)  {
         return Response.buildSuccess(saleService.getSaleSheetById(id));

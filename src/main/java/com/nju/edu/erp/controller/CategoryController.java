@@ -40,6 +40,7 @@ public class CategoryController {
         return Response.buildSuccess(categoryService.queryAllCategory());
     }
 
+    @ApiOperation("更新商品分类")
     @GetMapping("/update")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
     public Response updateCategory(@RequestParam(value = "id") int id,
@@ -47,6 +48,7 @@ public class CategoryController {
         return Response.buildSuccess(categoryService.updateCategory(id, name));
     }
 
+    @ApiOperation("删除商品分类")
     @GetMapping("/delete")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
     public Response deleteCategory(@RequestParam(value = "id") int id) {

@@ -7,11 +7,14 @@ import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 import com.nju.edu.erp.service.PurchaseReturnsService;
 import com.nju.edu.erp.common.Response;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/purchase-returns")
+@Api(tags = "PurchaseReturnsController")
 public class PurchaseReturnsController {
 
     private final PurchaseReturnsService purchaseReturnsService;
@@ -24,6 +27,7 @@ public class PurchaseReturnsController {
     /**
      * 销售人员制定进货退货单
      */
+    @ApiOperation("销售人员制定进货退货单")
     @Authorized(roles = {Role.SALE_STAFF, Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     @PostMapping(value = "/sheet-make")
     public Response makePurchaseOrder(UserVO userVO, @RequestBody PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
@@ -37,6 +41,7 @@ public class PurchaseReturnsController {
      * @param purchaseReturnsSheetId 进货退货单id
      * @param state                  修改后的状态("审批失败"/"待二级审批")
      */
+    @ApiOperation("销售经理审批")
     @GetMapping(value = "/first-approval")
     @Authorized(roles = {Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     public Response firstApproval(@RequestParam("purchaseReturnsSheetId") String purchaseReturnsSheetId,
@@ -55,6 +60,7 @@ public class PurchaseReturnsController {
      * @param purchaseReturnsSheetId 进货退货单id
      * @param state                  修改后的状态("审批失败"/"审批完成")
      */
+    @ApiOperation("总经理审批")
     @Authorized(roles = {Role.GM, Role.ADMIN})
     @GetMapping(value = "/second-approval")
     public Response secondApproval(@RequestParam("purchaseReturnsSheetId") String purchaseReturnsSheetId,
@@ -70,6 +76,7 @@ public class PurchaseReturnsController {
     /**
      * 根据状态查看进货退货单
      */
+    @ApiOperation("根据状态查看进货退货单")
     @GetMapping(value = "/sheet-show")
     public Response showSheetByState(@RequestParam(value = "state", required = false) PurchaseReturnsSheetState state) {
         return Response.buildSuccess(purchaseReturnsService.getPurchaseReturnsSheetByState(state));

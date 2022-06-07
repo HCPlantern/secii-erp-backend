@@ -17,6 +17,7 @@ import com.nju.edu.erp.model.vo.warehouse.WarehouseCountingVO;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.common.Response;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(path = "/warehouse")
+@ApiOperation("WarehouseController")
 public class WarehouseController {
 
     public WarehouseService warehouseService;
@@ -64,6 +66,7 @@ public class WarehouseController {
 
     @PostMapping("/product/count")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    @ApiOperation("商品出库的前驱步骤")
     public Response warehouseOutput(@RequestBody GetWareProductInfoParamsVO getWareProductInfoParamsVO) {
         return Response.buildSuccess(warehouseService.getWareProductInfo(getWareProductInfoParamsVO));
     }
@@ -84,6 +87,7 @@ public class WarehouseController {
 
     @GetMapping("/inputSheet/approve")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    @ApiOperation("审批入库单")
     public Response warehouseInputSheetApprove(UserVO user,
                                                @RequestParam(value = "sheetId") String sheetId,
                                                @RequestParam(value = "state") WarehouseInputSheetState state) {
@@ -97,6 +101,7 @@ public class WarehouseController {
 
     @GetMapping("/inputSheet/state")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("根据审批状态查询入库单")
     public Response getWarehouseInputSheet(@RequestParam(value = "state", required = false) WarehouseInputSheetState state) {
         List<WarehouseInputSheetPO> ans = warehouseService.getWareHouseInputSheetByState(state);
         return Response.buildSuccess(ans);
@@ -105,6 +110,7 @@ public class WarehouseController {
 
     @GetMapping("/outputSheet/state")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER, Role.GM})
+    @ApiOperation("根据审批状态查询出库单")
     public Response getWarehouseOutSheet(@RequestParam(value = "state", required = false) WarehouseOutputSheetState state) {
         List<WarehouseOutputSheetPO> ans = warehouseService.getWareHouseOutSheetByState(state);
         return Response.buildSuccess(ans);
@@ -112,6 +118,7 @@ public class WarehouseController {
 
     @GetMapping("/inputSheet/content")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER, Role.GM})
+    @ApiOperation("查询入库单内容")
     public Response getWarehouseInputSheetContent(@RequestParam(value = "sheetId") String sheetId) {
         List<WarehouseInputSheetContentPO> ans = warehouseService.getWHISheetContentById(sheetId);
         return Response.buildSuccess(ans);
@@ -119,6 +126,7 @@ public class WarehouseController {
 
     @GetMapping("/outputSheet/content")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER, Role.GM})
+    @ApiOperation("查询出库单内容")
     public Response getWarehouseOutputSheetContent(@RequestParam(value = "sheetId") String sheetId) {
         List<WarehouseOutputSheetContentPO> ans = warehouseService.getWHOSheetContentById(sheetId);
         return Response.buildSuccess(ans);
@@ -126,6 +134,7 @@ public class WarehouseController {
 
     @GetMapping("/outputSheet/approve")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    @ApiOperation("审批出库单")
     public Response warehouseOutputSheetApprove(UserVO user,
                                                 @RequestParam(value = "sheetId") String sheetId,
                                                 @RequestParam(value = "state") WarehouseOutputSheetState state) {
@@ -147,6 +156,7 @@ public class WarehouseController {
      */
     @GetMapping("/sheetContent/time")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("查询指定时间段内出/入库数量/金额/商品信息/分类信息")
     public Response getWarehouseIODetailByTime(@RequestParam String beginDateStr, @RequestParam String endDateStr) throws ParseException {
         List<WarehouseIODetailPO> ans = warehouseService.getWarehouseIODetailByTime(beginDateStr, endDateStr);
         return Response.buildSuccess(ans);
@@ -161,6 +171,7 @@ public class WarehouseController {
      */
     @GetMapping("/inputSheet/time/quantity")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("一个时间段内的入库数量合计")
     public Response getWarehouseInputProductQuantityByTime(@RequestParam String beginDateStr, @RequestParam String endDateStr) throws ParseException {
         int quantity = warehouseService.getWarehouseInputProductQuantityByTime(beginDateStr, endDateStr);
         return Response.buildSuccess(quantity);
@@ -175,6 +186,7 @@ public class WarehouseController {
      */
     @GetMapping("/outputSheet/time/quantity")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("一个时间段内的出库数量合计")
     public Response getWarehouseOutputProductQuantityByTime(@RequestParam String beginDateStr, @RequestParam String endDateStr) throws ParseException {
         int quantity = warehouseService.getWarehouseOutProductQuantityByTime(beginDateStr, endDateStr);
         return Response.buildSuccess(quantity);
@@ -188,6 +200,7 @@ public class WarehouseController {
      */
     @GetMapping("/warehouse/counting")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("库存盘点")
     public Response getWarehouseCounting() {
         return Response.buildSuccess(warehouseService.warehouseCounting());
     }
@@ -197,6 +210,7 @@ public class WarehouseController {
      **/
     @GetMapping("/warehouse/counting/exportexcel")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
+    @ApiOperation("库存盘点 导出为Excel")
     public void getWarehouseCountingAsExcel(HttpServletResponse response) {
         List<WarehouseCountingVO> warehouseCountingList = warehouseService.warehouseCounting();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
