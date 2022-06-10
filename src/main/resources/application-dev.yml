@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://project-database-service.secii-erp-backend-3008.svc.cluster.local:3306/seec_erp?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
+    url: jdbc:mysql://43.134.23.92:3306/seec_erp?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
     username: root
-    password: root
+    password: team9root
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
