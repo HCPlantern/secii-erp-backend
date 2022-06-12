@@ -700,3 +700,15 @@ SET FOREIGN_KEY_CHECKS = 1;
 # LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
 #     WHERE wos.sale_sheet_id = "XSD-20220524-00000" AND wosc.pid = "0000000000400000"
 # ORDER BY sale_price;
+
+
+create table company_account
+(
+    id     int auto_increment
+        primary key,
+    name   varchar(255)           not null,
+    amount bigint default 1000000 null,
+    constraint company_account_id_uindex
+        unique (id)
+)
+    comment '公司银行账户';

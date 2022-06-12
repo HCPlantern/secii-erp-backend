@@ -45,6 +45,12 @@
                 </set>
                 where id = #{id}
     </update>
+    <update id="updateReceivableById">
+        update customer set receivable = receivable-#{amount} where id = #{id}
+    </update>
+    <update id="updatePayableById">
+        update customer set payable = payable-#{amount} where id = #{id}
+    </update>
 
     <select id="findOneById" resultType="com.nju.edu.erp.model.po.CustomerPO">
         select * from customer where id=#{id}
