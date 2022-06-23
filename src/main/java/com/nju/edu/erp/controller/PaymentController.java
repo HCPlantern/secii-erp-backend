@@ -1,6 +1,7 @@
 package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.common.Response;
+import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.vo.PaymentSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
@@ -35,6 +36,11 @@ public class PaymentController {
         }else{
             return Response.buildFailed("000000","操作失败");
         }
+    }
+
+    @GetMapping("/sheet-show")
+    public Response findAllPaymentSheetByState(@RequestParam(required = false) PaymentSheetState state){
+        return Response.buildSuccess(paymentService.findAllPaymentSheetByState(state));
     }
 
 }

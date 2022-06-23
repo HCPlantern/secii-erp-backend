@@ -43,4 +43,9 @@ public class CollectionController {
             return Response.buildFailed("000000","操作失败");
         }
     }
+
+    @GetMapping("/sheet-show")
+    public Response findAllCollectionSheetByState(@RequestParam(required = false) CollectionSheetState state){
+        return Response.buildSuccess(collectionService.findAllCollectionSheetByState(state));
+    }
 }

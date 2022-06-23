@@ -10,12 +10,15 @@ import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.TransferListSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.CollectionService;
+import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,6 +53,10 @@ public class CollectionServiceImpl implements CollectionService {
         // 需要保存到数据库
         CollectionSheetPO collectionSheetPO=new CollectionSheetPO();
         BeanUtils.copyProperties(collectionSheetVO,collectionSheetPO);
+        CollectionSheetPO latest=collectionDao.findLatest();
+        String id = IdGenerator.generateSheetId(latest == null ? null : latest.getId(), "SKD");
+        collectionSheetPO.setId(id);
+        collectionSheetPO.setCreateTime(new Date());
         collectionSheetPO.setState(CollectionSheetState.PENDING);
         List<TransferListSheetPO> collectionSheetContentPOS=new ArrayList<>();
         // 收款单的内容
@@ -58,14 +65,16 @@ public class CollectionServiceImpl implements CollectionService {
         for(TransferListSheetVO collectionContentVO:collectionSheetContentVOS){
             TransferListSheetPO collectionContentPO=new TransferListSheetPO();
             BeanUtils.copyProperties(collectionContentVO,collectionContentPO);
+            collectionContentPO.setCollectionSheetId(id);
             // 加上每一个的转账的钱
             totalAmount=totalAmount.add(collectionContentVO.getTransferAmount());
             collectionSheetContentPOS.add(collectionContentPO);
         }
         // 设置总金额 其他的都copy过了
         collectionSheetPO.setTotalAmount(totalAmount);
-        collectionDao.saveTransferList(collectionSheetContentPOS);
         collectionDao.saveCollectionSheetSheet(collectionSheetPO);
+        collectionDao.saveTransferList(collectionSheetContentPOS);
+
     }
 
     //TODO:审批收款单@hcx
@@ -100,5 +109,37 @@ public class CollectionServiceImpl implements CollectionService {
                 customerDao.updatePayableById(customerId,collectionSheetContentPO.getTransferAmount());
             }
         }
+    }
+
+    /**
+     * 按照状态查找收款单
+     * @param state 对应的状态(可以为空)
+     * @return 所有的满足条件的收款单
+     */
+    @Override
+    public List<CollectionSheetVO> findAllCollectionSheetByState(CollectionSheetState state) {
+        List<CollectionSheetPO> collectionSheetPOS;
+        List<CollectionSheetVO> collectionSheetVOS=new ArrayList<>();
+        if(state==null){
+            collectionSheetPOS=collectionDao.findAllCollectionSheet();
+        }else {
+            collectionSheetPOS=collectionDao.findAllCollectionSheetByState(state);
+        }
+        for(CollectionSheetPO collectionSheetPO:collectionSheetPOS){
+            CollectionSheetVO collectionSheetVO=new CollectionSheetVO();
+            BeanUtils.copyProperties(collectionSheetPO,collectionSheetVO);
+            List<TransferListSheetPO> collectionSheetContentPOS=collectionDao.findAllCollectionSheetContent(collectionSheetPO.getId());
+            System.out.println(collectionSheetContentPOS.get(0));
+            List<TransferListSheetVO> collectionSheetContentVOS=new ArrayList<>();
+            for(TransferListSheetPO collectionSheetContentPO:collectionSheetContentPOS){
+                TransferListSheetVO transferListSheetVO=new TransferListSheetVO();
+                BeanUtils.copyProperties(collectionSheetContentPO,transferListSheetVO);
+                System.out.println(transferListSheetVO);
+                collectionSheetContentVOS.add(transferListSheetVO);
+            }
+            collectionSheetVO.setCollectionContent(collectionSheetContentVOS);
+            collectionSheetVOS.add(collectionSheetVO);
+        }
+        return collectionSheetVOS;
     }
 }

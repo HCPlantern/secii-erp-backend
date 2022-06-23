@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 收货单
@@ -41,4 +42,6 @@ public class CollectionSheetPO {
      * 状态
      */
     private CollectionSheetState state;
+
+    private Date createTime;
 }

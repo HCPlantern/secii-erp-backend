@@ -39,6 +39,8 @@ public interface CollectionDao {
      */
     public List<CollectionSheetPO> findAllCollectionSheet();
 
+    public List<CollectionSheetPO> findAllCollectionSheetByState(CollectionSheetState state);
+
     /**
      * 查询所有收款单的内容
      * @Param collectionSheetId 所关联的收款单Id
@@ -54,5 +56,7 @@ public interface CollectionDao {
      * @return
      */
     public int updateState(String id, CollectionSheetState state);
+
+    public CollectionSheetPO findLatest();
 
 }

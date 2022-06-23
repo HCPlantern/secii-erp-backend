@@ -24,4 +24,7 @@ public interface PaymentSheetDao {
 
     public List<PaymentSheetContentPO> findAllPaymentSheetContentById(String id);
 
+    public PaymentSheetPO findLatest();
+
+    public List<PaymentSheetPO> findAllPaymentSheetByState(PaymentSheetState state);
 }

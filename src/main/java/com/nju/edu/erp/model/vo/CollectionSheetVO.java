@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 @Data
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 public class CollectionSheetVO {
     /**
-     * 表示收货单id
+     * 表示收款单id
      */
     private String id;
     /**
@@ -39,4 +40,6 @@ public class CollectionSheetVO {
      * 状态
      */
     private CollectionSheetState state;
+
+    private Date createTime;
 }

@@ -6,10 +6,12 @@
         <result column="customer" property="customer"/>
         <result column="operator" property="operator"/>
         <result column="total_amount" property="totalAmount"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
     <insert id="saveCollectionSheetSheet" parameterType="CollectionSheetPO">
-        insert into collection_sheet(id,customer,operator,total_amount)
-        values (#{id},#{customer},#{operator},#{totalAmount})
+        insert into collection_sheet(id,customer,operator,total_amount,state,create_time)
+        values (#{id},#{customer},#{operator},#{totalAmount},#{state},#{createTime})
     </insert>
     <insert id="saveTransferList" useGeneratedKeys="true" keyProperty="id">
         insert into transfer_list_sheet(id,company_account_id,transfer_amount,collection_sheet_id,remark)
@@ -31,6 +33,12 @@
         select *
         from transfer_list_sheet
         where collection_sheet_id = #{collectionSheetId};
+    </select>
+    <select id="findAllCollectionSheetByState" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
+        select * from collection_sheet where state = #{state}
+    </select>
+    <select id="findLatest" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
+        select * from collection_sheet order by create_time desc limit 1
     </select>
 
 

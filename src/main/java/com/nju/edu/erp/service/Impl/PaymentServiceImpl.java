@@ -6,16 +6,20 @@ import com.nju.edu.erp.dao.PaymentSheetDao;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
+import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.PaymentSheetContentVO;
 import com.nju.edu.erp.model.vo.PaymentSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.PaymentService;
+import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,6 +47,10 @@ public class PaymentServiceImpl implements PaymentService {
     public void makePaymentSheet(UserVO userVO, PaymentSheetVO paymentSheetVO) {
         PaymentSheetPO paymentSheetPO=new PaymentSheetPO();
         BeanUtils.copyProperties(paymentSheetVO,paymentSheetPO);
+        PaymentSheetPO latest=paymentSheetDao.findLatest();
+        String id= IdGenerator.generateSheetId(latest == null ? null : latest.getId(),"XJFKD");
+        paymentSheetPO.setId(id);
+        paymentSheetPO.setCreateTime(new Date());
         paymentSheetPO.setState(PaymentSheetState.PENDING);
         List<PaymentSheetContentPO> paymentSheetContentPOS=new ArrayList<>();
         // 收款单内容
@@ -51,6 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
         for (PaymentSheetContentVO paymentSheetContentVO:paymentSheetContentVOS){
             PaymentSheetContentPO paymentSheetContentPO=new PaymentSheetContentPO();
             BeanUtils.copyProperties(paymentSheetContentVO,paymentSheetContentPO);
+            paymentSheetContentPO.setPaymentSheetId(id);
             totalAmount=totalAmount.add(paymentSheetContentVO.getTransferAmount());
             paymentSheetContentPOS.add(paymentSheetContentPO);
         }
@@ -80,5 +89,30 @@ public class PaymentServiceImpl implements PaymentService {
                 customerDao.updatePayableById(customerId,paymentSheetContentPO.getTransferAmount());
             }
         }
+    }
+
+    @Override
+    public List<PaymentSheetVO> findAllPaymentSheetByState(PaymentSheetState paymentSheetState) {
+        List<PaymentSheetPO> paymentSheetPOS;
+        List<PaymentSheetVO> paymentSheetVOS=new ArrayList<>();
+        if(paymentSheetState==null){
+            paymentSheetPOS=paymentSheetDao.findAllPaymentSheet();
+        }else {
+            paymentSheetPOS=paymentSheetDao.findAllPaymentSheetByState(paymentSheetState);
+        }
+        for(PaymentSheetPO paymentSheetPO:paymentSheetPOS){
+            PaymentSheetVO paymentSheetVO=new PaymentSheetVO();
+            BeanUtils.copyProperties(paymentSheetPO,paymentSheetVO);
+            List<PaymentSheetContentPO> paymentSheetContentPOS=paymentSheetDao.findAllPaymentSheetContentById(paymentSheetPO.getId());
+            List<PaymentSheetContentVO> paymentSheetContentVOS=new ArrayList<>();
+            for(PaymentSheetContentPO paymentSheetContentPO:paymentSheetContentPOS){
+                PaymentSheetContentVO paymentSheetContentVO=new PaymentSheetContentVO();
+                BeanUtils.copyProperties(paymentSheetContentPO,paymentSheetContentVO);
+                paymentSheetContentVOS.add(paymentSheetContentVO);
+            }
+            paymentSheetVO.setPaymentSheetContentVOS(paymentSheetContentVOS);
+            paymentSheetVOS.add(paymentSheetVO);
+        }
+        return paymentSheetVOS;
     }
 }
