@@ -112,5 +112,5 @@ public interface SaleSheetDao {
      * 获取所有销售单的基本信息
      * @return 所有销售单基本信息
      */
-    List<SheetPO> findAllBasicSheetInfo();
+    List<SheetPO> findAllBasicSheetInfo(@Param("startTime") String startTime, @Param("endTime") String endTime);
 }

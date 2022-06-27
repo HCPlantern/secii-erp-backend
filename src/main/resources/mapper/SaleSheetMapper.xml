@@ -107,6 +107,7 @@
         select ss.id as id, ss.create_time as date, c.name as client, ss.operator as operator
         from sale_sheet ss
                  left join customer c on ss.supplier = c.id
+        where ss.create_time between #{startTime} and #{endTime}
     </select>
 
     <resultMap id="CustomerPurchaseAmountPO" type="com.nju.edu.erp.model.po.CustomerPurchaseAmountPO">

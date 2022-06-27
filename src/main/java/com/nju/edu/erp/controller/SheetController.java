@@ -7,10 +7,7 @@ import com.nju.edu.erp.service.SheetService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sheet")
@@ -27,7 +24,7 @@ public class SheetController {
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.FINANCIAL_STAFF})
     @GetMapping(value = "/findAllSheet")
     @ApiOperation("查询所有单据")
-    public Response findAllSheet() {
-        return Response.buildSuccess(sheetService.findAllSheet());
+    public Response findAllSheet(@RequestParam String beginDateStr, @RequestParam String endDateStr) {
+        return Response.buildSuccess(sheetService.findAllSheet(beginDateStr, endDateStr));
     }
 }

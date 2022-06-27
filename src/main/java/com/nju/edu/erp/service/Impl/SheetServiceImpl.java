@@ -44,11 +44,11 @@ public class SheetServiceImpl implements SheetService {
 
 
     @Override
-    public List<SheetVO> findAllSheet() {
+    public List<SheetVO> findAllSheet(String beginDateStr, String endDateStr) {
         List<SheetVO> res = new ArrayList<>();
         List<SheetPO> sheetPOs = new ArrayList<>();
         // 销售单
-        sheetPOs.addAll(saleSheetDao.findAllBasicSheetInfo());
+        sheetPOs.addAll(saleSheetDao.findAllBasicSheetInfo(beginDateStr, endDateStr));
         // TODO: 其他单据: 销售退货，进货单， 进货退货单， 付款单， 收款单， 工资单， 入库单， 出库单
 
         for (SheetPO sheetPO: sheetPOs) {

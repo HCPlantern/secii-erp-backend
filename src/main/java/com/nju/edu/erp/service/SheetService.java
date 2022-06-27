@@ -7,5 +7,5 @@ import java.util.List;
 
 @Service
 public interface SheetService {
-    List<SheetVO> findAllSheet();
+    List<SheetVO> findAllSheet(String beginDateStr, String endDateStr);
 }
