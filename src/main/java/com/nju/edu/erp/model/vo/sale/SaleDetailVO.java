@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.sale;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class SaleDetailVO {
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
     private String salesman;
     private Integer id;
