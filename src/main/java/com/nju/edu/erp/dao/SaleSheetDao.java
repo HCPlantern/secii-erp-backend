@@ -2,10 +2,7 @@ package com.nju.edu.erp.dao;
 
 
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
-import com.nju.edu.erp.model.po.CustomerPurchaseAmountPO;
-import com.nju.edu.erp.model.po.SaleDetailPO;
-import com.nju.edu.erp.model.po.SaleSheetContentPO;
-import com.nju.edu.erp.model.po.SaleSheetPO;
+import com.nju.edu.erp.model.po.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -110,4 +107,10 @@ public interface SaleSheetDao {
      * @return 销售详细信息
      */
     List<SaleDetailPO> findAllSaleDetailByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    /**
+     * 获取所有销售单的基本信息
+     * @return 所有销售单基本信息
+     */
+    List<SheetPO> findAllBasicSheetInfo();
 }
