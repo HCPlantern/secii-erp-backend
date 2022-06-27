@@ -8,7 +8,6 @@ import com.nju.edu.erp.exception.MyServiceException;
 import com.nju.edu.erp.model.po.User;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.UserService;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, String> login(UserVO userVO) {
         User user = userDao.findByUsernameAndPassword(userVO.getName(), userVO.getPassword());
-        if (null == user ) {
+        if (null == user) {
             throw new MyServiceException("A0000", "用户名或密码错误");
         }
         Map<String, String> authToken = new HashMap<>();
@@ -56,11 +55,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO auth(String token) {
         Map<String, Claim> claims = jwtConfig.parseJwt(token);
-        UserVO userVO = UserVO.builder()
+        return UserVO.builder()
                 .name(claims.get("name").as(String.class))
                 .role(Role.valueOf(claims.get("role").as(String.class)))
                 .build();
-        return userVO;
     }
 
     @Override
@@ -68,8 +66,26 @@ public class UserServiceImpl implements UserService {
         HashSet<String> set = new HashSet<>();
         List<String> users;
         List<String> roles = new ArrayList<>();
-        roles.add("SALE_MANAGER");
-        roles.add("SALE_STAFF");
+        roles.add(Role.SALE_MANAGER.toString());
+        roles.add(Role.SALE_STAFF.toString());
+        for (String role : roles) {
+            users = userDao.findUserNameByRole(role);
+            set.addAll(users);
+        }
+        return new ArrayList<>(set);
+    }
+
+    @Override
+    public List<String> findAllUsers() {
+        HashSet<String> set = new HashSet<>();
+        List<String> users;
+        List<String> roles = new ArrayList<>();
+        roles.add(Role.INVENTORY_MANAGER.toString());
+        roles.add(Role.SALE_STAFF.toString());
+        roles.add(Role.FINANCIAL_STAFF.toString());
+        roles.add(Role.SALE_MANAGER.toString());
+        roles.add(Role.HR.toString());
+        roles.add(Role.GM.toString());
         for (String role : roles) {
             users = userDao.findUserNameByRole(role);
             set.addAll(users);

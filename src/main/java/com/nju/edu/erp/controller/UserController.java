@@ -16,16 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "UserController")
 public class UserController {
 
-    private final UserDao userDao;
-
-    private JwtConfig jwtConfig;
-
     private UserService userService;
 
     @Autowired
-    public UserController(UserDao userDao, JwtConfig jwtConfig, UserService userService) {
-        this.userDao = userDao;
-        this.jwtConfig = jwtConfig;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -53,5 +47,12 @@ public class UserController {
     public Response findAllSalesMan() {
         return Response.buildSuccess(userService.findAllSalesMan());
     }
+
+    @GetMapping("/find-all-users")
+    @ApiOperation("查询所有用户")
+    public Response findAllUsers() {
+        return Response.buildSuccess(userService.findAllUsers());
+    }
+
 
 }
