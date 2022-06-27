@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +32,13 @@ public class User {
      */
     private Role role;
 
+    /**
+     * 打卡数量
+     */
+    private String attendance;
+
+    /**
+     * 上一次打卡的时间
+     */
+    private Date lastSignInTime;
 }

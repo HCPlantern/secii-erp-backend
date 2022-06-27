@@ -83,6 +83,7 @@ public class SaleReturnsController {
         }
     }
 
+    @Authorized(roles = {Role.SALE_MANAGER, Role.SALE_STAFF, Role.GM, Role.ADMIN})
     @GetMapping(value = "/sheet-show")
     @ApiOperation("根据状态查询销售退货单")
     public Response showSheetByOrder(@RequestParam(value = "state", required = false) SaleReturnsSheetState state) {

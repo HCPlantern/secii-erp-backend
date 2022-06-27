@@ -1,10 +1,12 @@
 package com.nju.edu.erp.controller;
 
+import com.nju.edu.erp.auth.Authorized;
+import com.nju.edu.erp.common.Response;
 import com.nju.edu.erp.config.JwtConfig;
 import com.nju.edu.erp.dao.UserDao;
+import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.UserService;
-import com.nju.edu.erp.common.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,16 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "UserController")
 public class UserController {
 
+    private final UserDao userDao;
+
+    private JwtConfig jwtConfig;
+
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserDao userDao, JwtConfig jwtConfig, UserService userService) {
+        this.userDao = userDao;
+        this.jwtConfig = jwtConfig;
         this.userService = userService;
     }
 
@@ -48,8 +56,16 @@ public class UserController {
         return Response.buildSuccess(userService.findAllSalesMan());
     }
 
+    @GetMapping("/signIn")
+    @ApiOperation("每日打卡")
+    @Authorized(roles = {Role.HR, Role.INVENTORY_MANAGER, Role.SALE_MANAGER, Role.SALE_STAFF, Role.FINANCIAL_STAFF})
+    public Response signIn(@RequestParam(name = "token") String token) {
+        return Response.buildSuccess(userService.signIn(token));
+    }
+
     @GetMapping("/find-all-users")
     @ApiOperation("查询所有用户")
+    @Authorized(roles = {Role.ADMIN, Role.GM, Role.HR, Role.FINANCIAL_STAFF})
     public Response findAllUsers() {
         return Response.buildSuccess(userService.findAllUsers());
     }
