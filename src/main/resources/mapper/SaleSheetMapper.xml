@@ -88,18 +88,24 @@
         where create_time between #{startTime} and #{endTime}
     </select>
     <select id="findAllSaleDetailByTime" resultType="com.nju.edu.erp.model.po.SaleDetailPO">
-        select ss.create_time as date,
-               ss.salesman as salesman,
-               c.name as supplier,
-               ssc.id as id,
-               p.name as name,
-               p.type as type,
-               ssc.quantity as quantity,
-               ssc.unit_price as unitPrice,
+        select ss.create_time  as date,
+               ss.salesman     as salesman,
+               c.name          as supplier,
+               ssc.id          as id,
+               p.name          as name,
+               p.type          as type,
+               ssc.quantity    as quantity,
+               ssc.unit_price  as unitPrice,
                ssc.total_price as totalPrice
         from sale_sheet ss
                  left join sale_sheet_content ssc on ss.id = ssc.sale_sheet_id
                  left join product p on ssc.pid = p.id
+                 left join customer c on ss.supplier = c.id
+        where ss.create_time between #{startTime} and #{endTime}
+    </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select ss.id as id, ss.create_time as date, c.name as client, ss.operator as operator
+        from sale_sheet ss
                  left join customer c on ss.supplier = c.id
         where ss.create_time between #{startTime} and #{endTime}
     </select>
