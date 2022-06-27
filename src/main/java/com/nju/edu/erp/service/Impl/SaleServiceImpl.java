@@ -279,6 +279,7 @@ public class SaleServiceImpl implements SaleService {
             // remember the date of the sale sheet
             Date date = sPO.getCreateTime();
             String salesMan = sPO.getSalesman();
+            CustomerPO customerPO = customerService.findCustomerById(sPO.getSupplier());
             for (SaleSheetContentPO sscPO : contentPO) {
                 SaleDetailVO sDetailVO = new SaleDetailVO();
                 // copy pid, quantity, unit price and total price
@@ -287,6 +288,8 @@ public class SaleServiceImpl implements SaleService {
                 sDetailVO.setDate(date);
                 // copy the salesman of the sale sheet
                 sDetailVO.setSalesman(salesMan);
+                // copy supplier name
+                sDetailVO.setSupplier(customerPO.getName());
                 // find name and type of this sale detail
                 ProductPO productPO = productDao.findById(sscPO.getPid());
                 sDetailVO.setName(productPO.getName());

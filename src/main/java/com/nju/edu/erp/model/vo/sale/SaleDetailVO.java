@@ -17,6 +17,7 @@ public class SaleDetailVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date date;
     private String salesman;
+    private String supplier;
     private Integer id;
     private String name;
     private String type;
