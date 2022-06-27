@@ -10,8 +10,8 @@ import com.nju.edu.erp.enums.sheetState.WarehouseOutputSheetState;
 import com.nju.edu.erp.model.po.SaleSheetContentPO;
 import com.nju.edu.erp.model.po.SaleSheetPO;
 import com.nju.edu.erp.model.po.WarehouseOutputSheetPO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetContentVO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetContentVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.utils.IdGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -25,8 +25,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @SpringBootTest
 public class SaleServiceTest { // 该测试为集成测试，需要用到数据库，请大家连给定的测试数据库进行测试
@@ -61,7 +59,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void makeSaleSheet() { // 测试销售单是否生成成功
         UserVO userVO = UserVO.builder()
                 .name("xiaoshoujingli")
@@ -112,7 +110,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void getSaleSheetByState() { // 测试按照状态获取销售单及其content是否成功
         List<SaleSheetVO> saleSheetByState = saleService.getSaleSheetByState(SaleSheetState.PENDING_LEVEL_2);
         Assertions.assertNotNull(saleSheetByState);
@@ -133,7 +131,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void approval_exceptions_1() { // 一级审批不能直接到审批完成 (提示：可以以抛出异常的方式终止流程，这样就能触发事务回滚)
         try {
             saleService.approval("XSD-20220524-00004", SaleSheetState.SUCCESS);
@@ -146,7 +144,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void approval_exceptions_2() { // 二级审批不能回到一级审批
         try {
             saleService.approval("XSD-20220524-00003", SaleSheetState.PENDING_LEVEL_1);
@@ -159,7 +157,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void approval_failed() { // 测试审批失败
         saleService.approval("XSD-20220524-00003", SaleSheetState.FAILURE);
         SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220524-00003");
@@ -168,7 +166,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void approval_1() { // 测试一级审批
         saleService.approval("XSD-20220524-00004", SaleSheetState.PENDING_LEVEL_2);
         SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220524-00004");
@@ -177,7 +175,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback()
     public void approval_2() { // 测试二级审批
         // 二级审批成功之后需要进行
         // 1. 修改单据状态

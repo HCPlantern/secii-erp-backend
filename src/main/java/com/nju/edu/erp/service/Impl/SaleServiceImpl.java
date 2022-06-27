@@ -8,11 +8,10 @@ import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.CustomerVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetContentVO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
+import com.nju.edu.erp.model.vo.sale.SaleDetailVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetContentVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputFormContentVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputFormVO;
 import com.nju.edu.erp.service.CustomerService;
@@ -20,7 +19,6 @@ import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.SaleService;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.utils.IdGenerator;
-import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +37,6 @@ public class SaleServiceImpl implements SaleService {
 
     private final SaleSheetDao saleSheetDao;
 
-    private final ProductDao productDao;
-
     private final CustomerDao customerDao;
 
     private final ProductService productService;
@@ -50,9 +46,8 @@ public class SaleServiceImpl implements SaleService {
     private final WarehouseService warehouseService;
 
     @Autowired
-    public SaleServiceImpl(SaleSheetDao saleSheetDao, ProductDao productDao, CustomerDao customerDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService) {
+    public SaleServiceImpl(SaleSheetDao saleSheetDao, CustomerDao customerDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService) {
         this.saleSheetDao = saleSheetDao;
-        this.productDao = productDao;
         this.customerDao = customerDao;
         this.productService = productService;
         this.customerService = customerService;
@@ -208,7 +203,7 @@ public class SaleServiceImpl implements SaleService {
      * @param salesman     销售人员的名字
      * @param beginDateStr 开始时间字符串
      * @param endDateStr   结束时间字符串
-     * @return
+     * @return 客户
      */
     public CustomerPurchaseAmountVO getMaxAmountCustomerOfSalesmanByTime(String salesman, String beginDateStr, String endDateStr) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -261,4 +256,27 @@ public class SaleServiceImpl implements SaleService {
         sVO.setSaleSheetContent(saleSheetContentVOList);
         return sVO;
     }
+
+    /**
+     * 根据时间段搜索销售详细信息
+     *
+     * @param beginDateStr 开始时间字符串
+     * @param endDateStr   结束时间字符串
+     * @return 销售详细信息
+     */
+    @Override
+    public List<SaleDetailVO> findAllSaleDetailByTime(String beginDateStr, String endDateStr) {
+        List<SaleDetailVO> result = new ArrayList<>();
+        // find all sale detail
+        List<SaleDetailPO> saleDetailPOList = saleSheetDao.findAllSaleDetailByTime(beginDateStr, endDateStr);
+        for (SaleDetailPO saleDetailPO :
+                saleDetailPOList) {
+            SaleDetailVO saleDetailVO = new SaleDetailVO();
+            BeanUtils.copyProperties(saleDetailPO, saleDetailVO);
+            result.add(saleDetailVO);
+        }
+        return result;
+    }
+
+
 }
