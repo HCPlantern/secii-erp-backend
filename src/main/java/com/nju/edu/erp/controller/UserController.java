@@ -1,7 +1,9 @@
 package com.nju.edu.erp.controller;
 
+import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.config.JwtConfig;
 import com.nju.edu.erp.dao.UserDao;
+import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.UserService;
 import com.nju.edu.erp.common.Response;
@@ -9,6 +11,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
 
 
 @RestController
@@ -54,4 +58,10 @@ public class UserController {
         return Response.buildSuccess(userService.findAllSalesMan());
     }
 
+    @GetMapping("/signIn")
+    @ApiOperation("每日打卡")
+    @Authorized(roles = {Role.HR, Role.INVENTORY_MANAGER, Role.SALE_MANAGER, Role.SALE_STAFF, Role.FINANCIAL_STAFF})
+    public Response signIn(@RequestParam(name = "token") String token) {
+        return Response.buildSuccess(userService.signIn(token));
+    }
 }

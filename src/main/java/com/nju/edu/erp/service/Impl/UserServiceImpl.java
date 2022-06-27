@@ -8,11 +8,11 @@ import com.nju.edu.erp.exception.MyServiceException;
 import com.nju.edu.erp.model.po.User;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.UserService;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, String> login(UserVO userVO) {
         User user = userDao.findByUsernameAndPassword(userVO.getName(), userVO.getPassword());
-        if (null == user ) {
+        if (null == user) {
             throw new MyServiceException("A0000", "用户名或密码错误");
         }
         Map<String, String> authToken = new HashMap<>();
@@ -75,5 +75,17 @@ public class UserServiceImpl implements UserService {
             set.addAll(users);
         }
         return new ArrayList<>(set);
+    }
+
+    @Override
+    public int signIn(String token) {
+        Map<String, Claim> claims = jwtConfig.parseJwt(token);
+        String name = claims.get("name").as(String.class);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        User user = userDao.findByUsername(name);
+        if (sdf.format(user.getLastSignInTime()).equals(sdf.format(new Date())))
+            return 0;
+        else userDao.signInByUserName(name);
+        return 1;
     }
 }

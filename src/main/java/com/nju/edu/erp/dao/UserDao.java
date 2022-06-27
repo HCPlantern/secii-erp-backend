@@ -5,6 +5,7 @@ import com.nju.edu.erp.model.po.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -18,4 +19,6 @@ public interface UserDao {
     User findByUsername(String username);
 
     List<String> findUserNameByRole(String role);
+
+    void signInByUserName(String name);
 }

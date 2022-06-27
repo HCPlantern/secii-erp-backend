@@ -11,6 +11,7 @@ public interface UserService {
 
     /**
      * 用户登录
+     *
      * @param userVO
      * @return
      */
@@ -18,17 +19,25 @@ public interface UserService {
 
     /**
      * 用户注册
+     *
      * @param userVO
      */
     void register(UserVO userVO);
 
     /**
      * 用户认证
+     *
      * @param token
      */
     UserVO auth(String token);
 
     List<String> findAllSalesMan();
 
-
+    /**
+     * 每日打卡
+     *
+     * @param userVO
+     * @return 0:今日已打卡; 1:打卡成功
+     */
+    int signIn(String token);
 }
