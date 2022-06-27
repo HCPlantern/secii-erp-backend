@@ -121,6 +121,7 @@ public class SaleController {
      */
     @ApiOperation("查看指定时间段内的所有商品销售信息")
     @GetMapping(value = "/find-all-sale-detail")
+    @Authorized(roles = {Role.SALE_STAFF, Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     public Response findAllSaleDetailByTime(@RequestParam String beginDateStr, @RequestParam String endDateStr) {
         return Response.buildSuccess(saleService.findAllSaleDetailByTime(beginDateStr, endDateStr));
     }

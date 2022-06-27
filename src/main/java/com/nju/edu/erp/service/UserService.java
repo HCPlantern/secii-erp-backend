@@ -33,10 +33,11 @@ public interface UserService {
 
     List<String> findAllSalesMan();
 
+    List<String> findAllUsers();
+
     /**
      * 每日打卡
      *
-     * @param userVO
      * @return 0:今日已打卡; 1:打卡成功
      */
     int signIn(String token);
