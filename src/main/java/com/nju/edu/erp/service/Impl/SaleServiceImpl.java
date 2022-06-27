@@ -8,11 +8,10 @@ import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.CustomerVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetContentVO;
-import com.nju.edu.erp.model.vo.Sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
+import com.nju.edu.erp.model.vo.sale.SaleDetailVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetContentVO;
+import com.nju.edu.erp.model.vo.sale.SaleSheetVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputFormContentVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputFormVO;
 import com.nju.edu.erp.service.CustomerService;
@@ -20,7 +19,6 @@ import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.SaleService;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.utils.IdGenerator;
-import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -208,7 +206,7 @@ public class SaleServiceImpl implements SaleService {
      * @param salesman     销售人员的名字
      * @param beginDateStr 开始时间字符串
      * @param endDateStr   结束时间字符串
-     * @return
+     * @return 客户
      */
     public CustomerPurchaseAmountVO getMaxAmountCustomerOfSalesmanByTime(String salesman, String beginDateStr, String endDateStr) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -261,4 +259,44 @@ public class SaleServiceImpl implements SaleService {
         sVO.setSaleSheetContent(saleSheetContentVOList);
         return sVO;
     }
+
+    /**
+     * 根据时间段搜索销售详细信息
+     *
+     * @param beginDateStr 开始时间字符串
+     * @param endDateStr   结束时间字符串
+     * @return 销售详细信息
+     */
+    @Override
+    public List<SaleDetailVO> findAllSaleDetailByTime(String beginDateStr, String endDateStr) {
+        // find all sale detail
+        List<SaleSheetPO> saleSheetPO = saleSheetDao.findAllSheetByTime(beginDateStr, endDateStr);
+        List<SaleDetailVO> result = new ArrayList<>();
+        for (SaleSheetPO sPO :
+                saleSheetPO) {
+            // find all sale sheet content
+            List<SaleSheetContentPO> contentPO = saleSheetDao.findContentBySheetId(sPO.getId());
+            // remember the date of the sale sheet
+            Date date = sPO.getCreateTime();
+            String salesMan = sPO.getSalesman();
+            for (SaleSheetContentPO sscPO : contentPO) {
+                SaleDetailVO sDetailVO = new SaleDetailVO();
+                // copy pid, quantity, unit price and total price
+                BeanUtils.copyProperties(sscPO, sDetailVO);
+                // copy the date of the sale sheet
+                sDetailVO.setDate(date);
+                // copy the salesman of the sale sheet
+                sDetailVO.setSalesman(salesMan);
+                // find name and type of this sale detail
+                ProductPO productPO = productDao.findById(sscPO.getPid());
+                sDetailVO.setName(productPO.getName());
+                sDetailVO.setType(productPO.getType());
+                // add to result
+                result.add(sDetailVO);
+            }
+        }
+        return result;
+    }
+
+
 }
