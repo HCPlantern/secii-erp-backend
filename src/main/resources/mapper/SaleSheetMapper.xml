@@ -87,6 +87,22 @@
         from sale_sheet
         where create_time between #{startTime} and #{endTime}
     </select>
+    <select id="findAllSaleDetailByTime" resultType="com.nju.edu.erp.model.po.SaleDetailPO">
+        select ss.create_time as date,
+               ss.salesman as salesman,
+               c.name as supplier,
+               ssc.id as id,
+               p.name as name,
+               p.type as type,
+               ssc.quantity as quantity,
+               ssc.unit_price as unitPrice,
+               ssc.total_price as totalPrice
+        from sale_sheet ss
+                 left join sale_sheet_content ssc on ss.id = ssc.sale_sheet_id
+                 left join product p on ssc.pid = p.id
+                 left join customer c on ss.supplier = c.id
+        where ss.create_time between #{startTime} and #{endTime}
+    </select>
 
     <resultMap id="CustomerPurchaseAmountPO" type="com.nju.edu.erp.model.po.CustomerPurchaseAmountPO">
         <result column="total_final_amount" property="totalFinalAmount"/>

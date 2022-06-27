@@ -1,4 +1,4 @@
-package com.nju.edu.erp.model.vo.sale;
+package com.nju.edu.erp.model.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleDetailVO {
+public class SaleDetailPO {
     /**
      * 时间 精确到日
      */

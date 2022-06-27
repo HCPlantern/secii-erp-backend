@@ -37,8 +37,6 @@ public class SaleServiceImpl implements SaleService {
 
     private final SaleSheetDao saleSheetDao;
 
-    private final ProductDao productDao;
-
     private final CustomerDao customerDao;
 
     private final ProductService productService;
@@ -48,9 +46,8 @@ public class SaleServiceImpl implements SaleService {
     private final WarehouseService warehouseService;
 
     @Autowired
-    public SaleServiceImpl(SaleSheetDao saleSheetDao, ProductDao productDao, CustomerDao customerDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService) {
+    public SaleServiceImpl(SaleSheetDao saleSheetDao, CustomerDao customerDao, ProductService productService, CustomerService customerService, WarehouseService warehouseService) {
         this.saleSheetDao = saleSheetDao;
-        this.productDao = productDao;
         this.customerDao = customerDao;
         this.productService = productService;
         this.customerService = customerService;
@@ -269,34 +266,14 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public List<SaleDetailVO> findAllSaleDetailByTime(String beginDateStr, String endDateStr) {
-        // find all sale detail
-        List<SaleSheetPO> saleSheetPO = saleSheetDao.findAllSheetByTime(beginDateStr, endDateStr);
         List<SaleDetailVO> result = new ArrayList<>();
-        for (SaleSheetPO sPO :
-                saleSheetPO) {
-            // find all sale sheet content
-            List<SaleSheetContentPO> contentPO = saleSheetDao.findContentBySheetId(sPO.getId());
-            // remember the date of the sale sheet
-            Date date = sPO.getCreateTime();
-            String salesMan = sPO.getSalesman();
-            CustomerPO customerPO = customerService.findCustomerById(sPO.getSupplier());
-            for (SaleSheetContentPO sscPO : contentPO) {
-                SaleDetailVO sDetailVO = new SaleDetailVO();
-                // copy pid, quantity, unit price and total price
-                BeanUtils.copyProperties(sscPO, sDetailVO);
-                // copy the date of the sale sheet
-                sDetailVO.setDate(date);
-                // copy the salesman of the sale sheet
-                sDetailVO.setSalesman(salesMan);
-                // copy supplier name
-                sDetailVO.setSupplier(customerPO.getName());
-                // find name and type of this sale detail
-                ProductPO productPO = productDao.findById(sscPO.getPid());
-                sDetailVO.setName(productPO.getName());
-                sDetailVO.setType(productPO.getType());
-                // add to result
-                result.add(sDetailVO);
-            }
+        // find all sale detail
+        List<SaleDetailPO> saleDetailPOList = saleSheetDao.findAllSaleDetailByTime(beginDateStr, endDateStr);
+        for (SaleDetailPO saleDetailPO :
+                saleDetailPOList) {
+            SaleDetailVO saleDetailVO = new SaleDetailVO();
+            BeanUtils.copyProperties(saleDetailPO, saleDetailVO);
+            result.add(saleDetailVO);
         }
         return result;
     }
