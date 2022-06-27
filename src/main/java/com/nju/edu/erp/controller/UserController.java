@@ -10,16 +10,24 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 
 @RestController
 @RequestMapping(path = "/user")
 @Api(tags = "UserController")
 public class UserController {
 
+    private final UserDao userDao;
+
+    private JwtConfig jwtConfig;
+
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserDao userDao, JwtConfig jwtConfig, UserService userService) {
+        this.userDao = userDao;
+        this.jwtConfig = jwtConfig;
         this.userService = userService;
     }
 
@@ -48,6 +56,12 @@ public class UserController {
         return Response.buildSuccess(userService.findAllSalesMan());
     }
 
+    @GetMapping("/signIn")
+    @ApiOperation("每日打卡")
+    @Authorized(roles = {Role.HR, Role.INVENTORY_MANAGER, Role.SALE_MANAGER, Role.SALE_STAFF, Role.FINANCIAL_STAFF})
+    public Response signIn(@RequestParam(name = "token") String token) {
+        return Response.buildSuccess(userService.signIn(token));
+    }
     @GetMapping("/find-all-users")
     @ApiOperation("查询所有用户")
     public Response findAllUsers() {

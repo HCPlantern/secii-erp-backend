@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -91,5 +92,17 @@ public class UserServiceImpl implements UserService {
             set.addAll(users);
         }
         return new ArrayList<>(set);
+    }
+
+    @Override
+    public int signIn(String token) {
+        Map<String, Claim> claims = jwtConfig.parseJwt(token);
+        String name = claims.get("name").as(String.class);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        User user = userDao.findByUsername(name);
+        if (sdf.format(user.getLastSignInTime()).equals(sdf.format(new Date())))
+            return 0;
+        else userDao.signInByUserName(name);
+        return 1;
     }
 }

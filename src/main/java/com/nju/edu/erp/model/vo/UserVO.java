@@ -28,4 +28,8 @@ public class UserVO {
      */
     private String password;
 
+    /**
+     * 打卡数量
+     */
+    private String attendance;
 }
