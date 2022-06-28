@@ -20,7 +20,7 @@ public interface CustomerDao {
 
     List<CustomerPO> findAll();
 
-    void createCustomer(CustomerPO customerPO);
+    int createCustomer(CustomerPO customerPO);
 
     int deleteById(Integer id);
 

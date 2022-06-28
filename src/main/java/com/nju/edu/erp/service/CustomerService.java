@@ -11,7 +11,7 @@ public interface CustomerService {
      * 根据id更新客户信息
      * @param customerVO 客户信息
      */
-    void updateCustomer(CustomerVO customerVO);
+    int updateCustomer(CustomerVO customerVO);
 
     /**
      * 根据type查找对应类型的客户
@@ -27,7 +27,7 @@ public interface CustomerService {
    * 增加客户
    * @param customerVO 客户类型
    */
-    void createCustomer(CustomerVO customerVO);
+    int createCustomer(CustomerVO customerVO);
 
   /**
    * 删除客户

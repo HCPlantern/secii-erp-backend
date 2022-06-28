@@ -33,9 +33,11 @@ public class MockCategoryControllerTest {
     @Transactional
     @Rollback
     public void testQueryAll() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/queryAll")).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/queryAll"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(4))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andDo(MockMvcResultHandlers.print());
     }
-
     /**
      * 根据商品id修改商品分类
      */
@@ -43,7 +45,9 @@ public class MockCategoryControllerTest {
     @Transactional
     @Rollback
     public void testUpdate() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/update").param("id","1").param("name","dyfgs")).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/update").param("id","1").param("name","dyfgs"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.name").value("dyfgs"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     /**
@@ -53,7 +57,7 @@ public class MockCategoryControllerTest {
     @Transactional
     @Rollback
     public void testDelete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/delete").param("id","1")).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/delete").param("id","4")).andDo(MockMvcResultHandlers.print());
     }
 
     /**

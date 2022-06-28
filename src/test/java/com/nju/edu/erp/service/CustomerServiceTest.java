@@ -42,7 +42,7 @@ public class CustomerServiceTest {
                 .payable(BigDecimal.valueOf(37908))
                 .operator("dfjdfv")
                 .build();
-        customerService.updateCustomer(mockCustomerVO);
+        Assert.assertEquals(1,customerService.updateCustomer(mockCustomerVO));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CustomerServiceTest {
     public void testFindCustomerById(){
         Integer id=5;
         CustomerPO res=customerService.findCustomerById(id);
-        System.out.println(res);
+        Assert.assertNotNull(res);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class CustomerServiceTest {
                 .payable(BigDecimal.valueOf(3790842))
                 .operator("dfjdfv")
                 .build();
-        customerService.createCustomer(mockCustomerVO);
+        Assert.assertEquals(1,customerService.createCustomer(mockCustomerVO));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class CustomerServiceTest {
     @Rollback
     public void testDeleteCustomer(){
         Integer id=10;
-        customerService.deleteCustomer(id);
+        Assert.assertEquals(1,customerService.deleteCustomer(id));
     }
 
 }
