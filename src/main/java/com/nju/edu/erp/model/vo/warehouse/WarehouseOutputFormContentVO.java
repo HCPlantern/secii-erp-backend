@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.warehouse;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseOutputFormContentVO { // 出库单内部结构
+public class WarehouseOutputFormContentVO extends ISheetVO { // 出库单内部结构
     private String pid;
     private BigDecimal salePrice;
     private Integer quantity;

@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import com.nju.edu.erp.model.po.CollectionSheetPO;
 import com.nju.edu.erp.model.po.TransferListSheetPO;
@@ -55,7 +56,7 @@ public interface CollectionDao {
      * @param state
      * @return
      */
-    public int updateState(String id, CollectionSheetState state);
+    public int updateState(String id, BaseEnum state);
 
     public CollectionSheetPO findLatest();
 

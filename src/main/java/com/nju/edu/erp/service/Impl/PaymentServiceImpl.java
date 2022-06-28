@@ -3,6 +3,7 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.CompanyAccountDao;
 import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.PaymentSheetDao;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
@@ -69,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void approval(String paymentSheetId, PaymentSheetState state) {
+    public void approval(String paymentSheetId, BaseEnum state) {
         PaymentSheetPO paymentSheetPO=paymentSheetDao.findPaymentSheetById(paymentSheetId);
         Integer customerId=paymentSheetPO.getCustomer();
         if(state.equals(PaymentSheetState.FAILURE)){

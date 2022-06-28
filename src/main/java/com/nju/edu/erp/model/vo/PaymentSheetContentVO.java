@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentSheetContentVO {
+public class PaymentSheetContentVO extends ISheetVO{
     /**
      * 自增id
      */

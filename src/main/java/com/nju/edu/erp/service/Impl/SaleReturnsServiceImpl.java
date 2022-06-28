@@ -1,6 +1,7 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.*;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -126,7 +127,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
      */
     @Override
     @Transactional
-    public void approval(String saleReturnsSheetId, SaleReturnsSheetState state) {
+    public void approval(String saleReturnsSheetId, BaseEnum state) {
         SaleReturnsSheetPO srsPO = srsDao.findOneById(saleReturnsSheetId);
         if (state.equals(SaleReturnsSheetState.FAILURE)) {
             if (srsPO.getState().equals(SaleReturnsSheetState.SUCCESS)) {

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransferListSheetPO {
+public class TransferListSheetPO extends ISheetPO{
     private Integer id;
     private Integer companyAccountId;
     private BigDecimal transferAmount;

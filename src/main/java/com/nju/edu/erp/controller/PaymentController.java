@@ -37,7 +37,6 @@ public class PaymentController {
             return Response.buildFailed("000000","操作失败");
         }
     }
-
     @GetMapping("/sheet-show")
     public Response findAllPaymentSheetByState(@RequestParam(required = false) PaymentSheetState state){
         return Response.buildSuccess(paymentService.findAllPaymentSheetByState(state));

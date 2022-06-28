@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurchaseReturnsSheetPO {
+public class PurchaseReturnsSheetPO extends ISheetPO{
     /**
      * 进货退货单单据编号（格式为：JHTHD-yyyyMMdd-xxxxx
      */

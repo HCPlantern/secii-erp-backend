@@ -27,8 +27,8 @@ public class CollectionController {
 
     @PostMapping("/collection-sheet-make")
     @ApiOperation("制定收款单")
-    public Response makeCollectionSheet(UserVO userVO,@RequestBody CollectionSheetVO collectionSheetVO){
-        collectionService.makeCollectionSheet(userVO,collectionSheetVO);
+    public Response makeCollectionSheet(@RequestBody CollectionSheetVO collectionSheetVO){
+        collectionService.makeCollectionSheet(collectionSheetVO);
         return Response.buildSuccess();
     }
 

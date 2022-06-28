@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseOutputSheetContentPO {
+public class WarehouseOutputSheetContentPO extends ISheetPO{
     /**
      * 出库商品列表id
      */

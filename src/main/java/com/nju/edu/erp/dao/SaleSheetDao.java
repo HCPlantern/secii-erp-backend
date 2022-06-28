@@ -1,6 +1,7 @@
 package com.nju.edu.erp.dao;
 
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.po.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -76,7 +77,7 @@ public interface SaleSheetDao {
      * @param state   销售单状态
      * @return 影响的行数
      */
-    int updateSheetState(String sheetId, SaleSheetState state);
+    int updateSheetState(String sheetId, BaseEnum state);
 
 
     /**
@@ -87,7 +88,7 @@ public interface SaleSheetDao {
      * @param state   更新后的状态
      * @return 影响的行数
      */
-    int updateSheetStateOnPrev(String sheetId, SaleSheetState prev, SaleSheetState state);
+    int updateSheetStateOnPrev(String sheetId, BaseEnum prev, BaseEnum state);
 
 
     /**

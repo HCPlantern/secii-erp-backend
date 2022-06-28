@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.PurchaseReturnsSheetContentPO;
 import com.nju.edu.erp.model.po.PurchaseReturnsSheetPO;
@@ -49,7 +50,7 @@ public interface PurchaseReturnsSheetDao {
      * @param state 进货退货单状态
      * @return 影响的条目数
      */
-    int updateState(String purchaseReturnsSheetId, PurchaseReturnsSheetState state);
+    int updateState(String purchaseReturnsSheetId, BaseEnum state);
 
     /**
      * 根据 purchaseReturnsSheetId 和 prevState 找到条目， 并更新其状态为state
@@ -58,7 +59,7 @@ public interface PurchaseReturnsSheetDao {
      * @param state 进货退货单状态
      * @return 影响的条目数
      */
-    int updateStateV2(String purchaseReturnsSheetId, PurchaseReturnsSheetState prevState, PurchaseReturnsSheetState state);
+    int updateStateV2(String purchaseReturnsSheetId, BaseEnum prevState, BaseEnum state);
 
     /**
      * 通过purchaseReturnsSheetId找到对应条目

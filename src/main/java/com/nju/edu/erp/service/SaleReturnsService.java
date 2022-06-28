@@ -1,12 +1,13 @@
 package com.nju.edu.erp.service;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.saleReturns.SaleReturnsSheetVO;
 
 import java.util.List;
 
-public interface SaleReturnsService {
+public interface SaleReturnsService extends SaleReturnsSheetOperation{
 
     /**
      * 制定销售退货单
@@ -23,7 +24,7 @@ public interface SaleReturnsService {
      * @param saleReturnsSheetId 销售退货单ID
      * @param state              销售退货单状态
      */
-    void approval(String saleReturnsSheetId, SaleReturnsSheetState state);
+    void approval(String saleReturnsSheetId, BaseEnum state);
 
     /**
      * 根据状态获取销售退货单

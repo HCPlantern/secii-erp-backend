@@ -21,7 +21,7 @@
         </foreach>
     </insert>
     <update id="updateState">
-        update transfer_list_sheet set state = #{state} where id = #{id}
+        update collection_sheet set state = #{state} where id = #{id}
     </update>
     <select id="findCollectionSheetById" resultMap="CollectionSheetPO">
         select * from collection_sheet where id = #{id}

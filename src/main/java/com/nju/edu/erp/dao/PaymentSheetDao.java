@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
@@ -20,11 +21,11 @@ public interface PaymentSheetDao {
 
     public List<PaymentSheetPO> findAllPaymentSheet();
 
-    public int updateStateById(String id, PaymentSheetState state);
+    public int updateStateById(String id, BaseEnum state);
 
     public List<PaymentSheetContentPO> findAllPaymentSheetContentById(String id);
 
     public PaymentSheetPO findLatest();
 
-    public List<PaymentSheetPO> findAllPaymentSheetByState(PaymentSheetState state);
+    public List<PaymentSheetPO> findAllPaymentSheetByState(BaseEnum state);
 }

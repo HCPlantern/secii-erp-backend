@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleDetailPO {
+public class SaleDetailPO extends ISheetPO{
     /**
      * 时间 精确到日
      */

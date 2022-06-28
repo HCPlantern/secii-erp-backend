@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
@@ -43,9 +44,9 @@ public interface PurchaseSheetDao {
      */
     List<PurchaseSheetPO> findAllByState(PurchaseSheetState state);
 
-    int updateState(String purchaseSheetId, PurchaseSheetState state);
+    int updateState(String purchaseSheetId, BaseEnum state);
 
-    int updateStateV2(String purchaseSheetId, PurchaseSheetState prevState, PurchaseSheetState state);
+    int updateStateV2(String purchaseSheetId, BaseEnum prevState, BaseEnum state);
 
     PurchaseSheetPO findOneById(String purchaseSheetId);
 

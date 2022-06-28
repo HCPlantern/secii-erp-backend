@@ -2,6 +2,7 @@ package com.nju.edu.erp.model.vo.sheet;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SheetVO {
+public class SheetVO extends ISheetVO {
     /**
      * 单据编号
      */

@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WarehouseIODetailPO {
+public class WarehouseIODetailPO extends ISheetPO{
     /**
      * 库存操作类型，入库或出库
      */

@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.warehouse;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseInputFormVO { // 入库单
+public class WarehouseInputFormVO extends ISheetVO { // 入库单
     private List<WarehouseInputFormContentVO> list;
     private String operator; // 操作员
     private String purchaseSheetId; // 关联的进货单Id

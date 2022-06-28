@@ -1,5 +1,6 @@
 package com.nju.edu.erp.service;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
@@ -7,7 +8,7 @@ import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import java.util.List;
 
 // 制定进货单 + 销售经理审批/总经理二级审批 + 更新客户表/制定入库单草稿 + 库存管理人员确认入库单/总经理审批 + 更新库存
-public interface PurchaseService {
+public interface PurchaseService extends PurchaseSheetOperation{
     /**
      * 制定进货单
      * @param purchaseSheetVO 进货单
@@ -27,7 +28,7 @@ public interface PurchaseService {
      * @param purchaseSheetId 进货单id
      * @param state 进货单修改后的状态
      */
-    void approval(String purchaseSheetId, PurchaseSheetState state);
+    void approval(String purchaseSheetId, BaseEnum state);
 
     /**
      * 根据进货单Id搜索进货单信息
@@ -35,8 +36,6 @@ public interface PurchaseService {
      * @return 进货单全部信息
      */
     PurchaseSheetVO getPurchaseSheetById(String purchaseSheetId);
-
-
 
 
 }

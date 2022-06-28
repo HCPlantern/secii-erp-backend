@@ -1,8 +1,10 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.*;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
@@ -60,7 +62,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
      */
     @Override
     @Transactional
-    public void makePurchaseReturnsSheet(UserVO userVO, PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
+    public void makePurchaseReturnsSheet(UserVO userVO,PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
         PurchaseReturnsSheetPO purchaseReturnsSheetPO = new PurchaseReturnsSheetPO();
         BeanUtils.copyProperties(purchaseReturnsSheetVO, purchaseReturnsSheetPO);
 
@@ -138,17 +140,17 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
      * 根据进货退货单id进行审批(state == "待二级审批"/"审批完成"/"审批失败")
      * 在controller层进行权限控制
      *
-     * @param purchaseReturnsSheetId 进货退货单id
+     * @param sheetId 进货退货单id
      * @param state                  进货退货单要达到的状态
      */
     @Override
     @Transactional
-    public void approval(String purchaseReturnsSheetId, PurchaseReturnsSheetState state) { // TODO
-        PurchaseReturnsSheetPO purchaseReturnsSheet = purchaseReturnsSheetDao.findOneById(purchaseReturnsSheetId);
+    public void approval(String sheetId, BaseEnum state) { // TODO
+        PurchaseReturnsSheetPO purchaseReturnsSheet = purchaseReturnsSheetDao.findOneById(sheetId);
         if (state.equals(PurchaseReturnsSheetState.FAILURE)) {
             if (purchaseReturnsSheet.getState() == PurchaseReturnsSheetState.SUCCESS)
                 throw new RuntimeException("状态更新失败");
-            int effectLines = purchaseReturnsSheetDao.updateState(purchaseReturnsSheetId, state);
+            int effectLines = purchaseReturnsSheetDao.updateState(sheetId, state);
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
         } else {
             PurchaseReturnsSheetState prevState;
@@ -159,16 +161,16 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
             } else {
                 throw new RuntimeException("状态更新失败");
             }
-            int effectLines = purchaseReturnsSheetDao.updateStateV2(purchaseReturnsSheetId, prevState, state);
+            int effectLines = purchaseReturnsSheetDao.updateStateV2(sheetId, prevState, state);
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
             if (state.equals(PurchaseReturnsSheetState.SUCCESS)) {
                 // TODO 审批完成, 修改一系列状态
                 // 进货退货单id， 关联的进货单id 【进货退货单id->进货单id->入库单id->批次id】
-                Integer batchId = purchaseReturnsSheetDao.findBatchId(purchaseReturnsSheetId);
+                Integer batchId = purchaseReturnsSheetDao.findBatchId(sheetId);
 
                 //- 进货退货单id-pid， quantity 【批次id+pid -> 定位到库存的一个条目->库存减去quantity】
                 //- 【 pid -> 定位到单位进价->Σ单位进价*quantity=要收回的钱->客户payable减去要收回的钱】
-                List<PurchaseReturnsSheetContentPO> contents = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(purchaseReturnsSheetId);
+                List<PurchaseReturnsSheetContentPO> contents = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(sheetId);
                 BigDecimal payableToDeduct = BigDecimal.ZERO;
                 for (PurchaseReturnsSheetContentPO content :
                         contents) {
@@ -184,7 +186,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
                         productService.updateProduct(productInfoVO);
                         payableToDeduct = payableToDeduct.add(content.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
                     } else {
-                        purchaseReturnsSheetDao.updateState(purchaseReturnsSheetId, PurchaseReturnsSheetState.FAILURE);
+                        purchaseReturnsSheetDao.updateState(sheetId, PurchaseReturnsSheetState.FAILURE);
                         throw new RuntimeException("商品数量不足！审批失败！");
                     }
                 }
@@ -198,4 +200,5 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
             }
         }
     }
+
 }

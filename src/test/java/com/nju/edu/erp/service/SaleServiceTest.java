@@ -82,8 +82,8 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
         SaleSheetVO saleSheetVO = SaleSheetVO.builder()
                 .saleSheetContent(saleSheetContentVOS)
                 .supplier(2)
-                .discount(BigDecimal.valueOf(0.8))// 这个表示折扣
-                .voucherAmount(BigDecimal.valueOf(300))// 这个表示优惠券
+                .discount(BigDecimal.valueOf(0.8))
+                .voucherAmount(BigDecimal.valueOf(300))
                 .remark("Test1")
                 .build();
         SaleSheetPO prevSheet = saleSheetDao.getLatestSheet();
@@ -196,5 +196,11 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
         WarehouseOutputSheetPO draftSheet = draftSheets.get(0);
         Assertions.assertNotNull(draftSheet);
         Assertions.assertEquals("XSD-20220524-00003",draftSheet.getSaleSheetId());
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void testFindAllSaleDetailByTime(){
+        
     }
 }

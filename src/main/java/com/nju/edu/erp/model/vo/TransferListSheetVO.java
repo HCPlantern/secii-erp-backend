@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransferListSheetVO {
+public class TransferListSheetVO extends ISheetVO{
     /**
      * 自增id
      */
