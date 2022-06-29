@@ -201,17 +201,30 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         }
         for (SaleReturnsSheetPO srsPO : srsPOList) {
             SaleReturnsSheetVO srsVO = new SaleReturnsSheetVO();
-            BeanUtils.copyProperties(srsPO, srsVO);
-            List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(srsPO.getId());
-            List<SaleReturnsSheetContentVO> srscVOList = new ArrayList<>();
-            for (SaleReturnsSheetContentPO srscPO : srscPOList) {
-                SaleReturnsSheetContentVO srscVO = new SaleReturnsSheetContentVO();
-                BeanUtils.copyProperties(srscPO, srscVO);
-                srscVOList.add(srscVO);
-            }
-            srsVO.setSaleReturnsSheetContent(srscVOList);
+            setVODetail(srsPO, srsVO);
             srsVOList.add(srsVO);
         }
         return srsVOList;
+    }
+
+
+    public SaleReturnsSheetVO getSaleReturnsSheetById(String id) {
+        SaleReturnsSheetPO srsPO = srsDao.findOneById(id);
+        if (srsPO == null) return null;
+        SaleReturnsSheetVO srsVO = new SaleReturnsSheetVO();
+        setVODetail(srsPO, srsVO);
+        return srsVO;
+    }
+
+    private void setVODetail(SaleReturnsSheetPO srsPO, SaleReturnsSheetVO srsVO) {
+        BeanUtils.copyProperties(srsPO, srsVO);
+        List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(srsPO.getId());
+        List<SaleReturnsSheetContentVO> srscVOList = new ArrayList<>();
+        for (SaleReturnsSheetContentPO srscPO : srscPOList) {
+            SaleReturnsSheetContentVO srscVO = new SaleReturnsSheetContentVO();
+            BeanUtils.copyProperties(srscPO, srscVO);
+            srscVOList.add(srscVO);
+        }
+        srsVO.setSaleReturnsSheetContent(srscVOList);
     }
 }

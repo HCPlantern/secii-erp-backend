@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface CategoryDao {
+public interface CategoryDao extends Dao {
 
     int createCategory(CategoryPO categoryPO);
 

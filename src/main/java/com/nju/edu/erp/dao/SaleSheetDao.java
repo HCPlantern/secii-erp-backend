@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface SaleSheetDao {
+public interface SaleSheetDao extends Dao {
 
     /**
      * 获取最近一条销售单
@@ -45,11 +45,11 @@ public interface SaleSheetDao {
     /**
      * 根据时间段查找销售单
      *
-     * @param startTime 开始时间
+     * @param beginTime 开始时间
      * @param endTime   结束时间
      * @return 销售单列表
      */
-    List<SaleSheetPO> findAllSheetByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SaleSheetPO> findAllSheetByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
 
     List<SaleSheetPO> findAllByState(@Param("state") SaleSheetState state);
@@ -103,15 +103,17 @@ public interface SaleSheetDao {
 
     /**
      * 获取时间段内的销售详细信息
-     * @param startTime 开始时间
-     * @param endTime 结束时间
+     *
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
      * @return 销售详细信息
      */
-    List<SaleDetailPO> findAllSaleDetailByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SaleDetailPO> findAllSaleDetailByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
     /**
      * 获取所有销售单的基本信息
+     *
      * @return 所有销售单基本信息
      */
-    List<SheetPO> findAllBasicSheetInfo(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 }

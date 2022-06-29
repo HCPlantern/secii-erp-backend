@@ -1,10 +1,8 @@
 package com.nju.edu.erp.controller;
 
-import cn.afterturn.easypoi.entity.vo.NormalExcelConstants;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
-import cn.afterturn.easypoi.view.PoiBaseView;
 import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.enums.sheetState.WarehouseInputSheetState;
@@ -14,18 +12,17 @@ import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.warehouse.GetWareProductInfoParamsVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseCountingVO;
+import com.nju.edu.erp.model.vo.warehouse.WarehouseInputSheetVO;
+import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputSheetVO;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.common.Response;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -107,12 +104,26 @@ public class WarehouseController {
         return Response.buildSuccess(ans);
     }
 
+    @GetMapping("/inputSheet/find-sheet")
+    @ApiOperation("根据入库单单号查询入库单")
+    public Response findInputSheetBySheetId(@RequestParam(value = "id") String id) {
+        WarehouseInputSheetVO ans = warehouseService.findInputSheetById(id);
+        return Response.buildSuccess(ans);
+    }
+
 
     @GetMapping("/outputSheet/state")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER, Role.GM})
     @ApiOperation("根据审批状态查询出库单")
     public Response getWarehouseOutSheet(@RequestParam(value = "state", required = false) WarehouseOutputSheetState state) {
         List<WarehouseOutputSheetPO> ans = warehouseService.getWareHouseOutSheetByState(state);
+        return Response.buildSuccess(ans);
+    }
+
+    @GetMapping("/outputSheet/find-sheet")
+    @ApiOperation("根据出库单号查询出库单")
+    public Response findOutputSheetBySheetId(@RequestParam(value = "id") String id) {
+        WarehouseOutputSheetVO ans = warehouseService.findOutputSheetById(id);
         return Response.buildSuccess(ans);
     }
 
@@ -152,7 +163,7 @@ public class WarehouseController {
      *
      * @param beginDateStr 格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
      * @param endDateStr   格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
-     * @return
+     * @return 库存查看结果
      */
     @GetMapping("/sheetContent/time")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
@@ -167,7 +178,7 @@ public class WarehouseController {
      *
      * @param beginDateStr 格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
      * @param endDateStr   格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
-     * @return
+     * @return 结果
      */
     @GetMapping("/inputSheet/time/quantity")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})
@@ -182,7 +193,7 @@ public class WarehouseController {
      *
      * @param beginDateStr 格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
      * @param endDateStr   格式：“yyyy-MM-dd HH:mm:ss”，如“2022-05-12 11:38:30”
-     * @return
+     * @return 结果
      */
     @GetMapping("/outputSheet/time/quantity")
     @Authorized(roles = {Role.ADMIN, Role.INVENTORY_MANAGER})

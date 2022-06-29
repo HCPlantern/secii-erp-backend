@@ -33,4 +33,14 @@ public interface SaleReturnsService extends SaleReturnsSheetOperation{
      * @return 满足条件的销售退货单
      */
     List<SaleReturnsSheetVO> getSaleReturnsSheetByState(SaleReturnsSheetState state);
+
+
+
+    /**
+     * 根据销售退货单Id搜索销售单信息
+     *
+     * @param id 销售单Id
+     * @return 销售退货单全部信息
+     */
+    SaleReturnsSheetVO getSaleReturnsSheetById(String id);
 }

@@ -55,5 +55,11 @@
         FROM sale_returns_sheet_content
         WHERE sale_returns_sheet_id = #{saleReturnsSheetId}
     </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select srs.id as id, srs.create_time as date, c.name as client, srs.operator as operator
+        from seec_erp.sale_returns_sheet srs
+                 left join customer c on srs.supplier = c.id
+        where srs.create_time between #{beginTime} and #{endTime}
+    </select>
 
 </mapper>

@@ -4,13 +4,10 @@ import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
-import com.nju.edu.erp.model.vo.ISheetVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormContentVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormVO;
 import com.nju.edu.erp.service.CustomerService;
 import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.PurchaseReturnsService;
@@ -62,7 +59,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
      */
     @Override
     @Transactional
-    public void makePurchaseReturnsSheet(UserVO userVO,PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
+    public void makePurchaseReturnsSheet(UserVO userVO, PurchaseReturnsSheetVO purchaseReturnsSheetVO) {
         PurchaseReturnsSheetPO purchaseReturnsSheetPO = new PurchaseReturnsSheetPO();
         BeanUtils.copyProperties(purchaseReturnsSheetVO, purchaseReturnsSheetPO);
 
@@ -122,15 +119,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         }
         for (PurchaseReturnsSheetPO po : all) {
             PurchaseReturnsSheetVO vo = new PurchaseReturnsSheetVO();
-            BeanUtils.copyProperties(po, vo);
-            List<PurchaseReturnsSheetContentPO> alll = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(po.getId());
-            List<PurchaseReturnsSheetContentVO> vos = new ArrayList<>();
-            for (PurchaseReturnsSheetContentPO p : alll) {
-                PurchaseReturnsSheetContentVO v = new PurchaseReturnsSheetContentVO();
-                BeanUtils.copyProperties(p, v);
-                vos.add(v);
-            }
-            vo.setPurchaseReturnsSheetContent(vos);
+            setVODetail(po, vo);
             res.add(vo);
         }
         return res;
@@ -141,7 +130,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
      * 在controller层进行权限控制
      *
      * @param sheetId 进货退货单id
-     * @param state                  进货退货单要达到的状态
+     * @param state   进货退货单要达到的状态
      */
     @Override
     @Transactional
@@ -199,6 +188,27 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
                 customerDao.updateOne(customer);
             }
         }
+    }
+
+    @Override
+    public PurchaseReturnsSheetVO getPurchaseReturnsSheetById(String sheetId) {
+        PurchaseReturnsSheetPO po = purchaseReturnsSheetDao.findOneById(sheetId);
+        if (po == null) return null;
+        PurchaseReturnsSheetVO vo = new PurchaseReturnsSheetVO();
+        setVODetail(po, vo);
+        return vo;
+    }
+
+    private void setVODetail(PurchaseReturnsSheetPO po,  PurchaseReturnsSheetVO vo) {
+        BeanUtils.copyProperties(po, vo);
+        List<PurchaseReturnsSheetContentPO> prscPOList = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(po.getId());
+        List<PurchaseReturnsSheetContentVO> vos = new ArrayList<>();
+        for (PurchaseReturnsSheetContentPO p : prscPOList) {
+            PurchaseReturnsSheetContentVO v = new PurchaseReturnsSheetContentVO();
+            BeanUtils.copyProperties(p, v);
+            vos.add(v);
+        }
+        vo.setPurchaseReturnsSheetContent(vos);
     }
 
 }

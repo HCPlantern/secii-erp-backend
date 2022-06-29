@@ -9,8 +9,10 @@ import com.nju.edu.erp.model.vo.UserVO;
 import java.util.List;
 
 public interface PaymentService extends PaymentSheetOperation{
-    public void makePaymentSheet(UserVO userVO, PaymentSheetVO paymentSheetVO);
-    public void approval(String paymentSheetId, BaseEnum state);
+    void makePaymentSheet(UserVO userVO, PaymentSheetVO paymentSheetVO);
+    void approval(String paymentSheetId, BaseEnum state);
 
-    public List<PaymentSheetVO> findAllPaymentSheetByState(PaymentSheetState paymentSheetState);
+    List<PaymentSheetVO> findAllPaymentSheetByState(PaymentSheetState paymentSheetState);
+
+    PaymentSheetVO findPaymentSheetById(String id);
 }

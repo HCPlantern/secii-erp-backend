@@ -29,7 +29,7 @@ public class SaleReturnsController {
      *
      * @param userVO             操作人员
      * @param saleReturnsSheetVO 退货单
-     * @return
+     * @return 操作结果
      */
     @Authorized(roles = {Role.SALE_STAFF, Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     @PostMapping(value = "sheet-make")
@@ -46,7 +46,7 @@ public class SaleReturnsController {
      *
      * @param saleReturnsSheetId 销售退货单ID
      * @param state              修改后的状态(审批失败/待二级审批)
-     * @return
+     * @return 操作结果
      */
     @Authorized(roles = {Role.SALE_MANAGER, Role.GM, Role.ADMIN})
     @GetMapping(value = "/first-approval")
@@ -67,7 +67,7 @@ public class SaleReturnsController {
      *
      * @param saleReturnsSheetId 销售退货单ID
      * @param state              修改后的状态(审批失败/审批通过)
-     * @return
+     * @return 操作结果
      */
     @Authorized(roles = {Role.GM, Role.ADMIN})
     @GetMapping(value = "/second-approval")
@@ -88,6 +88,19 @@ public class SaleReturnsController {
     @ApiOperation("根据状态查询销售退货单")
     public Response showSheetByOrder(@RequestParam(value = "state", required = false) SaleReturnsSheetState state) {
         return Response.buildSuccess(saleReturnsService.getSaleReturnsSheetByState(state));
+    }
+
+
+    /**
+     * 根据销售退货单Id搜索销售单信息
+     *
+     * @param id 销售退货单Id
+     * @return 销售退货单全部信息
+     */
+    @ApiOperation("根据销售退货单Id搜索销售退货单信息")
+    @GetMapping(value = "/find-sheet")
+    public Response findBySheetId(@RequestParam(value = "id") String id) {
+        return Response.buildSuccess(saleReturnsService.getSaleReturnsSheetById(id));
     }
 
 }

@@ -4,15 +4,16 @@ import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.SaleReturnsSheetContentPO;
 import com.nju.edu.erp.model.po.SaleReturnsSheetPO;
-import com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO;
+import com.nju.edu.erp.model.po.SheetPO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 @Mapper
-public interface SaleReturnsSheetDao {
+public interface SaleReturnsSheetDao extends Dao {
     /**
      * 获取最近一条销售退货单
      *
@@ -85,4 +86,5 @@ public interface SaleReturnsSheetDao {
      */
     List<SaleReturnsSheetContentPO> findContentBySaleReturnsSheetId(String saleReturnsSheetId);
 
+    List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 }

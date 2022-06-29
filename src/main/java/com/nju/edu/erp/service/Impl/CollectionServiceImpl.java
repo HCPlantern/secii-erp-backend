@@ -126,20 +126,28 @@ public class CollectionServiceImpl implements CollectionService {
             collectionSheetPOS=collectionDao.findAllCollectionSheetByState(state);
         }
         for(CollectionSheetPO collectionSheetPO:collectionSheetPOS){
-            CollectionSheetVO collectionSheetVO=new CollectionSheetVO();
-            BeanUtils.copyProperties(collectionSheetPO,collectionSheetVO);
-            List<TransferListSheetPO> collectionSheetContentPOS=collectionDao.findAllCollectionSheetContent(collectionSheetPO.getId());
-            System.out.println(collectionSheetContentPOS.get(0));
-            List<TransferListSheetVO> collectionSheetContentVOS=new ArrayList<>();
-            for(TransferListSheetPO collectionSheetContentPO:collectionSheetContentPOS){
-                TransferListSheetVO transferListSheetVO=new TransferListSheetVO();
-                BeanUtils.copyProperties(collectionSheetContentPO,transferListSheetVO);
-                System.out.println(transferListSheetVO);
-                collectionSheetContentVOS.add(transferListSheetVO);
-            }
-            collectionSheetVO.setCollectionContent(collectionSheetContentVOS);
-            collectionSheetVOS.add(collectionSheetVO);
+            collectionSheetVOS.add(getVOFromPO(collectionSheetPO));
         }
         return collectionSheetVOS;
+    }
+
+    @Override
+    public CollectionSheetVO findCollectionSheetById(String id) {
+        CollectionSheetPO collectionSheetPO = collectionDao.findCollectionSheetById(id);
+        return getVOFromPO(collectionSheetPO);
+    }
+
+    private CollectionSheetVO getVOFromPO(CollectionSheetPO collectionSheetPO){
+        CollectionSheetVO collectionSheetVO = new CollectionSheetVO();
+        BeanUtils.copyProperties(collectionSheetPO,collectionSheetVO);
+        List<TransferListSheetPO> transferListSheetPOList = collectionDao.findAllCollectionSheetContent(collectionSheetPO.getId());
+        List<TransferListSheetVO> transferListSheetVOList = new ArrayList<>();
+        for (TransferListSheetPO transferListSheetPO : transferListSheetPOList) {
+            TransferListSheetVO transferListSheetVO = new TransferListSheetVO();
+            BeanUtils.copyProperties(transferListSheetPO,transferListSheetVO);
+            transferListSheetVOList.add(transferListSheetVO);
+        }
+        collectionSheetVO.setCollectionContent(transferListSheetVOList);
+        return collectionSheetVO;
     }
 }

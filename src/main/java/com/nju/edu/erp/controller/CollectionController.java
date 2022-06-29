@@ -47,4 +47,9 @@ public class CollectionController {
     public Response findAllCollectionSheetByState(@RequestParam(required = false) CollectionSheetState state){
         return Response.buildSuccess(collectionService.findAllCollectionSheetByState(state));
     }
+
+    @GetMapping("/find-sheet")
+    public Response findBySheetId(@RequestParam("id") String id){
+        return Response.buildSuccess(collectionService.findCollectionSheetById(id));
+    }
 }

@@ -9,10 +9,12 @@ import java.util.List;
 
 public interface CollectionService extends CollectionSheetOperation{
 
-    public void makeCollectionSheet(CollectionSheetVO collectionSheetVO);
+    void makeCollectionSheet(CollectionSheetVO collectionSheetVO);
 
-    public void approval(String collectionSheetId, BaseEnum state);
+    void approval(String collectionSheetId, BaseEnum state);
 
-    public List<CollectionSheetVO> findAllCollectionSheetByState(CollectionSheetState state);
+    List<CollectionSheetVO> findAllCollectionSheetByState(CollectionSheetState state);
+
+    CollectionSheetVO findCollectionSheetById(String id);
 
 }

@@ -32,4 +32,6 @@ public interface PurchaseReturnsService extends PurchaseReturnsSheetOperation {
      */
     void approval(String sheetId, BaseEnum state);
 
+    PurchaseReturnsSheetVO getPurchaseReturnsSheetById(String sheetId);
+
 }
