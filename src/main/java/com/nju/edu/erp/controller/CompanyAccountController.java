@@ -9,6 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping(path = "/accountManage")
 @Api(tags = "CompanyAccountController")
@@ -22,6 +25,10 @@ public class CompanyAccountController {
     @ApiOperation("新建公司银行账户(只允许admin)")
     @Authorized(roles = {Role.ADMIN})
     public Response createAccount(@RequestBody CompanyAccountVO companyAccountVO){
+        BigDecimal amount=companyAccountVO.getAmount();
+        if(amount.compareTo(BigDecimal.ZERO)<0){
+            return Response.buildFailed("00001","银行账户的余额不能为负数!");
+        }
         companyAccountService.createAccount(companyAccountVO);
         return Response.buildSuccess();
     }
@@ -44,6 +51,10 @@ public class CompanyAccountController {
     @ApiOperation("修改账户(只可以修改账户名称)")
     @Authorized(roles = {Role.ADMIN})
     public Response updateCompanyAccount(@RequestBody CompanyAccountVO companyAccountVO){
+        BigDecimal amount=companyAccountVO.getAmount();
+        if(amount.compareTo(BigDecimal.ZERO)<0){
+            return Response.buildFailed("00001","银行账户的余额不能为负数!");
+        }
         companyAccountService.updateCompanyAccount(companyAccountVO);
         return Response.buildSuccess();
     }

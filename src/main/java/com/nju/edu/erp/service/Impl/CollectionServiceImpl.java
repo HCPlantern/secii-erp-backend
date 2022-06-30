@@ -6,6 +6,7 @@ import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import com.nju.edu.erp.model.po.CollectionSheetPO;
+import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.po.TransferListSheetPO;
 import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.TransferListSheetVO;
@@ -41,7 +42,6 @@ public class CollectionServiceImpl implements CollectionService {
 
 
 
-    //TODO:制定收款单@hcx
     /**
      * 制定收款单
      * 注意需要保存收款单据和转账列表
@@ -66,18 +66,26 @@ public class CollectionServiceImpl implements CollectionService {
             TransferListSheetPO collectionContentPO=new TransferListSheetPO();
             BeanUtils.copyProperties(collectionContentVO,collectionContentPO);
             collectionContentPO.setCollectionSheetId(id);
+            // 防御式编程 转账金额不能够小于0
+            assert collectionContentVO.getTransferAmount().compareTo(BigDecimal.ZERO)>=0:"错误! 转账金额不能够小于0";
             // 加上每一个的转账的钱
             totalAmount=totalAmount.add(collectionContentVO.getTransferAmount());
             collectionSheetContentPOS.add(collectionContentPO);
         }
         // 设置总金额 其他的都copy过了
+
+        // 防御式编程 付款单金额不能够大于客户应收金额
+        Integer customerId=collectionSheetVO.getCustomer();
+        CustomerPO relevantCustomer=customerDao.findOneById(customerId);
+        BigDecimal payableAmount=relevantCustomer.getPayable();
+        assert totalAmount.compareTo(payableAmount)<=0:"收款单金额不能够大于客户应付金额!";
+
         collectionSheetPO.setTotalAmount(totalAmount);
         collectionDao.saveCollectionSheetSheet(collectionSheetPO);
         collectionDao.saveTransferList(collectionSheetContentPOS);
 
     }
 
-    //TODO:审批收款单@hcx
     /**
      * 审批收款单(为了简化业务,这里只由总经理审批)
      *
@@ -106,6 +114,7 @@ public class CollectionServiceImpl implements CollectionService {
             // 根据每个内容更新对应的银行账户和客户
             for(TransferListSheetPO collectionSheetContentPO:collectionSheetContentPOS){
                 companyAccountDao.collectionUpdateCompanyAccountAmountById(collectionSheetContentPO.getCompanyAccountId(),collectionSheetContentPO.getTransferAmount());
+                // 更新应付款项
                 customerDao.updatePayableById(customerId,collectionSheetContentPO.getTransferAmount());
             }
         }
