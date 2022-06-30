@@ -1,4 +1,4 @@
-package com.nju.edu.erp.model.vo.employee;
+package com.nju.edu.erp.model.vo.humanResource;
 
 import com.nju.edu.erp.enums.Role;
 import lombok.AllArgsConstructor;

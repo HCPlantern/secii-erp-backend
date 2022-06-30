@@ -1,12 +1,12 @@
 package com.nju.edu.erp.service.Impl;
 
-import com.nju.edu.erp.dao.EmployeeDAO;
+import com.nju.edu.erp.dao.EmployeeDao;
 import com.nju.edu.erp.dao.UserDao;
 import com.nju.edu.erp.model.po.EmployeePO;
 import com.nju.edu.erp.model.po.User;
 import com.nju.edu.erp.model.vo.UserVO;
-import com.nju.edu.erp.model.vo.employee.EmployeeVO;
-import com.nju.edu.erp.service.HumanResourceService;
+import com.nju.edu.erp.model.vo.humanResource.EmployeeVO;
+import com.nju.edu.erp.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class HumanResourceServiceImpl implements HumanResourceService {
+public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeDAO employeeDAO;
+    private final EmployeeDao employeeDAO;
     private final UserDao userDAO;
 
     @Autowired
-    public HumanResourceServiceImpl(EmployeeDAO employeeDAO, UserDao userDAO) {
+    public EmployeeServiceImpl(EmployeeDao employeeDAO, UserDao userDAO) {
         this.employeeDAO = employeeDAO;
         this.userDAO = userDAO;
     }
@@ -65,10 +65,6 @@ public class HumanResourceServiceImpl implements HumanResourceService {
      */
     public void deleteEmployeeById(int id) {
         employeeDAO.deleteEmployeeById(id);
-    }
-
-    public void generateSalarySheet() {
-        //todo
     }
 
 }

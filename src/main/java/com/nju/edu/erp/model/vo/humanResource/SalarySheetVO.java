@@ -1,4 +1,4 @@
-package com.nju.edu.erp.model.vo.employee;
+package com.nju.edu.erp.model.vo.humanResource;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
