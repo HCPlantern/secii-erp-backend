@@ -15,8 +15,8 @@
     </select>
 
     <insert id="createUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into user (password, `name`, `role`)
-        values (#{password}, #{name}, #{role})
+        insert into user (password, `name`, `role`, `employee_id`)
+        values (#{password}, #{name}, #{role}, #{employeeId})
     </insert>
 
     <select id="findUserNameByRole" resultType="java.lang.String">

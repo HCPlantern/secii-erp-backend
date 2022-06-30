@@ -31,5 +31,5 @@ public class UserVO {
     /**
      * 打卡数量
      */
-    private String attendance;
+    private int attendance;
 }

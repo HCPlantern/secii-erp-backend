@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface EmployeeDAO {
 
-    void addEmployee(EmployeePO employeePO);
+    int addEmployee(EmployeePO employeePO);
 
     List<EmployeeVO> findAllEmployees();
 
