@@ -95,6 +95,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         // 挨个创建 srscPO
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (SaleReturnsSheetContentVO srscVO : srscVOLIst) {
+            assert (srscVO.getQuantity()>=0 && srscVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"销售退货单的数量和单价必须大于等于0";
             SaleReturnsSheetContentPO srscPO = new SaleReturnsSheetContentPO();
             // 这里传进来的的 srscVO 中可能单价和总金额不一定对，需要参考 sscPO
             // 传进来的数量不能改，退多少货需要参考这个

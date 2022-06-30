@@ -5,6 +5,7 @@ import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.PaymentSheetDao;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
+import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
 import com.nju.edu.erp.model.vo.PaymentSheetContentVO;
@@ -59,9 +60,18 @@ public class PaymentServiceImpl implements PaymentService {
             PaymentSheetContentPO paymentSheetContentPO=new PaymentSheetContentPO();
             BeanUtils.copyProperties(paymentSheetContentVO,paymentSheetContentPO);
             paymentSheetContentPO.setPaymentSheetId(id);
+            // 防御式编程 转账金额不能够小于0
+            assert paymentSheetContentVO.getTransferAmount().compareTo(BigDecimal.ZERO)>=0:"错误! 转账金额不能够小于0";
+
             totalAmount=totalAmount.add(paymentSheetContentVO.getTransferAmount());
             paymentSheetContentPOS.add(paymentSheetContentPO);
         }
+        // 防御式编程 付款单金额不能够大于客户应收金额
+        Integer customerId=paymentSheetVO.getCustomer();
+        CustomerPO relevantCustomer=customerDao.findOneById(customerId);
+        BigDecimal receivableAmount=relevantCustomer.getReceivable();
+        assert totalAmount.compareTo(receivableAmount)<=0:"付款单金额不能够大于客户应收金额!";
+
         paymentSheetPO.setTotalAmount(totalAmount);
         paymentSheetDao.savePaymentSheetContent(paymentSheetContentPOS);
         paymentSheetDao.savePaymentSheet(paymentSheetPO);
@@ -85,7 +95,7 @@ public class PaymentServiceImpl implements PaymentService {
             List<PaymentSheetContentPO> paymentSheetContentPOS=paymentSheetDao.findAllPaymentSheetContentById(paymentSheetId);
             for(PaymentSheetContentPO paymentSheetContentPO:paymentSheetContentPOS){
                 companyAccountDao.paymentUpdateCompanyAccountAmountById(paymentSheetContentPO.getCompanyAccountId(),paymentSheetContentPO.getTransferAmount());
-                customerDao.updatePayableById(customerId,paymentSheetContentPO.getTransferAmount());
+                customerDao.updateReceivableById(customerId,paymentSheetContentPO.getTransferAmount());
             }
         }
     }

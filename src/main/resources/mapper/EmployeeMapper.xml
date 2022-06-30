@@ -5,7 +5,7 @@
 
     </insert>
 
-    <select id="findAllEmployees" resultMap="EmployeePO">
+    <select id="findAllEmployees" resultMap="Employee">
 
     </select>
 

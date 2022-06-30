@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class CompanyAccountServiceImpl implements CompanyAccountService {
         // 后续amount的更改只会根据收款单和付款单修改，不可手动修改
         CompanyAccountPO companyAccountPO=new CompanyAccountPO();
         BeanUtils.copyProperties(companyAccountVO,companyAccountPO);
+        // 防御式编程 测试金额是否>=0
+        assert companyAccountVO.getAmount().compareTo(BigDecimal.ZERO)>=0:"错误! 输入的账户的余额不能小于0";
         companyAccountDao.createAccount(companyAccountPO);
     }
 
@@ -54,6 +57,7 @@ public class CompanyAccountServiceImpl implements CompanyAccountService {
 
     @Override
     public void updateCompanyAccount(CompanyAccountVO companyAccountVO) {
+        assert companyAccountVO.getAmount().compareTo(BigDecimal.ZERO)>=0:"错误! 输入的账户的余额不能小于0";
         CompanyAccountPO companyAccountPO=new CompanyAccountPO();
         BeanUtils.copyProperties(companyAccountVO,companyAccountPO);
         companyAccountDao.updateCompanyAccount(companyAccountPO);

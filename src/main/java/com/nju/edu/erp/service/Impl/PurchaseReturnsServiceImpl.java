@@ -82,6 +82,10 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         List<PurchaseReturnsSheetContentPO> prscPOList = new ArrayList<>();
         // 对每一个 进货退货单内容VO 操作
         for (PurchaseReturnsSheetContentVO prscVO : purchaseReturnsSheetVO.getPurchaseReturnsSheetContent()) {
+
+            // 防御式编程 单价和数量不能够<0
+            assert (prscVO.getQuantity()>=0 && prscVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能够小于零";
+
             // 新建 进货退货单内容PO
             PurchaseReturnsSheetContentPO prscPO = new PurchaseReturnsSheetContentPO();
             BeanUtils.copyProperties(prscVO, prscPO);

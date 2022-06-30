@@ -19,5 +19,5 @@ public interface EmployeeDAO {
 
     void deleteEmployeeById(int id);
 
-    void generateSalarySheet();
+//    void generateSalarySheet();
 }

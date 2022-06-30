@@ -76,6 +76,8 @@ public class SaleServiceImpl implements SaleService {
         BigDecimal rawTotalAmount = BigDecimal.ZERO;
         List<SaleSheetContentPO> saleSheetContentPOS = new ArrayList<>();
         for (SaleSheetContentVO saleSheetContentVO : saleSheetContentVOS) {
+            // 防御式编程
+            assert saleSheetContentVO.getQuantity()>=0 && saleSheetContentVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0:"销售单内容的数量和单价必须大于等于0";
             SaleSheetContentPO saleSheetContentPO = new SaleSheetContentPO();
             BeanUtils.copyProperties(saleSheetContentVO, saleSheetContentPO);
             saleSheetContentPO.setSaleSheetId(id);

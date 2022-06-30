@@ -70,8 +70,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         BigDecimal totalAmount = BigDecimal.ZERO;
         List<PurchaseSheetContentPO> pContentPOList = new ArrayList<>();
         for(PurchaseSheetContentVO content : purchaseSheetVO.getPurchaseSheetContent()) {
+            // 防御式编程 单价和数量不小于0
+            assert (content.getQuantity()>=0 && content.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能小于0";
+
             PurchaseSheetContentPO pContentPO = new PurchaseSheetContentPO();
             BeanUtils.copyProperties(content,pContentPO);
+
             pContentPO.setPurchaseSheetId(id);
             BigDecimal unitPrice = pContentPO.getUnitPrice();
             if(unitPrice == null) {
