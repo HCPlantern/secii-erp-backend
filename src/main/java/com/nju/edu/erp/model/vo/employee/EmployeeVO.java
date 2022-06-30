@@ -1,4 +1,4 @@
-package com.nju.edu.erp.model.po;
+package com.nju.edu.erp.model.vo.employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmployeePO {
+public class EmployeeVO {
     /**
      * 员工id（与系统用户id相同）
      */

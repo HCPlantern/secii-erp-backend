@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.EmployeeDAO">
+    <insert id="addEmployee" useGeneratedKeys="true" parameterType="EmployeePO" keyProperty="id">
+
+    </insert>
+
+    <select id="findAllEmployees" resultMap="EmployeePO">
+
+    </select>
+
+    <update id="updateEmployeeInfo" parameterType="EmployeePO">
+
+    </update>
+    
+    <delete id="deleteEmployeeById">
+
+    </delete>
+
+    <resultMap id="Employee" type="com.nju.edu.erp.model.po.EmployeePO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="phone" property="phone"></result>
+        <result column="birthday" property="birthday"></result>
+        <result column="job" property="job"></result>
+        <result column="grade" property="jobGrade"></result>
+        <result column="salary_account" property="salaryAccount"></result>
+    </resultMap>
+
+</mapper>
