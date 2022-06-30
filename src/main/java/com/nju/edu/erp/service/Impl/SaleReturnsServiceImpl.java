@@ -1,6 +1,7 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.*;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -126,7 +127,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
      */
     @Override
     @Transactional
-    public void approval(String saleReturnsSheetId, SaleReturnsSheetState state) {
+    public void approval(String saleReturnsSheetId, BaseEnum state) {
         SaleReturnsSheetPO srsPO = srsDao.findOneById(saleReturnsSheetId);
         if (state.equals(SaleReturnsSheetState.FAILURE)) {
             if (srsPO.getState().equals(SaleReturnsSheetState.SUCCESS)) {
@@ -200,17 +201,30 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         }
         for (SaleReturnsSheetPO srsPO : srsPOList) {
             SaleReturnsSheetVO srsVO = new SaleReturnsSheetVO();
-            BeanUtils.copyProperties(srsPO, srsVO);
-            List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(srsPO.getId());
-            List<SaleReturnsSheetContentVO> srscVOList = new ArrayList<>();
-            for (SaleReturnsSheetContentPO srscPO : srscPOList) {
-                SaleReturnsSheetContentVO srscVO = new SaleReturnsSheetContentVO();
-                BeanUtils.copyProperties(srscPO, srscVO);
-                srscVOList.add(srscVO);
-            }
-            srsVO.setSaleReturnsSheetContent(srscVOList);
+            setVODetail(srsPO, srsVO);
             srsVOList.add(srsVO);
         }
         return srsVOList;
+    }
+
+
+    public SaleReturnsSheetVO getSaleReturnsSheetById(String id) {
+        SaleReturnsSheetPO srsPO = srsDao.findOneById(id);
+        if (srsPO == null) return null;
+        SaleReturnsSheetVO srsVO = new SaleReturnsSheetVO();
+        setVODetail(srsPO, srsVO);
+        return srsVO;
+    }
+
+    private void setVODetail(SaleReturnsSheetPO srsPO, SaleReturnsSheetVO srsVO) {
+        BeanUtils.copyProperties(srsPO, srsVO);
+        List<SaleReturnsSheetContentPO> srscPOList = srsDao.findContentBySaleReturnsSheetId(srsPO.getId());
+        List<SaleReturnsSheetContentVO> srscVOList = new ArrayList<>();
+        for (SaleReturnsSheetContentPO srscPO : srscPOList) {
+            SaleReturnsSheetContentVO srscVO = new SaleReturnsSheetContentVO();
+            BeanUtils.copyProperties(srscPO, srscVO);
+            srscVOList.add(srscVO);
+        }
+        srsVO.setSaleReturnsSheetContent(srscVOList);
     }
 }

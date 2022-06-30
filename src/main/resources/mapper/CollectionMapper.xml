@@ -21,7 +21,7 @@
         </foreach>
     </insert>
     <update id="updateState">
-        update transfer_list_sheet set state = #{state} where id = #{id}
+        update collection_sheet set state = #{state} where id = #{id}
     </update>
     <select id="findCollectionSheetById" resultMap="CollectionSheetPO">
         select * from collection_sheet where id = #{id}
@@ -39,6 +39,12 @@
     </select>
     <select id="findLatest" resultType="com.nju.edu.erp.model.po.CollectionSheetPO">
         select * from collection_sheet order by create_time desc limit 1
+    </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select cs.id as id, cs.create_time as date, c.name as client, cs.operator as operator
+        from collection_sheet cs
+                 left join customer c on cs.customer = c.id
+        where cs.create_time between #{beginTime} and #{endTime}
     </select>
 
 

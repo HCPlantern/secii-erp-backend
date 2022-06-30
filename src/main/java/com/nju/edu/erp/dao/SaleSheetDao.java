@@ -1,11 +1,9 @@
 package com.nju.edu.erp.dao;
 
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
-import com.nju.edu.erp.model.po.CustomerPurchaseAmountPO;
-import com.nju.edu.erp.model.po.SaleDetailPO;
-import com.nju.edu.erp.model.po.SaleSheetContentPO;
-import com.nju.edu.erp.model.po.SaleSheetPO;
+import com.nju.edu.erp.model.po.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface SaleSheetDao {
+public interface SaleSheetDao extends Dao {
 
     /**
      * 获取最近一条销售单
@@ -47,11 +45,11 @@ public interface SaleSheetDao {
     /**
      * 根据时间段查找销售单
      *
-     * @param startTime 开始时间
+     * @param beginTime 开始时间
      * @param endTime   结束时间
      * @return 销售单列表
      */
-    List<SaleSheetPO> findAllSheetByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SaleSheetPO> findAllSheetByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
 
     List<SaleSheetPO> findAllByState(@Param("state") SaleSheetState state);
@@ -79,7 +77,7 @@ public interface SaleSheetDao {
      * @param state   销售单状态
      * @return 影响的行数
      */
-    int updateSheetState(String sheetId, SaleSheetState state);
+    int updateSheetState(String sheetId, BaseEnum state);
 
 
     /**
@@ -90,7 +88,7 @@ public interface SaleSheetDao {
      * @param state   更新后的状态
      * @return 影响的行数
      */
-    int updateSheetStateOnPrev(String sheetId, SaleSheetState prev, SaleSheetState state);
+    int updateSheetStateOnPrev(String sheetId, BaseEnum prev, BaseEnum state);
 
 
     /**
@@ -105,9 +103,17 @@ public interface SaleSheetDao {
 
     /**
      * 获取时间段内的销售详细信息
-     * @param startTime 开始时间
-     * @param endTime 结束时间
+     *
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
      * @return 销售详细信息
      */
-    List<SaleDetailPO> findAllSaleDetailByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SaleDetailPO> findAllSaleDetailByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
+
+    /**
+     * 获取所有销售单的基本信息
+     *
+     * @return 所有销售单基本信息
+     */
+    List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 }

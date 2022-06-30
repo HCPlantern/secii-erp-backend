@@ -1,8 +1,10 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
-import com.nju.edu.erp.model.po.*;
-import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
+import com.nju.edu.erp.model.po.PurchaseSheetContentPO;
+import com.nju.edu.erp.model.po.PurchaseSheetPO;
+import com.nju.edu.erp.model.po.SheetPO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,15 +12,17 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface PurchaseSheetDao {
+public interface PurchaseSheetDao extends Dao {
     /**
      * 获取最近一条进货单
+     *
      * @return 最近一条进货单
      */
     PurchaseSheetPO getLatest();
 
     /**
      * 存入一条进货单记录
+     *
      * @param toSave 一条进货单记录
      * @return 影响的行数
      */
@@ -26,28 +30,33 @@ public interface PurchaseSheetDao {
 
     /**
      * 把进货单上的具体内容存入数据库
+     *
      * @param purchaseSheetContent 进货单上的具体内容
      */
     void saveBatch(List<PurchaseSheetContentPO> purchaseSheetContent);
 
     /**
      * 返回所有进货单
+     *
      * @return 进货单列表
      */
     List<PurchaseSheetPO> findAll();
 
     /**
      * 根据state返回进货单
+     *
      * @param state 进货单状态
      * @return 进货单列表
      */
     List<PurchaseSheetPO> findAllByState(PurchaseSheetState state);
 
-    int updateState(String purchaseSheetId, PurchaseSheetState state);
+    int updateState(String purchaseSheetId, BaseEnum state);
 
-    int updateStateV2(String purchaseSheetId, PurchaseSheetState prevState, PurchaseSheetState state);
+    int updateStateV2(String purchaseSheetId, BaseEnum prevState, BaseEnum state);
 
     PurchaseSheetPO findOneById(String purchaseSheetId);
 
     List<PurchaseSheetContentPO> findContentByPurchaseSheetId(String purchaseSheetId);
+
+    List<SheetPO> findAllBasicSheetInfo(String beginTime, String endTime);
 }

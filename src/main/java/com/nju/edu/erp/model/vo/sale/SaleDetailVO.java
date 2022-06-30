@@ -1,6 +1,7 @@
 package com.nju.edu.erp.model.vo.sale;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleDetailVO {
+public class SaleDetailVO extends ISheetVO {
     /**
      * 时间 精确到日
      */

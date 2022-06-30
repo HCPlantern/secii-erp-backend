@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.purchase;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurchaseSheetContentVO {
+public class PurchaseSheetContentVO extends ISheetVO {
     /**
      * 自增id, 新建单据时前端传null
      */

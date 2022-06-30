@@ -3,6 +3,7 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.CollectionDao;
 import com.nju.edu.erp.dao.CompanyAccountDao;
 import com.nju.edu.erp.dao.CustomerDao;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import com.nju.edu.erp.model.po.CollectionSheetPO;
 import com.nju.edu.erp.model.po.TransferListSheetPO;
@@ -45,11 +46,10 @@ public class CollectionServiceImpl implements CollectionService {
      * 制定收款单
      * 注意需要保存收款单据和转账列表
      * 注意还需要写防御式编程
-     * @param userVO 操作人员
      * @param collectionSheetVO 收款单VO
      */
     @Override
-    public void makeCollectionSheet(UserVO userVO, CollectionSheetVO collectionSheetVO) {
+    public void makeCollectionSheet(CollectionSheetVO collectionSheetVO) {
         // 需要保存到数据库
         CollectionSheetPO collectionSheetPO=new CollectionSheetPO();
         BeanUtils.copyProperties(collectionSheetVO,collectionSheetPO);
@@ -86,7 +86,7 @@ public class CollectionServiceImpl implements CollectionService {
      * @param state 收款单状态 (state == "审批完成"/"审批失败")
      */
     @Override
-    public void approval(String collectionSheetId, CollectionSheetState state) {
+    public void approval(String collectionSheetId, BaseEnum state) {
         // 得到对应的收款单
         CollectionSheetPO collectionSheetPO=collectionDao.findCollectionSheetById(collectionSheetId);
         Integer customerId=collectionSheetPO.getCustomer();
@@ -126,20 +126,28 @@ public class CollectionServiceImpl implements CollectionService {
             collectionSheetPOS=collectionDao.findAllCollectionSheetByState(state);
         }
         for(CollectionSheetPO collectionSheetPO:collectionSheetPOS){
-            CollectionSheetVO collectionSheetVO=new CollectionSheetVO();
-            BeanUtils.copyProperties(collectionSheetPO,collectionSheetVO);
-            List<TransferListSheetPO> collectionSheetContentPOS=collectionDao.findAllCollectionSheetContent(collectionSheetPO.getId());
-            System.out.println(collectionSheetContentPOS.get(0));
-            List<TransferListSheetVO> collectionSheetContentVOS=new ArrayList<>();
-            for(TransferListSheetPO collectionSheetContentPO:collectionSheetContentPOS){
-                TransferListSheetVO transferListSheetVO=new TransferListSheetVO();
-                BeanUtils.copyProperties(collectionSheetContentPO,transferListSheetVO);
-                System.out.println(transferListSheetVO);
-                collectionSheetContentVOS.add(transferListSheetVO);
-            }
-            collectionSheetVO.setCollectionContent(collectionSheetContentVOS);
-            collectionSheetVOS.add(collectionSheetVO);
+            collectionSheetVOS.add(getVOFromPO(collectionSheetPO));
         }
         return collectionSheetVOS;
+    }
+
+    @Override
+    public CollectionSheetVO findCollectionSheetById(String id) {
+        CollectionSheetPO collectionSheetPO = collectionDao.findCollectionSheetById(id);
+        return getVOFromPO(collectionSheetPO);
+    }
+
+    private CollectionSheetVO getVOFromPO(CollectionSheetPO collectionSheetPO){
+        CollectionSheetVO collectionSheetVO = new CollectionSheetVO();
+        BeanUtils.copyProperties(collectionSheetPO,collectionSheetVO);
+        List<TransferListSheetPO> transferListSheetPOList = collectionDao.findAllCollectionSheetContent(collectionSheetPO.getId());
+        List<TransferListSheetVO> transferListSheetVOList = new ArrayList<>();
+        for (TransferListSheetPO transferListSheetPO : transferListSheetPOList) {
+            TransferListSheetVO transferListSheetVO = new TransferListSheetVO();
+            BeanUtils.copyProperties(transferListSheetPO,transferListSheetVO);
+            transferListSheetVOList.add(transferListSheetVO);
+        }
+        collectionSheetVO.setCollectionContent(transferListSheetVOList);
+        return collectionSheetVO;
     }
 }

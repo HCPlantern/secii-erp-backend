@@ -40,4 +40,10 @@
     <select id="findAllPaymentSheetByState" resultType="com.nju.edu.erp.model.po.PaymentSheetPO">
         select * from payment_sheet where state = #{state}
     </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select ps.id as id, ps.create_time as date, c.name as client, ps.operator as operator
+        from payment_sheet ps
+                 left join customer c on ps.customer = c.id
+        where ps.create_time between #{beginTime} and #{endTime}
+    </select>
 </mapper>

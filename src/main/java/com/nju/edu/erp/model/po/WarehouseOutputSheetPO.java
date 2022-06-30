@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseOutputSheetPO {
+public class WarehouseOutputSheetPO extends ISheetPO{
     /**
      * CKD + 日期 + index = 出库单编号
      */

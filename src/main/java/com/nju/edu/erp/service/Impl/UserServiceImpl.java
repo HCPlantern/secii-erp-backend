@@ -56,11 +56,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO auth(String token) {
         Map<String, Claim> claims = jwtConfig.parseJwt(token);
-        UserVO userVO = UserVO.builder()
+        return UserVO.builder()
                 .name(claims.get("name").as(String.class))
                 .role(Role.valueOf(claims.get("role").as(String.class)))
                 .build();
-        return userVO;
     }
 
     @Override
@@ -68,8 +67,26 @@ public class UserServiceImpl implements UserService {
         HashSet<String> set = new HashSet<>();
         List<String> users;
         List<String> roles = new ArrayList<>();
-        roles.add("SALE_MANAGER");
-        roles.add("SALE_STAFF");
+        roles.add(Role.SALE_MANAGER.toString());
+        roles.add(Role.SALE_STAFF.toString());
+        for (String role : roles) {
+            users = userDao.findUserNameByRole(role);
+            set.addAll(users);
+        }
+        return new ArrayList<>(set);
+    }
+
+    @Override
+    public List<String> findAllUsers() {
+        HashSet<String> set = new HashSet<>();
+        List<String> users;
+        List<String> roles = new ArrayList<>();
+        roles.add(Role.INVENTORY_MANAGER.toString());
+        roles.add(Role.SALE_STAFF.toString());
+        roles.add(Role.FINANCIAL_STAFF.toString());
+        roles.add(Role.SALE_MANAGER.toString());
+        roles.add(Role.HR.toString());
+        roles.add(Role.GM.toString());
         for (String role : roles) {
             users = userDao.findUserNameByRole(role);
             set.addAll(users);

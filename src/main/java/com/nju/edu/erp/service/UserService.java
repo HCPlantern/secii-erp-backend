@@ -12,31 +12,32 @@ public interface UserService {
     /**
      * 用户登录
      *
-     * @param userVO
-     * @return
+     * @param userVO 用户信息
+     * @return token
      */
     Map<String, String> login(UserVO userVO);
 
     /**
      * 用户注册
      *
-     * @param userVO
+     * @param userVO 用户信息
      */
     void register(UserVO userVO);
 
     /**
      * 用户认证
      *
-     * @param token
+     * @param token token
      */
     UserVO auth(String token);
 
     List<String> findAllSalesMan();
 
+    List<String> findAllUsers();
+
     /**
      * 每日打卡
      *
-     * @param userVO
      * @return 0:今日已打卡; 1:打卡成功
      */
     int signIn(String token);

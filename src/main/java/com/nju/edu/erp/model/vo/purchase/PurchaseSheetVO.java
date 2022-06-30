@@ -2,6 +2,7 @@ package com.nju.edu.erp.model.vo.purchase;
 
 
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurchaseSheetVO {
+public class PurchaseSheetVO extends ISheetVO {
     /**
      * 进货单单据编号（格式为：JHD-yyyyMMdd-xxxxx), 新建单据时前端传null
      */

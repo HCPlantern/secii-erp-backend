@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,12 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentSheetVO {
+public class PaymentSheetVO extends ISheetVO{
     private String id;
     private Integer customer;
     private String operator;
     private List<PaymentSheetContentVO> paymentSheetContentVOS;
     private BigDecimal totalAmount;
     private PaymentSheetState state;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 }

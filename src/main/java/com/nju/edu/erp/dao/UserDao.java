@@ -5,12 +5,11 @@ import com.nju.edu.erp.model.po.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 @Mapper
-public interface UserDao {
+public interface UserDao extends Dao {
 
     User findByUsernameAndPassword(String username, String password);
 

@@ -1,5 +1,6 @@
 package com.nju.edu.erp.service;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.sale.SaleDetailVO;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface SaleService {
+public interface SaleService extends SaleSheetOperation{
 
     /**
      * 指定销售单
@@ -34,7 +35,7 @@ public interface SaleService {
      * @param saleSheetId 单据id
      * @param state 审批结果
      */
-    void approval(String saleSheetId, SaleSheetState state);
+    void approval(String saleSheetId, BaseEnum state);
 
     /**
      * 获取某个销售人员某段时间内消费总金额最大的客户(不考虑退货情况,销售单不需要审批通过,如果这样的客户有多个，仅保留一个)

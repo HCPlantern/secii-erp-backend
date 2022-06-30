@@ -2,6 +2,7 @@ package com.nju.edu.erp.model.vo.purchaseReturns;
 
 
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PurchaseReturnsSheetVO {
+public class PurchaseReturnsSheetVO extends ISheetVO {
     /**
      * 进货退货单单据编号（格式为：JHTHD-yyyyMMdd-xxxxx
      */

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleReturnsSheetContentPO {
+public class SaleReturnsSheetContentPO extends ISheetPO{
     /**
      * 自增id
      */

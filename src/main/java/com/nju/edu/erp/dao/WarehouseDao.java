@@ -1,7 +1,6 @@
 package com.nju.edu.erp.dao;
 
 import com.nju.edu.erp.model.po.WarehousePO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseCountingVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface WarehouseDao {
+public interface WarehouseDao extends Dao {
     void saveBatch(List<WarehousePO> warehousePOList);
 
     void deductQuantity(WarehousePO warehousePO);
@@ -20,8 +19,9 @@ public interface WarehouseDao {
 
     /**
      * 按照商品id获取现存商品（存量>0）并按价格排序
-     * @param pid
-     * @return
+     *
+     * @param pid 商品id
+     * @return 现存商品列表
      */
     List<WarehousePO> findByPidOrderByPurchasePricePos(String pid);
 
@@ -30,6 +30,7 @@ public interface WarehouseDao {
 
     /**
      * 查看所有库存（库存盘点）
+     *
      * @return 所有库存
      */
     List<WarehousePO> findAll();

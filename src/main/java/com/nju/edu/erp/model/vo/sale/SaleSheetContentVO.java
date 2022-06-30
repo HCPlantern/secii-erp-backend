@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.sale;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleSheetContentVO {
+public class SaleSheetContentVO extends ISheetVO {
     /**
      * 自增Id
      */

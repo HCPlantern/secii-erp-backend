@@ -1,6 +1,7 @@
 package com.nju.edu.erp.model.vo;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,5 +42,6 @@ public class CollectionSheetVO {
      */
     private CollectionSheetState state;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 }

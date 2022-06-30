@@ -109,4 +109,8 @@ public interface WarehouseService {
      *
      */
     List<WarehouseCountingVO> warehouseCounting();
+
+    WarehouseOutputSheetVO findOutputSheetById(String id);
+
+    WarehouseInputSheetVO findInputSheetById(String id);
 }

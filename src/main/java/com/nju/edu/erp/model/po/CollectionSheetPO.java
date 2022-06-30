@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CollectionSheetPO {
+public class CollectionSheetPO extends ISheetPO{
     /**
      * 收款单id
      * 格式为SKD-yyyyMMdd-xxxxx

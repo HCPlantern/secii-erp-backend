@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseInputSheetContentPO {
+public class WarehouseInputSheetContentPO extends ISheetPO{
     /**
      * 入库商品列表id
      */

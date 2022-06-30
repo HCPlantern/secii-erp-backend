@@ -3,10 +3,10 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.CompanyAccountDao;
 import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.PaymentSheetDao;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
-import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.PaymentSheetContentVO;
 import com.nju.edu.erp.model.vo.PaymentSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
@@ -14,7 +14,6 @@ import com.nju.edu.erp.service.PaymentService;
 import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -69,7 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void approval(String paymentSheetId, PaymentSheetState state) {
+    public void approval(String paymentSheetId, BaseEnum state) {
         PaymentSheetPO paymentSheetPO=paymentSheetDao.findPaymentSheetById(paymentSheetId);
         Integer customerId=paymentSheetPO.getCustomer();
         if(state.equals(PaymentSheetState.FAILURE)){
@@ -101,18 +100,27 @@ public class PaymentServiceImpl implements PaymentService {
             paymentSheetPOS=paymentSheetDao.findAllPaymentSheetByState(paymentSheetState);
         }
         for(PaymentSheetPO paymentSheetPO:paymentSheetPOS){
-            PaymentSheetVO paymentSheetVO=new PaymentSheetVO();
-            BeanUtils.copyProperties(paymentSheetPO,paymentSheetVO);
-            List<PaymentSheetContentPO> paymentSheetContentPOS=paymentSheetDao.findAllPaymentSheetContentById(paymentSheetPO.getId());
-            List<PaymentSheetContentVO> paymentSheetContentVOS=new ArrayList<>();
-            for(PaymentSheetContentPO paymentSheetContentPO:paymentSheetContentPOS){
-                PaymentSheetContentVO paymentSheetContentVO=new PaymentSheetContentVO();
-                BeanUtils.copyProperties(paymentSheetContentPO,paymentSheetContentVO);
-                paymentSheetContentVOS.add(paymentSheetContentVO);
-            }
-            paymentSheetVO.setPaymentSheetContentVOS(paymentSheetContentVOS);
-            paymentSheetVOS.add(paymentSheetVO);
+            paymentSheetVOS.add(getVOFromPO(paymentSheetPO));
         }
         return paymentSheetVOS;
+    }
+
+    public PaymentSheetVO findPaymentSheetById(String id) {
+        PaymentSheetPO paymentSheetPO = paymentSheetDao.findPaymentSheetById(id);
+        return getVOFromPO(paymentSheetPO);
+    }
+
+    private PaymentSheetVO getVOFromPO(PaymentSheetPO po) {
+        PaymentSheetVO vo = new PaymentSheetVO();
+        BeanUtils.copyProperties(po, vo);
+        List<PaymentSheetContentPO> pscPOList = paymentSheetDao.findAllPaymentSheetContentById(po.getId());
+        List<PaymentSheetContentVO> pscVOList = new ArrayList<>();
+        for (PaymentSheetContentPO pscPO : pscPOList) {
+            PaymentSheetContentVO pscVO = new PaymentSheetContentVO();
+            BeanUtils.copyProperties(pscPO, pscVO);
+            pscVOList.add(pscVO);
+        }
+        vo.setPaymentSheetContentVOS(pscVOList);
+        return vo;
     }
 }
