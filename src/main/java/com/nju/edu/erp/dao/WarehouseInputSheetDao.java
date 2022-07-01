@@ -74,7 +74,7 @@ public interface WarehouseInputSheetDao extends Dao {
      * 查询指定时间段内出/入库数量/金额/商品信息/分类信息
      *
      * @param beginTime 开始时间
-     * @param endTime  结束时间
+     * @param endTime   结束时间
      */
     List<WarehouseIODetailPO> getWarehouseIODetailByTime(Date beginTime, Date endTime);
 

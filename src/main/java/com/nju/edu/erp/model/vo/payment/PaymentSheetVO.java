@@ -1,7 +1,8 @@
-package com.nju.edu.erp.model.vo;
+package com.nju.edu.erp.model.vo.payment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentSheetVO extends ISheetVO{
+public class PaymentSheetVO extends ISheetVO {
     private String id;
     private Integer customer;
     private String operator;

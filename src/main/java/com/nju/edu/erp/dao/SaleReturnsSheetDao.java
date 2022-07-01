@@ -86,5 +86,20 @@ public interface SaleReturnsSheetDao extends Dao {
      */
     List<SaleReturnsSheetContentPO> findContentBySaleReturnsSheetId(String saleReturnsSheetId);
 
+    /**
+     * 通过时间段找到基本的表信息
+     *
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
+     * @return 表的基本信息
+     */
     List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
+
+    /**
+     * 找到销售单相关联的销售退货单
+     *
+     * @param saleSheetId 销售单Id
+     * @return 关联的销售退货单Id
+     */
+    List<SaleReturnsSheetPO> findBySaleSheetId(@Param("saleSheetId") String saleSheetId);
 }

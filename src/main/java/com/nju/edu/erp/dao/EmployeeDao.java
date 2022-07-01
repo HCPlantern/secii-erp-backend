@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface EmployeeDao extends Dao{
+public interface EmployeeDao extends Dao {
 
     int addEmployee(EmployeePO employeePO);
 
