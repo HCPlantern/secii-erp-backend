@@ -1,14 +1,13 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.*;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormContentVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormVO;
 import com.nju.edu.erp.service.CustomerService;
 import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.PurchaseReturnsService;
@@ -83,6 +82,10 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         List<PurchaseReturnsSheetContentPO> prscPOList = new ArrayList<>();
         // 对每一个 进货退货单内容VO 操作
         for (PurchaseReturnsSheetContentVO prscVO : purchaseReturnsSheetVO.getPurchaseReturnsSheetContent()) {
+
+            // 防御式编程 单价和数量不能够<0
+            assert (prscVO.getQuantity()>=0 && prscVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能够小于零";
+
             // 新建 进货退货单内容PO
             PurchaseReturnsSheetContentPO prscPO = new PurchaseReturnsSheetContentPO();
             BeanUtils.copyProperties(prscVO, prscPO);
@@ -120,15 +123,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         }
         for (PurchaseReturnsSheetPO po : all) {
             PurchaseReturnsSheetVO vo = new PurchaseReturnsSheetVO();
-            BeanUtils.copyProperties(po, vo);
-            List<PurchaseReturnsSheetContentPO> alll = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(po.getId());
-            List<PurchaseReturnsSheetContentVO> vos = new ArrayList<>();
-            for (PurchaseReturnsSheetContentPO p : alll) {
-                PurchaseReturnsSheetContentVO v = new PurchaseReturnsSheetContentVO();
-                BeanUtils.copyProperties(p, v);
-                vos.add(v);
-            }
-            vo.setPurchaseReturnsSheetContent(vos);
+            setVODetail(po, vo);
             res.add(vo);
         }
         return res;
@@ -138,17 +133,17 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
      * 根据进货退货单id进行审批(state == "待二级审批"/"审批完成"/"审批失败")
      * 在controller层进行权限控制
      *
-     * @param purchaseReturnsSheetId 进货退货单id
-     * @param state                  进货退货单要达到的状态
+     * @param sheetId 进货退货单id
+     * @param state   进货退货单要达到的状态
      */
     @Override
     @Transactional
-    public void approval(String purchaseReturnsSheetId, PurchaseReturnsSheetState state) { // TODO
-        PurchaseReturnsSheetPO purchaseReturnsSheet = purchaseReturnsSheetDao.findOneById(purchaseReturnsSheetId);
+    public void approval(String sheetId, BaseEnum state) { // TODO
+        PurchaseReturnsSheetPO purchaseReturnsSheet = purchaseReturnsSheetDao.findOneById(sheetId);
         if (state.equals(PurchaseReturnsSheetState.FAILURE)) {
             if (purchaseReturnsSheet.getState() == PurchaseReturnsSheetState.SUCCESS)
                 throw new RuntimeException("状态更新失败");
-            int effectLines = purchaseReturnsSheetDao.updateState(purchaseReturnsSheetId, state);
+            int effectLines = purchaseReturnsSheetDao.updateState(sheetId, state);
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
         } else {
             PurchaseReturnsSheetState prevState;
@@ -159,16 +154,16 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
             } else {
                 throw new RuntimeException("状态更新失败");
             }
-            int effectLines = purchaseReturnsSheetDao.updateStateV2(purchaseReturnsSheetId, prevState, state);
+            int effectLines = purchaseReturnsSheetDao.updateStateV2(sheetId, prevState, state);
             if (effectLines == 0) throw new RuntimeException("状态更新失败");
             if (state.equals(PurchaseReturnsSheetState.SUCCESS)) {
                 // TODO 审批完成, 修改一系列状态
                 // 进货退货单id， 关联的进货单id 【进货退货单id->进货单id->入库单id->批次id】
-                Integer batchId = purchaseReturnsSheetDao.findBatchId(purchaseReturnsSheetId);
+                Integer batchId = purchaseReturnsSheetDao.findBatchId(sheetId);
 
                 //- 进货退货单id-pid， quantity 【批次id+pid -> 定位到库存的一个条目->库存减去quantity】
                 //- 【 pid -> 定位到单位进价->Σ单位进价*quantity=要收回的钱->客户payable减去要收回的钱】
-                List<PurchaseReturnsSheetContentPO> contents = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(purchaseReturnsSheetId);
+                List<PurchaseReturnsSheetContentPO> contents = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(sheetId);
                 BigDecimal payableToDeduct = BigDecimal.ZERO;
                 for (PurchaseReturnsSheetContentPO content :
                         contents) {
@@ -184,7 +179,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
                         productService.updateProduct(productInfoVO);
                         payableToDeduct = payableToDeduct.add(content.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
                     } else {
-                        purchaseReturnsSheetDao.updateState(purchaseReturnsSheetId, PurchaseReturnsSheetState.FAILURE);
+                        purchaseReturnsSheetDao.updateState(sheetId, PurchaseReturnsSheetState.FAILURE);
                         throw new RuntimeException("商品数量不足！审批失败！");
                     }
                 }
@@ -198,4 +193,26 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
             }
         }
     }
+
+    @Override
+    public PurchaseReturnsSheetVO getPurchaseReturnsSheetById(String sheetId) {
+        PurchaseReturnsSheetPO po = purchaseReturnsSheetDao.findOneById(sheetId);
+        if (po == null) return null;
+        PurchaseReturnsSheetVO vo = new PurchaseReturnsSheetVO();
+        setVODetail(po, vo);
+        return vo;
+    }
+
+    private void setVODetail(PurchaseReturnsSheetPO po,  PurchaseReturnsSheetVO vo) {
+        BeanUtils.copyProperties(po, vo);
+        List<PurchaseReturnsSheetContentPO> prscPOList = purchaseReturnsSheetDao.findContentByPurchaseReturnsSheetId(po.getId());
+        List<PurchaseReturnsSheetContentVO> vos = new ArrayList<>();
+        for (PurchaseReturnsSheetContentPO p : prscPOList) {
+            PurchaseReturnsSheetContentVO v = new PurchaseReturnsSheetContentVO();
+            BeanUtils.copyProperties(p, v);
+            vos.add(v);
+        }
+        vo.setPurchaseReturnsSheetContent(vos);
+    }
+
 }

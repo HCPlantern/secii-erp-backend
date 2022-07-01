@@ -31,6 +31,12 @@
     <select id="findContentByPurchaseSheetId" resultType="com.nju.edu.erp.model.po.PurchaseSheetContentPO">
         select * from purchase_sheet_content where purchase_sheet_id = #{purchase_sheet_id}
     </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select ps.id as id, ps.create_time as date, c.name as client, ps.operator as operator
+        from seec_erp.purchase_sheet ps
+                 left join customer c on ps.supplier = c.id
+        where ps.create_time between #{beginTime} and #{endTime}
+    </select>
 
     <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id">
         insert into purchase_sheet_content (purchase_sheet_id, pid, quantity, unit_price, total_price, remark) values

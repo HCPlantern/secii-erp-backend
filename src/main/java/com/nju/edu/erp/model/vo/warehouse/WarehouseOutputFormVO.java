@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.warehouse;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseOutputFormVO { // 出库单
+public class WarehouseOutputFormVO extends ISheetVO { // 出库单
     private List<WarehouseOutputFormContentVO> list;
     private String operator;
     private String saleSheetId;

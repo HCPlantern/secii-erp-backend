@@ -1,4 +1,4 @@
-package com.nju.edu.erp.CategoryTest;
+package com.nju.edu.erp.service;
 
 import com.nju.edu.erp.dao.CategoryDao;
 import com.nju.edu.erp.model.po.CategoryPO;
@@ -17,16 +17,18 @@ import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class CategoryTests {
+public class MockCategoryServiceTest {
 
     @InjectMocks
+            // 这个调用真实的方法
     CategoryServiceImpl categoryService1;
 
     @Mock
+    // 这个表示不调用真实方法
     private CategoryDao categoryDao1;
 
     @Test
-    public void findAllTest() {
+    public void testFindAllCategory() {
         CategoryPO categoryPO1 = CategoryPO.builder()
                 .id(1)
                 .isLeaf(true)
@@ -44,6 +46,7 @@ public class CategoryTests {
         List<CategoryPO> categoryPOList = new ArrayList<>();
         categoryPOList.add(categoryPO1);
         categoryPOList.add(categoryPO2);
+        // 这个表示categoryDao1.findAll()方法是模拟的
         Mockito.when(categoryDao1.findAll()).thenReturn(categoryPOList);
 
         CategoryVO categoryVO1 = CategoryVO.builder()

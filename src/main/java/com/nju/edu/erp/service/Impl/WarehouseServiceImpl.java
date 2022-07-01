@@ -208,7 +208,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public void approvalInputSheet(UserVO user, String warehouseInputSheetId, WarehouseInputSheetState state) {
         // TODO
         // 也许要加一个修改草稿的接口 此处只是审批通过并修改操作员
-        WarehouseInputSheetPO warehouseInputSheetPO = warehouseInputSheetDao.getSheet(warehouseInputSheetId);
+        WarehouseInputSheetPO warehouseInputSheetPO = warehouseInputSheetDao.findSheetById(warehouseInputSheetId);
         warehouseInputSheetPO.setOperator(user.getName());
         warehouseInputSheetPO.setState(state);
         warehouseInputSheetDao.updateById(warehouseInputSheetPO);
@@ -266,7 +266,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     @Transactional
     public void approvalOutputSheet(UserVO user, String sheetId, WarehouseOutputSheetState state) {
-        WarehouseOutputSheetPO warehouseOutputSheetPO = warehouseOutputSheetDao.getSheet(sheetId);
+        WarehouseOutputSheetPO warehouseOutputSheetPO = warehouseOutputSheetDao.findById(sheetId);
         warehouseOutputSheetPO.setOperator(user.getName());
         warehouseOutputSheetPO.setState(state);
         warehouseOutputSheetDao.updateById(warehouseOutputSheetPO);
@@ -448,5 +448,37 @@ public class WarehouseServiceImpl implements WarehouseService {
             res.add(vo);
         }
         return res;
+    }
+
+    @Override
+    public WarehouseOutputSheetVO findOutputSheetById(String id) {
+        WarehouseOutputSheetPO po = warehouseOutputSheetDao.findById(id);
+        WarehouseOutputSheetVO vo = new WarehouseOutputSheetVO();
+        BeanUtils.copyProperties(po, vo);
+        List<WarehouseOutputSheetContentPO> wosContentPO = warehouseOutputSheetDao.getAllContentById(id);
+        List<WarehouseOutputSheetContentVO> wosContentVOList = new ArrayList<>();
+        for (WarehouseOutputSheetContentPO wosContent : wosContentPO) {
+            WarehouseOutputSheetContentVO wosContentVO1 = new WarehouseOutputSheetContentVO();
+            BeanUtils.copyProperties(wosContent, wosContentVO1);
+            wosContentVOList.add(wosContentVO1);
+        }
+        vo.setContent(wosContentVOList);
+        return vo;
+    }
+
+    @Override
+    public WarehouseInputSheetVO findInputSheetById(String id) {
+        WarehouseInputSheetPO wisPO = warehouseInputSheetDao.findSheetById(id);
+        WarehouseInputSheetVO wisVO = new WarehouseInputSheetVO();
+        BeanUtils.copyProperties(wisPO, wisVO);
+        List<WarehouseInputSheetContentPO> wisContentPOList = warehouseInputSheetDao.getAllContentById(id);
+        List<WarehouseInputSheetContentVO> wisContentVOList = new ArrayList<>();
+        for (WarehouseInputSheetContentPO po : wisContentPOList) {
+            WarehouseInputSheetContentVO vo = new WarehouseInputSheetContentVO();
+            BeanUtils.copyProperties(po, vo);
+            wisContentVOList.add(vo);
+        }
+        wisVO.setContent(wisContentVOList);
+        return wisVO;
     }
 }

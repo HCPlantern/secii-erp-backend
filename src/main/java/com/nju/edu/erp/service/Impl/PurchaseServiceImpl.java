@@ -3,6 +3,7 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.ProductDao;
 import com.nju.edu.erp.dao.PurchaseSheetDao;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
 import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.po.ProductPO;
@@ -14,14 +15,12 @@ import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
 import com.nju.edu.erp.model.vo.purchase.PurchaseSheetVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormContentVO;
 import com.nju.edu.erp.model.vo.warehouse.WarehouseInputFormVO;
-import com.nju.edu.erp.service.CustomerService;
 import com.nju.edu.erp.service.ProductService;
 import com.nju.edu.erp.service.PurchaseService;
 import com.nju.edu.erp.service.WarehouseService;
 import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -72,8 +70,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         BigDecimal totalAmount = BigDecimal.ZERO;
         List<PurchaseSheetContentPO> pContentPOList = new ArrayList<>();
         for(PurchaseSheetContentVO content : purchaseSheetVO.getPurchaseSheetContent()) {
+            // 防御式编程 单价和数量不小于0
+            assert (content.getQuantity()>=0 && content.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能小于0";
+
             PurchaseSheetContentPO pContentPO = new PurchaseSheetContentPO();
             BeanUtils.copyProperties(content,pContentPO);
+
             pContentPO.setPurchaseSheetId(id);
             BigDecimal unitPrice = pContentPO.getUnitPrice();
             if(unitPrice == null) {
@@ -130,7 +132,7 @@ public class PurchaseServiceImpl implements PurchaseService {
      */
     @Override
     @Transactional
-    public void approval(String purchaseSheetId, PurchaseSheetState state) {
+    public void approval(String purchaseSheetId, BaseEnum state) {
         if(state.equals(PurchaseSheetState.FAILURE)) {
             PurchaseSheetPO purchaseSheet = purchaseSheetDao.findOneById(purchaseSheetId);
             if(purchaseSheet.getState() == PurchaseSheetState.SUCCESS) throw new RuntimeException("状态更新失败");

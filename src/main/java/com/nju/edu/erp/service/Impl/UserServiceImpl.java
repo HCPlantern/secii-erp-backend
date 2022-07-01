@@ -100,7 +100,8 @@ public class UserServiceImpl implements UserService {
         String name = claims.get("name").as(String.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         User user = userDao.findByUsername(name);
-        if (sdf.format(user.getLastSignInTime()).equals(sdf.format(new Date())))
+        if (user.getLastSignInTime() != null &&
+                sdf.format(user.getLastSignInTime()).equals(sdf.format(new Date())))
             return 0;
         else userDao.signInByUserName(name);
         return 1;

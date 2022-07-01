@@ -31,10 +31,10 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     @Transactional
-    public void updateCustomer(CustomerVO customerVO) {
+    public int updateCustomer(CustomerVO customerVO) {
         CustomerPO customerPO = new CustomerPO();
         BeanUtils.copyProperties(customerVO, customerPO);
-        customerDao.updateOne(customerPO);
+        return customerDao.updateOne(customerPO);
     }
 
     /**
@@ -64,10 +64,10 @@ public class CustomerServiceImpl implements CustomerService {
    * @param customerVO 客户类型
    */
    @Override
-   public void createCustomer(CustomerVO customerVO){
+   public int createCustomer(CustomerVO customerVO){
      CustomerPO customerPO = new CustomerPO();
      BeanUtils.copyProperties(customerVO, customerPO);
-     customerDao.createCustomer(customerPO);
+     return customerDao.createCustomer(customerPO);
   }
   /**
    * 删除客户

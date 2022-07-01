@@ -1,12 +1,12 @@
 package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.auth.Authorized;
+import com.nju.edu.erp.common.Response;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetVO;
 import com.nju.edu.erp.service.PurchaseReturnsService;
-import com.nju.edu.erp.common.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +80,18 @@ public class PurchaseReturnsController {
     @GetMapping(value = "/sheet-show")
     public Response showSheetByState(@RequestParam(value = "state", required = false) PurchaseReturnsSheetState state) {
         return Response.buildSuccess(purchaseReturnsService.getPurchaseReturnsSheetByState(state));
+    }
+
+    /**
+     * 根据id查看进货退货单
+     *
+     * @param purchaseReturnsSheetId 进货退货单id
+     * @return 进货退货单
+     */
+    @ApiOperation("根据单据id查找进货退货单")
+    @GetMapping(value = "/find-sheet")
+    public Response findBySheetId(@RequestParam("id") String purchaseReturnsSheetId) {
+        return Response.buildSuccess(purchaseReturnsService.getPurchaseReturnsSheetById(purchaseReturnsSheetId));
     }
 
 }

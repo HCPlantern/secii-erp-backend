@@ -2,6 +2,7 @@ package com.nju.edu.erp.model.vo.warehouse;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WarehouseCountingVO {
+public class WarehouseCountingVO extends ISheetVO {
     /**
      * 库存id
      */

@@ -1,6 +1,7 @@
 package com.nju.edu.erp.model.vo.sale;
 
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SaleSheetVO {
+public class SaleSheetVO extends ISheetVO {
 
     /**
      * 销售单单据编号（格式为：XSD-yyyyMMdd-xxxxx), 新建单据时前端传null

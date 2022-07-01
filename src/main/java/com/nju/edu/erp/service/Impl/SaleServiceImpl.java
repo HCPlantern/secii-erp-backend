@@ -3,6 +3,7 @@ package com.nju.edu.erp.service.Impl;
 import com.nju.edu.erp.dao.CustomerDao;
 import com.nju.edu.erp.dao.ProductDao;
 import com.nju.edu.erp.dao.SaleSheetDao;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
@@ -75,6 +76,8 @@ public class SaleServiceImpl implements SaleService {
         BigDecimal rawTotalAmount = BigDecimal.ZERO;
         List<SaleSheetContentPO> saleSheetContentPOS = new ArrayList<>();
         for (SaleSheetContentVO saleSheetContentVO : saleSheetContentVOS) {
+            // 防御式编程
+            assert saleSheetContentVO.getQuantity()>=0 && saleSheetContentVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0:"销售单内容的数量和单价必须大于等于0";
             SaleSheetContentPO saleSheetContentPO = new SaleSheetContentPO();
             BeanUtils.copyProperties(saleSheetContentVO, saleSheetContentPO);
             saleSheetContentPO.setSaleSheetId(id);
@@ -128,7 +131,7 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     @Transactional
-    public void approval(String saleSheetId, SaleSheetState state) {
+    public void approval(String saleSheetId, BaseEnum state) {
         // TODO
         // 需要的service和dao层相关方法均已提供，可以不用自己再实现一遍
         /* 一些注意点：

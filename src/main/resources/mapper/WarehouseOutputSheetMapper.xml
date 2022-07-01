@@ -3,30 +3,37 @@
 <mapper namespace="com.nju.edu.erp.dao.WarehouseOutputSheetDao">
     <insert id="save" parameterType="WarehouseOutputSheetPO">
         insert into warehouse_output_sheet (id, operator, create_time, `state`, sale_sheet_id)
-        values (#{id},#{operator},#{createTime},#{state},#{saleSheetId})
+        values (#{id}, #{operator}, #{createTime}, #{state}, #{saleSheetId})
     </insert>
 
     <delete id="deleteContent">
-        delete from warehouse_output_sheet_content where warehouse_output_sheet_id = #{sheetId} ;
+        delete
+        from warehouse_output_sheet_content
+        where warehouse_output_sheet_id = #{sheetId};
     </delete>
 
     <select id="getLatest" resultMap="WarehouseOutputSheetPO">
-        select * from warehouse_output_sheet order by id desc limit 0,1 ;
+        select *
+        from warehouse_output_sheet
+        order by id desc
+        limit 0,1;
     </select>
 
     <insert id="saveBatch" useGeneratedKeys="true" keyProperty="id">
-        insert into warehouse_output_sheet_content (warehouse_output_sheet_id, pid, quantity, sale_price, remark, batch_id) values
+        insert into warehouse_output_sheet_content (warehouse_output_sheet_id, pid, quantity, sale_price, remark,
+        batch_id) values
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.warehouseOutputSheetId},#{item.pid},#{item.quantity},#{item.salePrice},#{item.remark},#{item.batchId})
         </foreach>
     </insert>
 
     <update id="updateById">
-        update warehouse_output_sheet set operator = #{operator},
-        sale_sheet_id = #{saleSheetId}, `state` = #{state} where id = #{id};
+        update warehouse_output_sheet
+        set operator      = #{operator},
+            sale_sheet_id = #{saleSheetId},
+            `state`       = #{state}
+        where id = #{id};
     </update>
-
-
 
 
     <!--待补充语句：库存查看:一个时间段内的出库数量合计-->
@@ -35,37 +42,61 @@
     2.出库单状态必须为"审批完成",才算是完成一次出库操作
     -->
     <select id="getWarehouseOutputProductQuantityByTime" resultType="java.lang.Integer">
-        select sum(quantity) from warehouse_output_sheet_content where warehouse_output_sheet_id in(
-        select id from warehouse_output_sheet where create_time between #{beginTime} and #{endTime} and state='审批完成' );
+        select sum(quantity)
+        from warehouse_output_sheet_content
+        where warehouse_output_sheet_id in (select id
+                                            from warehouse_output_sheet
+                                            where create_time between #{beginTime} and #{endTime} and state = '审批完成');
     </select>
 
 
     <select id="getAllSheets" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
-        select * from warehouse_output_sheet;
+        select *
+        from warehouse_output_sheet;
     </select>
 
     <select id="getDraftSheets" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
-        select * from warehouse_output_sheet where `state` = #{state};
+        select *
+        from warehouse_output_sheet
+        where `state` = #{state};
     </select>
 
-    <select id="getSheet" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
-        select * from warehouse_output_sheet where id = #{sheetId};
+    <select id="findById" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
+        select *
+        from warehouse_output_sheet
+        where id = #{sheetId};
     </select>
 
     <select id="getAllContentById" resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
-        select * from warehouse_output_sheet_content where warehouse_output_sheet_id = #{sheetId};
+        select *
+        from warehouse_output_sheet_content
+        where warehouse_output_sheet_id = #{sheetId};
     </select>
     <select id="findBatchBySaleSheetIdAndPId"
             resultType="com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO">
-        SELECT wosc.id, wosc.pid, wosc.warehouse_output_sheet_id, wosc.batch_id, wosc.quantity, wosc.sale_price, wosc.remark
+        SELECT wosc.id,
+               wosc.pid,
+               wosc.warehouse_output_sheet_id,
+               wosc.batch_id,
+               wosc.quantity,
+               wosc.sale_price,
+               wosc.remark
         FROM warehouse_output_sheet wos
                  LEFT JOIN warehouse_output_sheet_content wosc on wos.id = wosc.warehouse_output_sheet_id
-        WHERE wos.sale_sheet_id = #{saleSheetId} AND wosc.pid = #{pid};
+        WHERE wos.sale_sheet_id = #{saleSheetId}
+          AND wosc.pid = #{pid};
+    </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select wos.id as id, wos.create_time as date, c.name as client, wos.operator as operator
+        from warehouse_output_sheet wos
+                 left join seec_erp.sale_sheet ss on wos.sale_sheet_id = ss.id
+                 left join customer c on ss.supplier = c.id
+        where wos.create_time between #{beginTime} and #{endTime}
     </select>
 
     <resultMap id="WarehouseOutputSheetPO" type="com.nju.edu.erp.model.po.WarehouseOutputSheetPO">
-        <id column="id" property="id"></id>
-        <result column="operator" property="operator"></result>
-        <result column="create_time" property="createTime"></result>
+        <id column="id" property="id"/>
+        <result column="operator" property="operator"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 </mapper>

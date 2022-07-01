@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SheetPO {
+public class SheetPO extends ISheetPO{
     /**
      * 单据编号
      */
