@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.JobDao">
+
+    <select id="findJobByName" resultMap="JobPO" parameterType="com.nju.edu.erp.enums.Role">
+        select *
+        from job
+        where name = #{name}
+    </select>
+
+    <select id="queryAllJobs" resultMap="JobPO">
+        select *
+        from job
+    </select>
+
+    <update id="updateJobById" parameterType="JobPO">
+        update job
+        set base_wage=#{baseWage},
+            post_wage=#{postWage},
+            salary_calculation_method=#{salaryCalculationMethod},
+            salary_payment_method=#{salaryPaymentMethod}
+        where id = #{id}
+    </update>
+
+    <resultMap id="JobPO" type="com.nju.edu.erp.model.po.JobPO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="base_wage" property="baseWage"></result>
+        <result column="post_wage" property="postWage"></result>
+        <result column="salary_calculation_method" property="salaryCalculationMethod"></result>
+        <result column="salary_payment_method" property="salaryPaymentMethod"></result>
+    </resultMap>
+</mapper>

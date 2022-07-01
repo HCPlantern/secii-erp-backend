@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nju.edu.erp.dao.EmployeeDAO">
+<mapper namespace="com.nju.edu.erp.dao.EmployeeDao">
     <insert id="addEmployee" useGeneratedKeys="true" parameterType="EmployeePO" keyProperty="id">
-
+        insert into employee(name, sex, phone, birthday, job, grade, salary_account)
+        values (#{name}, #{sex}, #{phone}, #{birthday}, #{job}, #{jobGrade}, #{salaryAccount})
     </insert>
 
-    <select id="findAllEmployees" resultMap="Employee">
-
+    <select id="findAllEmployees" resultMap="EmployeePO">
+        select *
+        from employee
     </select>
 
     <update id="updateEmployeeInfo" parameterType="EmployeePO">
-
+        update employee
+        set name          = #{name},
+            sex=#{sex},
+            phone=#{phone},
+            birthday=#{birthday},
+            job= #{job},
+            grade=#{jobGrade},
+            salary_account=#{salaryAccount}
+        where id = #{id}
     </update>
-    
-    <delete id="deleteEmployeeById">
 
+    <delete id="deleteEmployeeById" parameterType="int">
+        delete
+        from employee
+        where id = #{id}
     </delete>
 
-    <resultMap id="Employee" type="com.nju.edu.erp.model.po.EmployeePO">
+    <resultMap id="EmployeePO" type="com.nju.edu.erp.model.po.EmployeePO">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
         <result column="sex" property="sex"></result>

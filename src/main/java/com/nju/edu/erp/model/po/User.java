@@ -35,10 +35,15 @@ public class User {
     /**
      * 打卡数量
      */
-    private String attendance;
+    private int attendance;
 
     /**
      * 上一次打卡的时间
      */
     private Date lastSignInTime;
+
+    /**
+     * 关联的员工id
+     */
+    private int employeeId;
 }

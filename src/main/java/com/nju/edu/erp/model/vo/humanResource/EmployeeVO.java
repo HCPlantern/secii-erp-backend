@@ -1,5 +1,6 @@
-package com.nju.edu.erp.model.vo.employee;
+package com.nju.edu.erp.model.vo.humanResource;
 
+import com.nju.edu.erp.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EmployeeVO {
     /**
-     * 员工id（与系统用户id相同）
+     * 员工id
      */
     private Integer id;
 
@@ -38,7 +39,7 @@ public class EmployeeVO {
     /**
      * 工作岗位
      */
-    private String job;
+    private Role job;
 
     /**
      * 岗位级别

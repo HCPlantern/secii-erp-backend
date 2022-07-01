@@ -1,7 +1,7 @@
 package com.nju.edu.erp.dao;
 
 import com.nju.edu.erp.model.po.EmployeePO;
-import com.nju.edu.erp.model.vo.employee.EmployeeVO;
+import com.nju.edu.erp.model.vo.humanResource.EmployeeVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -9,9 +9,9 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface EmployeeDAO {
+public interface EmployeeDao extends Dao{
 
-    void addEmployee(EmployeePO employeePO);
+    int addEmployee(EmployeePO employeePO);
 
     List<EmployeeVO> findAllEmployees();
 
