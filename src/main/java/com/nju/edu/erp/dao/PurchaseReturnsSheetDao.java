@@ -94,4 +94,6 @@ public interface PurchaseReturnsSheetDao extends Dao {
     Integer findBatchId(String purchaseReturnsSheetId);
 
     List<SheetPO> findAllBasicSheetInfo(String beginTime, String endTime);
+
+    List<PurchaseReturnsSheetPO> findByPurchaseSheetId(String purchaseSheetId);
 }

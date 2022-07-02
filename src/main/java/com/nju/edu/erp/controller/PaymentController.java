@@ -2,7 +2,7 @@ package com.nju.edu.erp.controller;
 
 import com.nju.edu.erp.common.Response;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
-import com.nju.edu.erp.model.vo.PaymentSheetVO;
+import com.nju.edu.erp.model.vo.payment.PaymentSheetVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.PaymentService;
 import io.swagger.annotations.ApiOperation;

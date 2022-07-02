@@ -1,5 +1,6 @@
-package com.nju.edu.erp.model.vo;
+package com.nju.edu.erp.model.vo.payment;
 
+import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentSheetContentVO extends ISheetVO{
+public class PaymentSheetContentVO extends ISheetVO {
     /**
      * 自增id
      */

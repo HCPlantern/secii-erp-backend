@@ -59,4 +59,6 @@ public interface PurchaseSheetDao extends Dao {
     List<PurchaseSheetContentPO> findContentByPurchaseSheetId(String purchaseSheetId);
 
     List<SheetPO> findAllBasicSheetInfo(String beginTime, String endTime);
+
+    List<PurchaseSheetPO> findByCreateTime(String beginTime, String endTime);
 }

@@ -46,7 +46,8 @@
         from warehouse_output_sheet_content
         where warehouse_output_sheet_id in (select id
                                             from warehouse_output_sheet
-                                            where create_time between #{beginTime} and #{endTime} and state = '审批完成');
+                                            where create_time between #{beginTime} and #{endTime}
+                                              and state = '审批完成');
     </select>
 
 

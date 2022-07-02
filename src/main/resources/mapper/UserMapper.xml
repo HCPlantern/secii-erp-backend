@@ -24,9 +24,10 @@
         from user
         where `role` = #{role}
     </select>
-    
+
     <update id="signInByUserName" parameterType="java.lang.String">
-        update user set attendance = attendance + 1
+        update user
+        set attendance = attendance + 1
         where `name` = #{name};
     </update>
 

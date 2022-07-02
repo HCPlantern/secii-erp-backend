@@ -1,13 +1,11 @@
 package com.nju.edu.erp.service;
 
-import com.nju.edu.erp.dao.CollectionDao;
 import com.nju.edu.erp.dao.PaymentSheetDao;
 import com.nju.edu.erp.enums.sheetState.PaymentSheetState;
 import com.nju.edu.erp.model.po.PaymentSheetContentPO;
 import com.nju.edu.erp.model.po.PaymentSheetPO;
-import com.nju.edu.erp.model.vo.PaymentSheetContentVO;
-import com.nju.edu.erp.model.vo.PaymentSheetVO;
-import com.nju.edu.erp.service.Impl.CollectionServiceImpl;
+import com.nju.edu.erp.model.vo.payment.PaymentSheetContentVO;
+import com.nju.edu.erp.model.vo.payment.PaymentSheetVO;
 import com.nju.edu.erp.service.Impl.PaymentServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
