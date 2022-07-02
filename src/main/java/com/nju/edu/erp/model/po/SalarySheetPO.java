@@ -1,17 +1,20 @@
 package com.nju.edu.erp.model.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SalarySheetPo {
+public class SalarySheetPO {
     /**
      * 员工id（与系统用户id相同）
      */
@@ -20,12 +23,14 @@ public class SalarySheetPo {
     /**
      * 姓名
      */
-    private String name;
+    private Integer employeeId;
 
     /**
-     * 工作岗位
+     *
+     * 单据创建时间
      */
-    private String job;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date createTime;
 
     /**
      * 基本工资
@@ -36,22 +41,6 @@ public class SalarySheetPo {
      * 岗位工资
      */
     private BigDecimal postWage;
-
-    /**
-     * 岗位级别
-     */
-    private Integer jobGrade;
-
-    /**
-     * 薪资计算方式
-     */
-    private String salaryCalculationMethod;
-
-    /**
-     * 薪资发放方式
-     */
-    private String salaryPaymentMethod;
-
     /**
      * 未税总工资
      */
@@ -62,5 +51,9 @@ public class SalarySheetPo {
      */
     private BigDecimal taxedSalary;
 
+    /**
+     * 审批状态
+     */
+    private SalarySheetState state;
 }
 
