@@ -13,7 +13,7 @@ public interface EmployeeDao extends Dao {
 
     int addEmployee(EmployeePO employeePO);
 
-    List<EmployeeVO> findAllEmployees();
+    List<EmployeePO> findAllEmployees();
 
     void updateEmployeeInfo(EmployeePO employeePO);
 

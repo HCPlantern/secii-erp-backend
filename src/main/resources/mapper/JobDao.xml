@@ -18,7 +18,8 @@
         set base_wage=#{baseWage},
             post_wage=#{postWage},
             salary_calculation_method=#{salaryCalculationMethod},
-            salary_payment_method=#{salaryPaymentMethod}
+            salary_payment_method=#{salaryPaymentMethod},
+            annual_bonus=#{annualBonus}
         where id = #{id}
     </update>
 
@@ -29,5 +30,6 @@
         <result column="post_wage" property="postWage"></result>
         <result column="salary_calculation_method" property="salaryCalculationMethod"></result>
         <result column="salary_payment_method" property="salaryPaymentMethod"></result>
+        <result column="annual_bonus" property="annualBonus"></result>
     </resultMap>
 </mapper>

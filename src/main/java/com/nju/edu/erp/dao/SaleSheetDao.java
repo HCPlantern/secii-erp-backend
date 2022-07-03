@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -116,4 +117,11 @@ public interface SaleSheetDao extends Dao {
      * @return 所有销售单基本信息
      */
     List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
+
+    /**
+     * 获取某个销售员一段时间内审批完成的销售总额，用于计算提成
+     * @param employeeId 员工id
+     * @return 折扣前销售额
+     */
+    BigDecimal calTotalAmountOfSalesman(int employeeId, @Param("beginTime") String beginTime, @Param("endTime") String endTime);
 }

@@ -42,9 +42,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return userVO;
     }
 
-    public List<EmployeeVO> queryAllEmployees() {
-        List<EmployeeVO> employeeVOList = employeeDAO.findAllEmployees();
-        return employeeVOList;
+    public List<EmployeePO> queryAllEmployees() {
+        List<EmployeePO> employeePOList = employeeDAO.findAllEmployees();
+        return employeePOList;
     }
 
     /**

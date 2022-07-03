@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nju.edu.erp.dao.SalarySheetDao">
+    <insert id="createSalarySheet" parameterType="com.nju.edu.erp.model.po.SalarySheetPO">
+        insert into salary_sheet(create_time, base_wage, post_wage, total_salary, taxed_salary, state)
+        values (#{createTime}, #{baseWage}, #{postWage}, #{totalSalary}, #{taxedSalary}, #{state})
+    </insert>
 
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *

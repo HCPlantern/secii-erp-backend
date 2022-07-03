@@ -4,7 +4,6 @@ import com.nju.edu.erp.service.SalaryService;
 import com.nju.edu.erp.auth.Authorized;
 import com.nju.edu.erp.common.Response;
 import com.nju.edu.erp.enums.Role;
-import com.nju.edu.erp.service.SalaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
