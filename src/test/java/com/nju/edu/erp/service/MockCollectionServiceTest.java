@@ -68,7 +68,7 @@ public class MockCollectionServiceTest {
                 .customer(1)
                 .operator("djhf")
                 .state(CollectionSheetState.PENDING)
-                .collectionContent(transferListSheetVOS)
+                .content(transferListSheetVOS)
                 .createTime(new Date())
                 .build();
         List<CollectionSheetVO> res2=new ArrayList<>();

@@ -1,11 +1,9 @@
 package com.nju.edu.erp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import com.nju.edu.erp.enums.sheetState.CollectionSheetState;
 import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.TransferListSheetVO;
-import net.minidev.json.JSONValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -53,7 +51,7 @@ public class MockCollectionControllerTest {
         CollectionSheetVO mockCollectionSheetVO= CollectionSheetVO.builder().id("SKD-20220627-00010")
                 .customer(1)
                 .operator("djhf")
-                .collectionContent(mockCollectionContentList)
+                .content(mockCollectionContentList)
                 .state(CollectionSheetState.PENDING)
                 .createTime(new Date())
                 .build();

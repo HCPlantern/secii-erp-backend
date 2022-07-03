@@ -20,7 +20,7 @@ public class PaymentSheetVO extends ISheetVO {
     private String id;
     private Integer customer;
     private String operator;
-    private List<PaymentSheetContentVO> paymentSheetContentVOS;
+    private List<PaymentSheetContentVO> content;
     private BigDecimal totalAmount;
     private PaymentSheetState state;
 

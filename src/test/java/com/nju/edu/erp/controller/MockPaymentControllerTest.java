@@ -54,7 +54,7 @@ public class MockPaymentControllerTest {
                 .id("XJFYD-20220627-00001")
                 .customer(3)
                 .operator("sfjhg")
-                .paymentSheetContentVOS(mockPaymentSheetContentList)
+                .content(mockPaymentSheetContentList)
                 .state(PaymentSheetState.PENDING)
                 .createTime(new Date())
                 .build();

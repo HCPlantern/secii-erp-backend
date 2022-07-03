@@ -31,7 +31,7 @@ public class CollectionSheetVO {
     /**
      * 表示收款单的具体内容
      */
-    private List<TransferListSheetVO> collectionContent;
+    private List<TransferListSheetVO> content;
     /**
      * 收款总金额
      * 这个是根据收款单具体内容算出来的

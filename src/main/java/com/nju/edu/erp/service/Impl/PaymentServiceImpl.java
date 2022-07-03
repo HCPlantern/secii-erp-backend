@@ -40,8 +40,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     /**
      * 制定付款单
-     * @param userVO
-     * @param paymentSheetVO
+     * @param userVO 用户信息
+     * @param paymentSheetVO 付款单信息
      */
     @Override
     public void makePaymentSheet(UserVO userVO, PaymentSheetVO paymentSheetVO) {
@@ -54,7 +54,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentSheetPO.setState(PaymentSheetState.PENDING);
         List<PaymentSheetContentPO> paymentSheetContentPOS=new ArrayList<>();
         // 收款单内容
-        List<PaymentSheetContentVO> paymentSheetContentVOS=paymentSheetVO.getPaymentSheetContentVOS();
+        List<PaymentSheetContentVO> paymentSheetContentVOS=paymentSheetVO.getContent();
         BigDecimal totalAmount= BigDecimal.valueOf(0);
         for (PaymentSheetContentVO paymentSheetContentVO:paymentSheetContentVOS){
             PaymentSheetContentPO paymentSheetContentPO=new PaymentSheetContentPO();
@@ -130,7 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
             BeanUtils.copyProperties(pscPO, pscVO);
             pscVOList.add(pscVO);
         }
-        vo.setPaymentSheetContentVOS(pscVOList);
+        vo.setContent(pscVOList);
         return vo;
     }
 }

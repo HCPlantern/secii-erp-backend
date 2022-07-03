@@ -28,7 +28,7 @@
         insert into warehouse_input_sheet_content (warehouse_input_sheet_id, pid, quantity, purchase_price,
         production_date, remark) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.wiId},#{item.pid},#{item.quantity},#{item.purchasePrice},#{item.productionDate},#{item.remark})
+            (#{item.warehouseInputSheetId},#{item.pid},#{item.quantity},#{item.purchasePrice},#{item.productionDate},#{item.remark})
         </foreach>
     </insert>
 

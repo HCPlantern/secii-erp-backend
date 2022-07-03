@@ -71,7 +71,7 @@ public class MockPaymentServiceTest {
                 .customer(2)
                 .operator("dkjfs")
                 .state(PaymentSheetState.PENDING)
-                .paymentSheetContentVOS(paymentSheetContentVOS)
+                .content(paymentSheetContentVOS)
                 .createTime(new Date())
                 .build();
         List<PaymentSheetVO> paymentSheetVOS=new ArrayList<>();

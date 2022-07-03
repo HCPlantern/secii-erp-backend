@@ -10,12 +10,10 @@ import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.po.TransferListSheetPO;
 import com.nju.edu.erp.model.vo.CollectionSheetVO;
 import com.nju.edu.erp.model.vo.TransferListSheetVO;
-import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.service.CollectionService;
 import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -60,7 +58,7 @@ public class CollectionServiceImpl implements CollectionService {
         collectionSheetPO.setState(CollectionSheetState.PENDING);
         List<TransferListSheetPO> collectionSheetContentPOS=new ArrayList<>();
         // 收款单的内容
-        List<TransferListSheetVO> collectionSheetContentVOS=collectionSheetVO.getCollectionContent();
+        List<TransferListSheetVO> collectionSheetContentVOS=collectionSheetVO.getContent();
         BigDecimal totalAmount= BigDecimal.valueOf(0);
         for(TransferListSheetVO collectionContentVO:collectionSheetContentVOS){
             TransferListSheetPO collectionContentPO=new TransferListSheetPO();
@@ -156,7 +154,7 @@ public class CollectionServiceImpl implements CollectionService {
             BeanUtils.copyProperties(transferListSheetPO,transferListSheetVO);
             transferListSheetVOList.add(transferListSheetVO);
         }
-        collectionSheetVO.setCollectionContent(transferListSheetVOList);
+        collectionSheetVO.setContent(transferListSheetVOList);
         return collectionSheetVO;
     }
 }
