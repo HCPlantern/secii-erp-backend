@@ -1,5 +1,6 @@
 package com.nju.edu.erp.service;
 
+import com.nju.edu.erp.model.po.EmployeePO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.humanResource.EmployeeVO;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public interface EmployeeService {
      */
     UserVO addEmployee(EmployeeVO employeeVO);
 
-    List<EmployeeVO> queryAllEmployees();
+    List<EmployeePO> queryAllEmployees();
 
     /**
      * 更新员工信息，数据库触发器级联更新user.role

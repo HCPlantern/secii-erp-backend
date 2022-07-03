@@ -42,4 +42,9 @@ public class JobVO {
      * 岗位工资
      */
     private BigDecimal postWage;
+
+    /**
+     * 年终奖
+     */
+    private BigDecimal annualBonus;
 }

@@ -77,16 +77,19 @@
         order by total_final_amount
         limit 1;
     </select>
+
     <select id="findAllByState" resultType="com.nju.edu.erp.model.po.SaleSheetPO">
         select *
         from sale_sheet
         where state = #{state}
     </select>
+
     <select id="findAllSheetByTime" resultType="com.nju.edu.erp.model.po.SaleSheetPO">
         select *
         from sale_sheet
         where create_time between #{beginTime} and #{endTime}
     </select>
+
     <select id="findAllSaleDetailByTime" resultType="com.nju.edu.erp.model.po.SaleDetailPO">
         select ss.create_time  as date,
                ss.salesman     as salesman,
@@ -103,11 +106,23 @@
                  left join customer c on ss.supplier = c.id
         where ss.create_time between #{beginTime} and #{endTime}
     </select>
+
     <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
         select ss.id as id, ss.create_time as date, c.name as client, ss.operator as operator
         from sale_sheet ss
                  left join customer c on ss.supplier = c.id
         where ss.create_time between #{beginTime} and #{endTime}
+    </select>
+
+    <select id="calTotalAmountOfSalesman" resultType="java.math.BigDecimal" parameterType="int">
+        select sum(raw_total_amount)
+        from sale_sheet
+        where create_time between #{beginTime} and #{endTime}
+          and salesman in (select user.name
+                           from user,
+                                employee
+                           where employee.id = #{id}
+                             and user.employee_id = employee.id)
     </select>
 
     <resultMap id="CustomerPurchaseAmountPO" type="com.nju.edu.erp.model.po.CustomerPurchaseAmountPO">

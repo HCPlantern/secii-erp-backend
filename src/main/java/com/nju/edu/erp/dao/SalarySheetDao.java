@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 @Mapper
 public interface SalarySheetDao extends Dao {
+    void createSalarySheet(SalarySheetPO salarySheetPO);
+
     List<SalarySheetPO> getSalarySheetByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
     SalarySheetPO getSalarySheetById(Integer id);

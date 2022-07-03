@@ -1,6 +1,7 @@
 package com.nju.edu.erp.service;
 
 
+import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
 
@@ -12,7 +13,7 @@ public interface SalaryService {
      *
      * @return 岗位信息列表
      */
-    List<JobVO> queryAllJobs();
+    List<JobPO> queryAllJobs();
 
     /**
      * 根据岗位id更新岗位信息

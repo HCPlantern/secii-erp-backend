@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.TaxDao">
+
+    <select id="findTax" resultMap="TaxPO">
+        select *
+        from tax
+        order by base
+    </select>
+
+    <resultMap id="TaxPO" type="com.nju.edu.erp.model.po.TaxPO">
+        <id column="base" property="base"></id>
+        <result column="rate" property="rate"></result>
+    </resultMap>
+</mapper>
