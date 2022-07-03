@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
@@ -65,6 +66,7 @@ public class SaleReturnsSheetPO extends ISheetPO{
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
 }

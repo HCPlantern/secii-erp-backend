@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.warehouse;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.WarehouseOutputSheetState;
 import com.nju.edu.erp.model.po.ISheetPO;
 import com.nju.edu.erp.model.po.WarehouseOutputSheetContentPO;
@@ -27,6 +28,7 @@ public class WarehouseOutputSheetVO {
     /**
      * 操作时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     /**
      * 关联的销售单据

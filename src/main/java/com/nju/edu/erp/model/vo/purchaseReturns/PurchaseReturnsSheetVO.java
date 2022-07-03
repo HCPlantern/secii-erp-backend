@@ -1,6 +1,7 @@
 package com.nju.edu.erp.model.vo.purchaseReturns;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class PurchaseReturnsSheetVO extends ISheetVO {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     /**
      * 进货单具体内容

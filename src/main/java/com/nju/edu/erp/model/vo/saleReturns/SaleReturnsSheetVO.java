@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.vo.saleReturns;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.vo.ISheetVO;
 import lombok.AllArgsConstructor;
@@ -62,6 +63,7 @@ public class SaleReturnsSheetVO extends ISheetVO {
     private BigDecimal voucherAmount;
 
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     /**
      * 销售单具体内容

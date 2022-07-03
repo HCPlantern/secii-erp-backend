@@ -1,5 +1,6 @@
 package com.nju.edu.erp.model.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,6 +41,7 @@ public class User {
     /**
      * 上一次打卡的时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastSignInTime;
 
     /**

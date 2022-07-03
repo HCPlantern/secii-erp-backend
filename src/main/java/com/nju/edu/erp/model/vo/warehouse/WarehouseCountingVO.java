@@ -2,6 +2,7 @@ package com.nju.edu.erp.model.vo.warehouse;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nju.edu.erp.model.vo.ISheetVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class WarehouseCountingVO extends ISheetVO {
     /**
      * 出厂日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Excel(name = "出厂日期", width = 20, format = "yyyy-MM-dd HH:mm:ss")
     private Date productionDate;
 }
