@@ -7,7 +7,8 @@
         <result column="amount" property="amount"/>
     </resultMap>
     <insert id="createAccount" parameterType="CompanyAccountPO" useGeneratedKeys="true" keyProperty="id">
-        insert into company_account(name,amount) values (#{name},#{amount})
+        insert into company_account(name, amount)
+        values (#{name}, #{amount})
     </insert>
     <update id="updateCompanyAccount" parameterType="CompanyAccountPO">
         update company_account
@@ -17,18 +18,27 @@
         where id = #{id}
     </update>
     <update id="collectionUpdateCompanyAccountAmountById">
-        update company_account set amount = amount + #{amount} where id =#{id}
+        update company_account
+        set amount = amount + #{amount}
+        where id = #{id}
     </update>
     <update id="paymentUpdateCompanyAccountAmountById">
-        update company_account set amount = amount - #{amount} where id =#{id}
+        update company_account
+        set amount = amount - #{amount}
+        where id = #{id}
     </update>
     <delete id="deleteCompanyAccountById">
-        delete from company_account where id = #{id}
+        delete
+        from company_account
+        where id = #{id}
     </delete>
     <select id="findCompanyAccountByName" resultType="com.nju.edu.erp.model.po.CompanyAccountPO">
-        select * from company_account where name = #{name}
+        select *
+        from company_account
+        where name = #{name}
     </select>
     <select id="findAllCompanyAccounts" resultType="com.nju.edu.erp.model.po.CompanyAccountPO">
-        select * from company_account
+        select *
+        from company_account
     </select>
 </mapper>

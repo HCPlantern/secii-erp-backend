@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.SalarySheetDao">
+
+    <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
+        select *
+        from salary_sheet
+        where create_time between #{startTime} and #{endTime}
+    </select>
+    <select id="getSalarySheetById" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
+        select *
+        from salary_sheet
+        where id = #{id}
+    </select>
+    <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
+        select ss.id as id, ss.create_time as date, NULL, NULL
+        from salary_sheet ss
+        where create_time between #{startTime} and #{endTime}
+    </select>
+</mapper>

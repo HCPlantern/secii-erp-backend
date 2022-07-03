@@ -618,22 +618,28 @@ CREATE TABLE `sale_returns_sheet`
   ROW_FORMAT = Dynamic;
 
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220523-00000', 'XSD-20220523-00000', 2, 'xiaoshoujingli', '卖卖卖', '审批失败', '2022-05-23 23:46:12', 'xiaoshoujingli', 1300000.00,
+VALUES ('XSTHD-20220523-00000', 'XSD-20220523-00000', 2, 'xiaoshoujingli', '卖卖卖', '审批失败', '2022-05-23 23:46:12',
+        'xiaoshoujingli', 1300000.00,
         0.80, 1039800.00, 200.00);
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220524-00000', 'XSD-20220524-00000', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:04:37', 'xiaoshoujingli', 4200000.00,
+VALUES ('XSTHD-20220524-00000', 'XSD-20220524-00000', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:04:37',
+        'xiaoshoujingli', 4200000.00,
         0.80, 3359800.00, 200.00);
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220524-00001', 'XSD-20220524-00001', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:32:41', 'xiaoshoujingli', 620000.00,
+VALUES ('XSTHD-20220524-00001', 'XSD-20220524-00001', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:32:41',
+        'xiaoshoujingli', 620000.00,
         0.80, 495800.00, 200.00);
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220524-00002', 'XSD-20220524-00002', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:45:25', 'xiaoshoujingli', 720000.00,
+VALUES ('XSTHD-20220524-00002', 'XSD-20220524-00002', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:45:25',
+        'xiaoshoujingli', 720000.00,
         0.80, 575800.00, 200.00);
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220524-00003', 'XSD-20220524-00003', 2, 'xiaoshoujingli', NULL, '待二级审批', '2022-05-24 01:05:15', 'xiaoshoujingli', 660000.00,
+VALUES ('XSTHD-20220524-00003', 'XSD-20220524-00003', 2, 'xiaoshoujingli', NULL, '待二级审批', '2022-05-24 01:05:15',
+        'xiaoshoujingli', 660000.00,
         0.80, 527700.00, 300.00);
 INSERT INTO `sale_returns_sheet`
-VALUES ('XSTHD-20220524-00004', 'XSD-20220524-00004', 2, 'xiaoshoujingli', NULL, '待一级审批', '2022-05-24 01:07:23', 'xiaoshoujingli', 2900000.00,
+VALUES ('XSTHD-20220524-00004', 'XSD-20220524-00004', 2, 'xiaoshoujingli', NULL, '待一级审批', '2022-05-24 01:07:23',
+        'xiaoshoujingli', 2900000.00,
         0.90, 2609800.00, 200.00);
 -- ----------------------------
 -- Table structure for sale_returns_sheet_content
@@ -712,3 +718,24 @@ create table company_account
         unique (id)
 )
     comment '公司银行账户';
+
+DROP TABLE IF EXISTS salary_sheet;
+CREATE TABLE salary_sheet
+(
+    `id`           int auto_increment primary key comment '工资单id',
+    `employee_id`  int                                                          not null comment '员工id',
+    `create_time`  datetime                                                     not null comment '创建时间',
+    `base_wage`    decimal(10, 2)                                               not null comment '基本工资',
+    `post_wage`    decimal(10, 2)                                               not null comment '岗位工资',
+    `total_salary` decimal(10, 2)                                               not null comment '未税总工资',
+    `taxed_salary` decimal(10, 2)                                               not null comment '税后工资',
+    `state`        varchar(31) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci not null comment '状态'
+
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = Dynamic
+    comment '工资单';
+
+INSERT INTO salary_sheet
+VALUES (1, 1, '2020-05-01', 10000, 10000, 20000, 19000, '审批完成');

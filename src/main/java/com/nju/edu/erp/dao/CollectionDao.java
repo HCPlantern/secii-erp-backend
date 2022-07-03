@@ -60,7 +60,7 @@ public interface CollectionDao extends Dao {
     /**
      * 更新id收款单的state
      *
-     * @param id 收款单id
+     * @param id    收款单id
      * @param state 收款单状态
      * @return
      */
