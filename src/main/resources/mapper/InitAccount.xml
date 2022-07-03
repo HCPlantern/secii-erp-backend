@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.InitAccountDao">
+    <resultMap id="InitCustomerPO" type="com.nju.edu.erp.model.po.InitCustomerPO">
+        <id column="id" property="id"></id>
+        <result column="type" property="type"></result>
+        <result column="level" property="level"></result>
+        <result column="name" property="name"></result>
+        <result column="phone" property="phone"></result>
+        <result column="address" property="address"></result>
+        <result column="zipcode" property="zipcode"></result>
+        <result column="email" property="email"></result>
+        <result column="line_of_credit" property="lineOfCredit"></result>
+        <result column="receivable" property="receivable"></result>
+        <result column="payable" property="payable"></result>
+        <result column="operator" property="operator"></result>
+    </resultMap>
+    <resultMap id="InitProductPO" type="com.nju.edu.erp.model.po.InitProductPO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="category_id" property="categoryId"></result>
+        <result column="type" property="type"></result>
+        <result column="quantity" property="quantity"></result>
+        <result column="purchase_price" property="purchasePrice"></result>
+        <result column="retail_price" property="retailPrice"></result>
+        <result column="recent_pp" property="recentPp"></result>
+        <result column="recent_rp" property="recentRp"></result>
+    </resultMap>
+
+    <resultMap id="InitCompanyAccountPO" type="com.nju.edu.erp.model.po.InitCompanyAccountPO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+    <insert id="createProduct" parameterType="InitProductPO">
+        insert into init_product (id, `name`, category_id, `type`, quantity, purchase_price, retail_price)
+        values (#{id}, #{name}, #{categoryId}, #{type}, 0, #{purchasePrice}, #{retailPrice})
+    </insert>
+    <insert id="createAccount" parameterType="InitCompanyAccountPO">
+        insert into init_company_account(name, amount)
+        values (#{name}, #{amount})
+    </insert>
+    <update id="createCustomer" parameterType="InitCustomerPO">
+        insert into init_customer (type, level, name, phone, address, zipcode, email, line_of_credit, operator)
+        values (#{type}, #{level}, #{name}, #{phone}, #{address}, #{zipcode}, #{email}, #{lineOfCredit}, #{operator})
+    </update>
+</mapper>
