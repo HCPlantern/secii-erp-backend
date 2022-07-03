@@ -2,6 +2,7 @@ package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.JobDao;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
+import com.nju.edu.erp.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
