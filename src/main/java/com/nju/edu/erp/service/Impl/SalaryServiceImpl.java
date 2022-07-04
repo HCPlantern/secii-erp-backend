@@ -4,6 +4,7 @@ import com.nju.edu.erp.dao.EmployeeDao;
 import com.nju.edu.erp.dao.JobDao;
 import com.nju.edu.erp.dao.SalarySheetDao;
 import com.nju.edu.erp.dao.UserDao;
+import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.EmployeePO;
 import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
@@ -63,7 +64,7 @@ public class SalaryServiceImpl implements SalaryService {
         for (EmployeePO employeePO : allEmployees) {
             BeanUtils.copyProperties(employeePO, employeeVO);
             //策略模式
-            
+
         }
 
         //最后扣税，扣除缺勤基本工资
@@ -90,5 +91,14 @@ public class SalaryServiceImpl implements SalaryService {
      */
     public SalarySheetPO getSalarySheetById(Integer id) {
         return salarySheetDao.getSalarySheetById(id);
+    }
+
+    @Override
+    public List<SalarySheetPO> getSalarySheetByState(SalarySheetState state) {
+        if (state == null) {
+            return salarySheetDao.getAllSalarySheet();
+        } else {
+            return salarySheetDao.getSalarySheetByState(state);
+        }
     }
 }

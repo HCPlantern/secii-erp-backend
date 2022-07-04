@@ -1,6 +1,7 @@
 package com.nju.edu.erp.service;
 
 
+import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
@@ -37,4 +38,6 @@ public interface SalaryService {
      * @return 工资单
      */
     SalarySheetPO getSalarySheetById(Integer id);
+
+    List<SalarySheetPO> getSalarySheetByState(SalarySheetState state);
 }

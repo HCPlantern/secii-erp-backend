@@ -1,7 +1,6 @@
 package com.nju.edu.erp.service.Impl;
 
-import com.nju.edu.erp.dao.CategoryDao;
-import com.nju.edu.erp.dao.InitAccountDao;
+import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.exception.MyServiceException;
 import com.nju.edu.erp.model.po.CategoryPO;
 import com.nju.edu.erp.model.po.InitCompanyAccountPO;
@@ -14,19 +13,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 // 期初建账业务逻辑
 public class InitAccountServiceImpl implements InitAccountService {
+
+    private final CustomerDao customerDao;
+
+    private final CompanyAccountDao companyAccountDao;
+
+    private final ProductDao productDao;
 
     private final InitAccountDao initAccountDao;
 
     private final CategoryDao categoryDao;
 
     @Autowired
-    public InitAccountServiceImpl(InitAccountDao initAccountDao, CategoryDao categoryDao) {
+    public InitAccountServiceImpl(CustomerDao customerDao, CompanyAccountDao companyAccountDao, ProductDao productDao, InitAccountDao initAccountDao, CategoryDao categoryDao) {
+        this.customerDao = customerDao;
+        this.companyAccountDao = companyAccountDao;
+        this.productDao = productDao;
         this.initAccountDao = initAccountDao;
         this.categoryDao = categoryDao;
     }
+
     /**
      * 期初创建客户
      * @param initCustomerVO
@@ -37,7 +49,10 @@ public class InitAccountServiceImpl implements InitAccountService {
     public int createCustomer(InitCustomerVO initCustomerVO) {
         InitCustomerPO initCustomerPO=new InitCustomerPO();
         BeanUtils.copyProperties(initCustomerVO,initCustomerPO);
-        return initAccountDao.createCustomer(initCustomerPO);
+        int res = initAccountDao.createCustomer(initCustomerPO);
+//        customerDao.deleteAll();
+        customerDao.insertFromInit();
+        return res;
     }
 
     /**
@@ -50,6 +65,8 @@ public class InitAccountServiceImpl implements InitAccountService {
         InitCompanyAccountPO initCompanyAccountPO=new InitCompanyAccountPO();
         BeanUtils.copyProperties(initCompanyAccountVO,initCompanyAccountPO);
         initAccountDao.createAccount(initCompanyAccountPO);
+//        companyAccountDao.deleteAll();
+        companyAccountDao.insertFromInit();
     }
 
     /**
@@ -73,9 +90,48 @@ public class InitAccountServiceImpl implements InitAccountService {
         BeanUtils.copyProperties(initProductVO,savePO);
         savePO.setId(productId);
         initAccountDao.createProduct(savePO);
+        // 修改对应的商品分类
         category.setItemCount(category.getItemCount() + 1);
         category.setItemIndex(category.getItemIndex() + 1);
         categoryDao.updateById(category);
+//        productDao.deleteAll();
+        productDao.insertFromInit();
+    }
+
+    @Override
+    public List<InitCustomerVO> getAllInitCustomer() {
+        List<InitCustomerPO> initCustomerPOS=initAccountDao.getAllInitCustomer();
+        List<InitCustomerVO> res=new ArrayList<>();
+        for(InitCustomerPO initCustomerPO:initCustomerPOS){
+            InitCustomerVO initCustomerVO=new InitCustomerVO();
+            BeanUtils.copyProperties(initCustomerPO,initCustomerVO);
+            res.add(initCustomerVO);
+        }
+        return res;
+    }
+
+    @Override
+    public List<InitProductVO> getAllInitProduct() {
+        List<InitProductPO> initProductPOS=initAccountDao.getAllInitProduct();
+        List<InitProductVO> res=new ArrayList<>();
+        for(InitProductPO initProductPO:initProductPOS){
+            InitProductVO initProductVO=new InitProductVO();
+            BeanUtils.copyProperties(initProductVO,initProductPO);
+            res.add(initProductVO);
+        }
+        return res;
+    }
+
+    @Override
+    public List<InitCompanyAccountVO> getAllInitCompanyAccount() {
+        List<InitCompanyAccountPO> initCompanyAccountPOS=initAccountDao.getAllInitCompanyAccount();
+        List<InitCompanyAccountVO> res=new ArrayList<>();
+        for(InitCompanyAccountPO initCompanyAccountPO:initCompanyAccountPOS){
+            InitCompanyAccountVO initCompanyAccountVO=new InitCompanyAccountVO();
+            BeanUtils.copyProperties(initCompanyAccountPO,initCompanyAccountVO);
+            res.add(initCompanyAccountVO);
+        }
+        return res;
     }
 
     private String generateProductId(CategoryPO categoryPO) {
