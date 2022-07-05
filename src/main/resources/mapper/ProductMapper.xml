@@ -19,6 +19,9 @@
         insert into product (id, `name`, category_id, `type`, quantity, purchase_price, retail_price)
         values (#{id}, #{name}, #{categoryId}, #{type}, 0, #{purchasePrice}, #{retailPrice})
     </insert>
+    <insert id="insertFromInit">
+        insert into product select * from  init_product
+    </insert>
 
     <select id="findById" resultMap="ProductPO">
         select *
@@ -35,6 +38,9 @@
         delete
         from product
         where id = #{id}
+    </delete>
+    <delete id="deleteAll">
+        truncate table product
     </delete>
 
     <resultMap id="ProductPO" type="com.nju.edu.erp.model.po.ProductPO">

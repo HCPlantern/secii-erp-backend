@@ -9,10 +9,7 @@ import com.nju.edu.erp.service.InitAccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -45,4 +42,22 @@ public class InitAccountController {
         initAccountService.createAccount(initCompanyAccountVO);
         return Response.buildSuccess();
     }
+    @GetMapping("/getAllInitCustomer")
+    @ApiOperation("获取期初建账的客户的全部信息")
+    public Response getAllInitCustomer(){
+        return Response.buildSuccess(initAccountService.getAllInitCustomer());
+    }
+
+    @GetMapping("/getAllInitProduct")
+    @ApiOperation("获取期初建账的商品的全部信息")
+    public Response getAllInitProduct(){
+        return Response.buildSuccess(initAccountService.getAllInitProduct());
+    }
+
+    @GetMapping("/getAllInitCompanyAccount")
+    @ApiOperation("获取期初建账的银行账户的全部信息")
+    public Response getAllInitCompanyAccount(){
+        return Response.buildSuccess(initAccountService.getAllInitCompanyAccount());
+    }
+
 }

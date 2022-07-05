@@ -10,6 +10,9 @@
         insert into company_account(name, amount)
         values (#{name}, #{amount})
     </insert>
+    <insert id="insertFromInit">
+        insert into company_account select * from init_company_account
+    </insert>
     <update id="updateCompanyAccount" parameterType="CompanyAccountPO">
         update company_account
         <set>
@@ -31,6 +34,9 @@
         delete
         from company_account
         where id = #{id}
+    </delete>
+    <delete id="deleteAll">
+        truncate table company_account
     </delete>
     <select id="findCompanyAccountByName" resultType="com.nju.edu.erp.model.po.CompanyAccountPO">
         select *

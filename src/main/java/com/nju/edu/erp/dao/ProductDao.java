@@ -19,4 +19,9 @@ public interface ProductDao extends Dao {
     List<ProductPO> findAll();
 
     int deleteById(String id);
+
+    int deleteAll();
+
+    int insertFromInit();
+
 }

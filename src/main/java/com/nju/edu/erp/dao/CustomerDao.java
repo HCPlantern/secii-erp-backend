@@ -40,4 +40,16 @@ public interface CustomerDao extends Dao {
      * @return
      */
     int updatePayableById(Integer id, BigDecimal amount);
+
+    /**
+     * 删除表的数据
+     * @return
+     */
+    int deleteAll();
+
+    /**
+     * 从初始化的表中导入
+     * @return
+     */
+    int insertFromInit();
 }

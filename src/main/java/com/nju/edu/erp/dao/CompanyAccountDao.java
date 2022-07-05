@@ -32,4 +32,9 @@ public interface CompanyAccountDao extends Dao {
 
     void paymentUpdateCompanyAccountAmountById(Integer id, BigDecimal amount);
 
+
+    int deleteAll();
+
+    int insertFromInit();
+
 }
