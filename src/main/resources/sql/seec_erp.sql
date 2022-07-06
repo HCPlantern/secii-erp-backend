@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 2022-07-03 16:10:12
+ Date: 2022-07-06 16:22:09
 */
 create database `seec_erp`;
 SET NAMES utf8mb4;
@@ -20,6 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for category
 -- ----------------------------
+
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category`
 (
@@ -31,7 +32,7 @@ CREATE TABLE `category`
     `item_index` int(11)      NOT NULL COMMENT '插入的下一个index',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 10
+  AUTO_INCREMENT = 13
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -39,7 +40,7 @@ INSERT INTO `category` (`id`, `name`, `parent_id`, `is_leaf`, `item_count`, `ite
 VALUES (1, '商品', 0, 0, 0, 0),
        (2, '电子产品', 1, 0, 0, 0),
        (4, '电脑', 2, 1, 2, 3),
-       (5, '手机', 2, 1, 14, 15);
+       (5, '手机', 2, 1, 20, 21);
 
 DROP TABLE IF EXISTS `collection_sheet`;
 CREATE TABLE `collection_sheet`
@@ -60,9 +61,16 @@ VALUES ('SKD-20220612-00000', 2, 'hcx', 100000, '审批完成', '2022-06-12 00:0
        ('SKD-20220612-00002', 6, 'hcx', 100, '审批失败', '2022-06-12 17:12:20'),
        ('SKD-20220612-00003', 7, 'hcx', 90, '审批失败', '2022-06-12 17:16:25'),
        ('SKD-20220612-00004', 8, 'hcx', 30, '审批完成', '2022-06-12 17:18:29'),
-       ('SKD-20220612-00005', 10, 'hcx', 90, '待审批', '2022-06-12 17:25:39'),
+       ('SKD-20220612-00005', 10, 'hcx', 90, '审批失败', '2022-06-12 17:25:39'),
        ('SKD-20220627-00000', 2, 'bobby', 100, '审批失败', '2022-06-27 14:56:05'),
-       ('SKD-20220627-00001', 3, 'bobby', 10, '审批失败', '2022-06-27 14:56:59');
+       ('SKD-20220627-00001', 3, 'bobby', 10, '审批失败', '2022-06-27 14:56:59'),
+       ('SKD-20220706-00000', 2, 'sky', 1, '审批失败', '2022-07-06 13:22:24'),
+       ('SKD-20220706-00001', 2, 'sky', 100000, '审批失败', '2022-07-06 20:25:49'),
+       ('SKD-20220706-00002', 2, 'sky', -100000, '审批失败', '2022-07-06 20:30:12'),
+       ('SKD-20220706-00003', 2, 'sky', -100000, '审批失败', '2022-07-06 20:30:53'),
+       ('SKD-20220706-00004', 5, 'sky', 0, '待审批', '2022-07-06 20:39:21'),
+       ('SKD-20220706-00005', 2, 'sky', 0, '待审批', '2022-07-06 20:40:09'),
+       ('SKD-20220706-00006', 2, 'sky', -100000, '待审批', '2022-07-06 21:38:00');
 
 DROP TABLE IF EXISTS `company_account`;
 CREATE TABLE `company_account`
@@ -97,16 +105,16 @@ CREATE TABLE `customer`
     `operator`       varchar(255)   DEFAULT NULL COMMENT '默认业务员',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 21
+  AUTO_INCREMENT = 24
   DEFAULT CHARSET = utf8
   ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `customer` (`id`, `type`, `level`, `name`, `phone`, `address`, `zipcode`, `email`, `line_of_credit`,
                         `receivable`, `payable`, `operator`)
-VALUES (1, '销售商', 1, '田所浩二', '114514', '下北泽', '114514', '1919810@qq.com', 114.00, 514.00, 3240000.00, '67'),
+VALUES (1, '销售商', 1, '田所浩二', '114514', '下北泽', '114514', '1919810@qq.com', 114.00, 514.00, 8680000.00, '67'),
        (2, '销售商', 1, 'hello', '12580', '蝻睛大学软件学院', '123457', '12121@cba.com', 20000000.00, 4949100.00, 3080616.00,
         'uncl'),
-       (3, '供应商', 1, '胡铁波', '120', '蝻睛大学领袖', '123456', '23333@nju.com', 0.00, 100.00, 0.00, 'uncln'),
+       (3, '供应商', 1, '胡铁波', '120', '蝻睛大学领袖', '123456', '23333@nju.com', 0.00, 100.00, 1.00, 'uncln'),
        (5, '供应商', 1, '潘拙学', '110', '蝻睛大学软件学院', '210046', '22@qq.com', 100.00, 0.00, 0.00, '67'),
        (6, '销售商', 3, '杭宸歆', '15951320294', '蝻睛大学软件学院', '210046', '201250037@qq.com', 1000.00, 0.00, 0.00, 'duffvs'),
        (7, '供应商', 4, '陈阵雨', '31434234', '蝻睛大学软件学院', '210046', '1667827813@qq.com', 1222.00, 0.00, 0.00, '67'),
@@ -122,7 +130,7 @@ CREATE TABLE `employee`
     `name`           varchar(255) NOT NULL COMMENT '姓名',
     `sex`            varchar(255) DEFAULT NULL COMMENT '性别',
     `phone`          varchar(31)  DEFAULT NULL COMMENT '手机号码',
-    `grade`          varchar(255) DEFAULT NULL COMMENT '岗位级别',
+    `grade`          int(11)      DEFAULT NULL,
     `salary_account` varchar(31)  DEFAULT NULL COMMENT '工资卡账户',
     `job`            varchar(255) DEFAULT NULL COMMENT '岗位名称',
     `birthday`       date         DEFAULT NULL COMMENT '出生日期',
@@ -132,18 +140,18 @@ CREATE TABLE `employee`
   DEFAULT CHARSET = latin1;
 
 INSERT INTO `employee` (`id`, `name`, `sex`, `phone`, `grade`, `salary_account`, `job`, `birthday`)
-VALUES (1, 'seecoder', NULL, NULL, '1', NULL, 'INVENTORY_MANAGER', NULL),
-       (2, 'uncln', NULL, NULL, '1', NULL, 'INVENTORY_MANAGER', NULL),
-       (3, 'kucun', NULL, NULL, '1', NULL, 'INVENTORY_MANAGER', NULL),
-       (5, 'zxr', NULL, NULL, '1', NULL, 'SALE_MANAGER', NULL),
-       (6, '67', NULL, NULL, '1', NULL, 'GM', NULL),
-       (7, 'xiaoshou', NULL, NULL, '3', NULL, 'SALE_STAFF', NULL),
-       (8, 'Leone', NULL, NULL, '3', NULL, 'GM', NULL),
-       (9, 'xiaoshoujingli', NULL, NULL, '1', NULL, 'SALE_MANAGER', NULL),
-       (10, 'warehouse', NULL, NULL, '2', NULL, 'INVENTORY_MANAGER', NULL),
-       (11, 'hcx', NULL, NULL, '1', NULL, 'FINANCIAL_STAFF', NULL),
-       (19, 'ppw4', 'male', '123', '2', '234', 'SALE_STAFF', '2011-11-11'),
-       (20, 'hr', 'male', '123', '1', '123', 'HR', '2011-11-11');
+VALUES (1, 'seecoder', NULL, NULL, 1, NULL, 'INVENTORY_MANAGER', NULL),
+       (2, 'uncln', NULL, NULL, 1, NULL, 'INVENTORY_MANAGER', NULL),
+       (3, 'kucun', NULL, NULL, 1, NULL, 'INVENTORY_MANAGER', NULL),
+       (5, 'zxr', NULL, NULL, 1, NULL, 'SALE_MANAGER', NULL),
+       (6, '67', NULL, NULL, 1, NULL, 'GM', NULL),
+       (7, 'xiaoshou', NULL, NULL, 3, NULL, 'SALE_STAFF', NULL),
+       (8, 'Leone', NULL, NULL, 3, NULL, 'GM', NULL),
+       (9, 'xiaoshoujingli', NULL, NULL, 1, NULL, 'SALE_MANAGER', NULL),
+       (10, 'warehouse', NULL, NULL, 2, NULL, 'INVENTORY_MANAGER', NULL),
+       (11, 'hcx', NULL, NULL, 1, NULL, 'FINANCIAL_STAFF', NULL),
+       (19, 'ppw4', 'male', '123', 2, '234', 'SALE_STAFF', '2011-11-11'),
+       (20, 'hr', 'male', '123', 1, '123', 'HR', '2011-11-11');
 
 DELIMITER ;;
 
@@ -174,8 +182,11 @@ CREATE TABLE `init_company_account`
     PRIMARY KEY (`id`),
     UNIQUE KEY `init_company_account_id_uindex` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 
+INSERT INTO `init_company_account` (`id`, `name`, `amount`)
+VALUES (1, 'sdfhgj', 1000);
 
 DROP TABLE IF EXISTS `init_customer`;
 CREATE TABLE `init_customer`
@@ -221,22 +232,29 @@ CREATE TABLE `job`
 (
     `id`                        int(11)        NOT NULL AUTO_INCREMENT COMMENT '自增id',
     `name`                      varchar(255)   NOT NULL,
-    `base_wage`                 decimal(10, 2) NOT NULL COMMENT '基本工资',
+    `base_wage`                 decimal(10, 2) NOT NULL DEFAULT '0.00' COMMENT '基本工资',
     `salary_calculation_method` varchar(255)   NOT NULL COMMENT '薪资计算方式',
     `salary_payment_method`     varchar(255)   NOT NULL COMMENT '薪资发放方式',
-    `post_wage`                 decimal(10, 2) DEFAULT NULL COMMENT '岗位工资',
-    `annual_bonus`              decimal(10, 2) DEFAULT '0.00' COMMENT '年终奖',
+    `post_wage`                 decimal(10, 2)          DEFAULT '0.00' COMMENT '岗位工资',
+    `annual_bonus`              decimal(10, 2)          DEFAULT '0.00' COMMENT '年终奖',
+    `deduct_rate`               decimal(10, 2)          DEFAULT '0.00' COMMENT '提成率',
+    `grade_rate`                decimal(10, 2)          DEFAULT '0.00' COMMENT '岗位级别加薪率',
+    `insurance`                 decimal(10, 2)          DEFAULT '0.00' COMMENT '失业保险金',
+    `housing_fund`              decimal(10, 2)          DEFAULT '0.00' COMMENT '住房公积金',
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = latin1;
 
 INSERT INTO `job` (`id`, `name`, `base_wage`, `salary_calculation_method`, `salary_payment_method`, `post_wage`,
-                   `annual_bonus`)
-VALUES (1, 'INVENTORY_MANAGER', 1000.00, 'DEDUCT', 'MONTHLY', 1000.00, 0.00),
-       (2, 'SALE_MANAGER', 2000.00, 'DEDUCT', 'MONTHLY', 2000.00, 0.00),
-       (3, 'GM', 5000.00, 'POST', 'ANNUALLY', 5000.00, 0.00);
+                   `annual_bonus`, `deduct_rate`, `grade_rate`, `insurance`, `housing_fund`)
+VALUES (1, 'INVENTORY_MANAGER', 4500.00, 'POST', 'MONTHLY', 1000.00, 0.00, 0.00, 0.20, 100.00, 2000.00),
+       (2, 'SALE_MANAGER', 5500.00, 'DEDUCT', 'MONTHLY', 0.00, 0.00, 0.08, 0.00, 100.00, 1500.00),
+       (3, 'GM', 8000.00, 'POST', 'ANNUALLY', 5000.00, 114514.00, 0.00, 0.10, 100.00, 2000.00),
+       (4, 'FINANCIAL_STAFF', 6000.00, 'POST', 'ANNUALLY', 1000.00, 0.00, 0.00, 0.15, 100.00, 1000.00),
+       (5, 'SALE_STAFF', 5000.00, 'DEDUCT', 'MONTHLY', 0.00, 0.00, 0.05, 0.00, 200.00, 1000.00),
+       (6, 'HR', 6000.00, 'POST', 'ANNUALLY', 5000.00, 0.00, 0.00, 0.10, 100.00, 2000.00);
 
 DROP TABLE IF EXISTS `payment_sheet`;
 CREATE TABLE `payment_sheet`
@@ -254,6 +272,8 @@ CREATE TABLE `payment_sheet`
 INSERT INTO `payment_sheet` (`id`, `customer`, `operator`, `total_amount`, `state`, `create_time`)
 VALUES ('XJFKD-20220612-00000', 2, 'hcx', 10000, '审批完成', '2022-06-12 20:16:24'),
        ('XJFKD-20220612-00001', 13, 'hcx', 1000, '审批失败', NULL),
+       ('XJFKD-20220706-00000', 1, 'sky', 1, '审批失败', '2022-07-06 21:24:22'),
+       ('XJFKD-20220706-00001', 1, 'sky', 1, '审批失败', '2022-07-06 21:26:09'),
        ('XJFYD-20220612-00001', 3, 'hcx', 100, '审批失败', NULL);
 
 DROP TABLE IF EXISTS `payment_sheet_content`;
@@ -267,7 +287,7 @@ CREATE TABLE `payment_sheet_content`
     PRIMARY KEY (`id`),
     UNIQUE KEY `payment_sheet_content_id_uindex` (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 30
+  AUTO_INCREMENT = 40
   DEFAULT CHARSET = utf8 COMMENT ='付款单内容,与收款单内容一致';
 
 INSERT INTO `payment_sheet_content` (`id`, `company_account_id`, `transfer_amount`, `remark`, `payment_sheet_id`)
@@ -275,7 +295,17 @@ VALUES (1, 1, 10000, '软工二寄了', 'XJFKD-20220612-00000'),
        (2, 1, 100, '谢谢你', 'XJFYD-20220612-00001'),
        (3, 1, 34, '你寄了', NULL),
        (4, 1, 34, '你寄了', NULL),
-       (5, 1, 1000, '超市', 'XJFKD-20220612-00001');
+       (5, 1, 1000, '超市', 'XJFKD-20220612-00001'),
+       (30, 3, 1, '1', 'XJFKD-20220706-00000'),
+       (31, 3, 1, 'ww', 'XJFKD-20220706-00000'),
+       (32, 1, 1, 'ww', 'XJFKD-20220706-00000'),
+       (33, 3, 1, 'ww', 'XJFKD-20220706-00000'),
+       (34, 1, 1, 'ww', 'XJFKD-20220706-00000'),
+       (35, 3, 1, 'ww', 'XJFKD-20220706-00000'),
+       (36, 1, 1, 'ww', 'XJFKD-20220706-00000'),
+       (37, 3, 1, 'ww', 'XJFKD-20220706-00001'),
+       (38, 1, 1, 'ww', 'XJFKD-20220706-00001'),
+       (39, 1, 1, '111', 'XJFKD-20220706-00001');
 
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product`
@@ -296,9 +326,9 @@ CREATE TABLE `product`
 
 INSERT INTO `product` (`id`, `name`, `category_id`, `type`, `quantity`, `purchase_price`, `retail_price`, `recent_pp`,
                        `recent_rp`)
-VALUES ('0000000000400000', '黑苹果电脑', 4, '戴尔(DELL)Vostro笔记本电脑5410 123色 戴尔成就3500Vostro1625D', 358, 4000.00, 4056.00,
-        1900.00, 2800.00),
-       ('0000000000400001', '小米手机', 4, 'lalalalala', 1000, 2000.00, 3500.00, 3000.00, 3800.00),
+VALUES ('0000000000400000', '黑苹果电脑', 4, '戴尔(DELL)Vostro笔记本电脑5410 123色 戴尔成就3500Vostro1625D', 358, 4000.00, 4056.00, 1.00,
+        2800.00),
+       ('0000000000400001', '小米手机', 4, 'lalalalala', 1000, 2000.00, 3500.00, 2900.00, 3800.00),
        ('0000000000400002', 'Y9000P2022', 4, 'intel 12代i7+RTX3060', 0, 8999.00, 11999.00, NULL, NULL),
        ('0000000000500000', 'intel电脑', 5, 'iphone14maxpro', 0, 6000.00, 10000.00, NULL, NULL),
        ('0000000000500001', 'iphone', 5, 'iphone14普通版', 0, 4000.00, 8000.00, NULL, NULL),
@@ -313,7 +343,24 @@ VALUES ('0000000000400000', '黑苹果电脑', 4, '戴尔(DELL)Vostro笔记本�
        ('0000000000500011', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
        ('0000000000500012', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
        ('0000000000500013', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
-       ('0000000000500014', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL);
+       ('0000000000500014', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500015', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500016', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500017', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500018', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500019', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL),
+       ('0000000000500020', 'test', 5, 'unknown', 0, 1.00, 2.00, NULL, NULL);
+
+DROP TABLE IF EXISTS `promotion_sheet`;
+CREATE TABLE `promotion_sheet`
+(
+    `customer_level` int(11) NOT NULL,
+    `gift`           varchar(15) DEFAULT NULL,
+    `discount`       float       DEFAULT NULL,
+    `coupon`         int(11)     DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
+
 
 DROP TABLE IF EXISTS `purchase_returns_sheet`;
 CREATE TABLE `purchase_returns_sheet`
@@ -349,7 +396,9 @@ VALUES ('JHTHD-20220523-00000', 'JHD-20220523-00001', 'xiaoshoujingli', '审批�
        ('JHTHD-20220603-00001', 'JHD-20220523-00001', NULL, '待一级审批', '2022-06-03 10:19:51', 11200.00, NULL),
        ('JHTHD-20220603-00002', 'JHD-20220523-00001', NULL, '待一级审批', '2022-06-03 19:34:53', 22000.00, NULL),
        ('JHTHD-20220603-00003', 'JHD-20220524-00002', NULL, '待二级审批', '2022-06-03 19:36:04', 16500.00, NULL),
-       ('JHTHD-20220603-00004', 'JHD-20220523-00001', NULL, '待二级审批', '2022-06-03 19:43:37', 22000.00, 'hhh');
+       ('JHTHD-20220603-00004', 'JHD-20220523-00001', NULL, '待二级审批', '2022-06-03 19:43:37', 22000.00, 'hhh'),
+       ('JHTHD-20220705-00000', 'JHD-20220524-00002', 'sky', '审批失败', '2022-07-05 20:07:45', 1650000.00, NULL),
+       ('JHTHD-20220705-00001', 'JHD-20220524-00002', 'sky', '审批失败', '2022-07-05 22:20:37', 1650000.00, NULL);
 
 DROP TABLE IF EXISTS `purchase_returns_sheet_content`;
 CREATE TABLE `purchase_returns_sheet_content`
@@ -363,7 +412,7 @@ CREATE TABLE `purchase_returns_sheet_content`
     `remark`                    varchar(255)   DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 46
+  AUTO_INCREMENT = 50
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -391,7 +440,11 @@ VALUES (23, 'JHTHD-20220523-00000', '0000000000400000', 500, 600000.00, 1200.00,
        (42, 'JHTHD-20220603-00003', '0000000000400000', 3, 5700.00, 1900.00, ''),
        (43, 'JHTHD-20220603-00003', '0000000000400001', 4, 10800.00, 2700.00, NULL),
        (44, 'JHTHD-20220603-00004', '0000000000400000', 10, 12000.00, 1200.00, 'b'),
-       (45, 'JHTHD-20220603-00004', '0000000000400001', 5, 10000.00, 2000.00, 'b');
+       (45, 'JHTHD-20220603-00004', '0000000000400001', 5, 10000.00, 2000.00, 'b'),
+       (46, 'JHTHD-20220705-00000', '0000000000400000', 300, 570000.00, 1900.00, ''),
+       (47, 'JHTHD-20220705-00000', '0000000000400001', 400, 1080000.00, 2700.00, NULL),
+       (48, 'JHTHD-20220705-00001', '0000000000400000', 300, 570000.00, 1900.00, ''),
+       (49, 'JHTHD-20220705-00001', '0000000000400001', 400, 1080000.00, 2700.00, NULL);
 
 DROP TABLE IF EXISTS `purchase_sheet`;
 CREATE TABLE `purchase_sheet`
@@ -412,9 +465,38 @@ INSERT INTO `purchase_sheet` (`id`, `supplier`, `operator`, `remark`, `total_amo
 VALUES ('JHD-20220523-00000', 1, 'xiaoshoujingli', 'a', 1000000.00, '审批完成', '2022-05-23 23:13:59'),
        ('JHD-20220523-00001', 1, 'xiaoshoujingli', 'b', 2200000.00, '审批完成', '2022-05-23 23:14:34'),
        ('JHD-20220523-00002', 1, 'xiaoshoujingli', 'c', 3450000.00, '审批完成', '2022-05-23 23:15:57'),
-       ('JHD-20220524-00000', 1, 'xiaoshoujingli', NULL, 2200000.00, '待一级审批', '2022-05-24 00:56:54'),
-       ('JHD-20220524-00001', 1, 'xiaoshoujingli', NULL, 3240000.00, '待二级审批', '2022-05-24 00:57:29'),
-       ('JHD-20220524-00002', 1, 'xiaoshoujingli', NULL, 1650000.00, '审批完成', '2022-05-24 01:02:04');
+       ('JHD-20220524-00000', 1, 'xiaoshoujingli', NULL, 2200000.00, '审批完成', '2022-05-24 00:56:54'),
+       ('JHD-20220524-00001', 1, 'xiaoshoujingli', NULL, 3240000.00, '审批完成', '2022-05-24 00:57:29'),
+       ('JHD-20220524-00002', 1, 'xiaoshoujingli', NULL, 1650000.00, '审批完成', '2022-05-24 01:02:04'),
+       ('JHD-20220704-00000', 11, 'sky', 'www', 100.00, '审批失败', '2022-07-04 22:06:50'),
+       ('JHD-20220704-00001', 11, 'sky', '测试红冲', -1000.00, '审批失败', '2022-07-04 22:07:41'),
+       ('JHD-20220704-00002', 11, 'sky', 'www', 100.00, '审批失败', '2022-07-04 22:09:27'),
+       ('JHD-20220704-00003', 11, 'sky', '红冲', -100.00, '审批失败', '2022-07-04 22:09:47'),
+       ('JHD-20220704-00004', 3, 'sky', 'www', 100.00, '审批失败', '2022-07-04 23:10:11'),
+       ('JHD-20220705-00000', 3, 'sky', 'asdfasdf', 605.00, '审批失败', '2022-07-05 01:24:42'),
+       ('JHD-20220705-00001', 11, 'sky', 'qqq', 100.00, '审批失败', '2022-07-05 15:42:29'),
+       ('JHD-20220705-00002', 3, 'sky', '11', 121.00, '审批失败', '2022-07-05 16:24:40'),
+       ('JHD-20220705-00003', 1, 'sky', '红冲！！！', -1000000.00, '审批失败', '2022-07-05 17:19:07'),
+       ('JHD-20220705-00004', 3, 'sky', 'asdfasdf', -605.00, '审批失败', '2022-07-05 17:27:27'),
+       ('JHD-20220705-00005', 3, 'sky', 'asdfasdf', -605.00, '审批失败', '2022-07-05 17:30:02'),
+       ('JHD-20220705-00006', 3, 'sky', 'asdfasdf', -605.00, '审批失败', '2022-07-05 17:30:07'),
+       ('JHD-20220705-00007', 3, 'sky', 'ww', 121.00, '审批失败', '2022-07-05 17:45:23'),
+       ('JHD-20220705-00008', 7, 'sky', 'fad', 111.00, '审批失败', '2022-07-05 17:49:04'),
+       ('JHD-20220705-00009', 7, 'sky', 'fff', 25.00, '审批失败', '2022-07-05 17:51:14'),
+       ('JHD-20220705-00010', 3, 'sky', 'www', 1.00, '审批失败', '2022-07-05 19:06:32'),
+       ('JHD-20220705-00011', 5, 'sky', 'w', 4.00, '审批失败', '2022-07-05 19:06:59'),
+       ('JHD-20220705-00012', 5, 'sky', 'w', 4.00, '审批失败', '2022-07-05 19:07:27'),
+       ('JHD-20220705-00013', 5, 'sky', 'ww', 1.00, '审批失败', '2022-07-05 19:07:42'),
+       ('JHD-20220705-00014', 5, 'sky', 'w', 1.00, '审批失败', '2022-07-05 19:08:17'),
+       ('JHD-20220705-00015', 7, 'sky', '???', 1.00, '审批失败', '2022-07-05 19:09:38'),
+       ('JHD-20220705-00016', 3, 'sky', NULL, 1.00, '审批失败', '2022-07-05 19:10:49'),
+       ('JHD-20220705-00017', 1, 'sky', 'a', -1000000.00, '审批失败', '2022-07-05 19:12:52'),
+       ('JHD-20220705-00018', 1, 'sky', 'a', -1000000.00, '审批失败', '2022-07-05 19:13:38'),
+       ('JHD-20220705-00019', 1, 'sky', 'a', -1000000.00, '审批失败', '2022-07-05 19:14:07'),
+       ('JHD-20220705-00020', 5, 'sky', '1', 1.00, '审批失败', '2022-07-05 21:28:39'),
+       ('JHD-20220705-00021', 3, 'sky', '1', 1.00, '审批失败', '2022-07-05 21:31:40'),
+       ('JHD-20220705-00022', 3, 'sky', '1', 1.00, '审批失败', '2022-07-05 22:20:13'),
+       ('JHD-20220706-00000', 3, 'sky', 'ff', 1.00, '审批完成', '2022-07-06 21:53:00');
 
 DROP TABLE IF EXISTS `purchase_sheet_content`;
 CREATE TABLE `purchase_sheet_content`
@@ -428,7 +510,7 @@ CREATE TABLE `purchase_sheet_content`
     `remark`            varchar(255)   DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 62
+  AUTO_INCREMENT = 95
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -444,28 +526,90 @@ VALUES (51, 'JHD-20220523-00000', '0000000000400000', 1000, 1000.00, 1000000.00,
        (58, 'JHD-20220524-00001', '0000000000400000', 600, 1900.00, 1140000.00, ''),
        (59, 'JHD-20220524-00001', '0000000000400001', 700, 3000.00, 2100000.00, NULL),
        (60, 'JHD-20220524-00002', '0000000000400000', 300, 1900.00, 570000.00, ''),
-       (61, 'JHD-20220524-00002', '0000000000400001', 400, 2700.00, 1080000.00, NULL);
+       (61, 'JHD-20220524-00002', '0000000000400001', 400, 2700.00, 1080000.00, NULL),
+       (62, 'JHD-20220704-00000', '0000000000500001', 10, 10.00, 100.00, 'www'),
+       (63, 'JHD-20220704-00001', '0000000000500003', -10, 100.00, -1000.00, '测试红冲'),
+       (64, 'JHD-20220704-00002', '0000000000400000', 10, 10.00, 100.00, 'www'),
+       (65, 'JHD-20220704-00003', '0000000000400000', -10, 10.00, -100.00, '红冲'),
+       (66, 'JHD-20220704-00004', '0000000000400000', 10, 10.00, 100.00, 'www'),
+       (67, 'JHD-20220705-00000', '0000000000400000', 11, 11.00, 121.00, 'www'),
+       (68, 'JHD-20220705-00000', '0000000000500000', 22, 22.00, 484.00, '111'),
+       (69, 'JHD-20220705-00001', '0000000000500000', 10, 10.00, 100.00, 'qqq'),
+       (70, 'JHD-20220705-00002', '0000000000500003', 11, 11.00, 121.00, '11'),
+       (71, 'JHD-20220705-00003', '0000000000400000', -1000, 1000.00, -1000000.00, 'a'),
+       (72, 'JHD-20220705-00004', '0000000000400000', -11, 11.00, -121.00, 'www'),
+       (73, 'JHD-20220705-00004', '0000000000500000', -22, 22.00, -484.00, '111'),
+       (74, 'JHD-20220705-00005', '0000000000400000', -11, 11.00, -121.00, 'www'),
+       (75, 'JHD-20220705-00005', '0000000000500000', -22, 22.00, -484.00, '111'),
+       (76, 'JHD-20220705-00006', '0000000000400000', -11, 11.00, -121.00, 'www'),
+       (77, 'JHD-20220705-00006', '0000000000500000', -22, 22.00, -484.00, '111'),
+       (78, 'JHD-20220705-00007', '0000000000400001', 11, 11.00, 121.00, 'ww'),
+       (79, 'JHD-20220705-00008', '0000000000500001', 111, 1.00, 111.00, 'fad'),
+       (80, 'JHD-20220705-00009', '0000000000500000', 5, 5.00, 25.00, 'fff'),
+       (81, 'JHD-20220705-00010', '0000000000400001', 1, 1.00, 1.00, 'www'),
+       (82, 'JHD-20220705-00011', '0000000000400001', 2, 2.00, 4.00, 'w'),
+       (83, 'JHD-20220705-00012', '0000000000400001', 2, 2.00, 4.00, 'w'),
+       (84, 'JHD-20220705-00013', '0000000000400002', 1, 1.00, 1.00, 'ww'),
+       (85, 'JHD-20220705-00014', '0000000000400001', 1, 1.00, 1.00, 'w'),
+       (86, 'JHD-20220705-00015', '0000000000400001', 1, 1.00, 1.00, '???'),
+       (87, 'JHD-20220705-00016', '0000000000400001', 1, 1.00, 1.00, ''),
+       (88, 'JHD-20220705-00017', '0000000000400000', -1000, 1000.00, -1000000.00, 'a'),
+       (89, 'JHD-20220705-00018', '0000000000400000', -1000, 1000.00, -1000000.00, 'a'),
+       (90, 'JHD-20220705-00019', '0000000000400000', -1000, 1000.00, -1000000.00, 'a'),
+       (91, 'JHD-20220705-00020', '0000000000400001', 1, 1.00, 1.00, '1'),
+       (92, 'JHD-20220705-00021', '0000000000400001', 1, 1.00, 1.00, '1'),
+       (93, 'JHD-20220705-00022', '0000000000500000', 1, 1.00, 1.00, '1'),
+       (94, 'JHD-20220706-00000', '0000000000400000', 1, 1.00, 1.00, 'ff');
 
 DROP TABLE IF EXISTS `salary_sheet`;
 CREATE TABLE `salary_sheet`
 (
-    `id`           int(11)        NOT NULL AUTO_INCREMENT COMMENT '工资单id',
-    `employee_id`  int(11)        NOT NULL COMMENT '员工id',
-    `create_time`  datetime       NOT NULL COMMENT '创建时间',
-    `base_wage`    decimal(10, 2) NOT NULL COMMENT '基本工资',
-    `post_wage`    decimal(10, 2) NOT NULL COMMENT '岗位工资',
-    `total_salary` decimal(10, 2) NOT NULL COMMENT '未税总工资',
-    `taxed_salary` decimal(10, 2) NOT NULL COMMENT '税后工资',
-    `state`        varchar(31)    NOT NULL COMMENT '状态',
+    `id`             varchar(31)    NOT NULL COMMENT '工资单id',
+    `employee_id`    int(11)        NOT NULL COMMENT '员工id',
+    `employee_name`  varchar(255)   DEFAULT NULL COMMENT '员工姓名',
+    `create_time`    datetime       NOT NULL COMMENT '创建时间',
+    `job`            varchar(255)   DEFAULT NULL COMMENT '岗位',
+    `base_wage`      decimal(10, 2) NOT NULL COMMENT '基本工资',
+    `post_wage`      decimal(10, 2) NOT NULL COMMENT '岗位工资',
+    `housing_fund`   decimal(10, 2) DEFAULT NULL COMMENT '住房公积金',
+    `insurance`      decimal(10, 2) DEFAULT NULL COMMENT '失业保险',
+    `total_salary`   decimal(10, 2) NOT NULL COMMENT '未税总工资',
+    `tax`            decimal(10, 2) DEFAULT NULL COMMENT '税款',
+    `taxed_salary`   decimal(10, 2) NOT NULL COMMENT '税后工资',
+    `salary_account` varchar(31)    DEFAULT NULL COMMENT '工资卡账户',
+    `state`          varchar(31)    NOT NULL COMMENT '状态',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC COMMENT ='工资单';
 
-INSERT INTO `salary_sheet` (`id`, `employee_id`, `create_time`, `base_wage`, `post_wage`, `total_salary`,
-                            `taxed_salary`, `state`)
-VALUES (1, 1, '2022-07-01 00:00:00', 10000.00, 10000.00, 20000.00, 19000.00, '审批完成');
+INSERT INTO `salary_sheet` (`id`, `employee_id`, `employee_name`, `create_time`, `job`, `base_wage`, `post_wage`,
+                            `housing_fund`, `insurance`, `total_salary`, `tax`, `taxed_salary`, `salary_account`,
+                            `state`)
+VALUES ('GZD-20221231-00000', 1, 'seecoder', '2022-07-07 00:13:14', 'INVENTORY_MANAGER', 3600.00, 1200.00, 2000.00,
+        100.00, 2700.00, 0.00, 2700.00, NULL, '待一级审批'),
+       ('GZD-20221231-00001', 2, 'uncln', '2022-07-07 00:13:14', 'INVENTORY_MANAGER', 3750.00, 1200.00, 2000.00, 100.00,
+        2850.00, 0.00, 2850.00, NULL, '待一级审批'),
+       ('GZD-20221231-00002', 3, 'kucun', '2022-07-07 00:13:15', 'INVENTORY_MANAGER', 3750.00, 1200.00, 2000.00, 100.00,
+        2850.00, 0.00, 2850.00, NULL, '待一级审批'),
+       ('GZD-20221231-00003', 5, 'zxr', '2022-07-07 00:13:15', 'SALE_MANAGER', 4583.33, 0.00, 1500.00, 100.00, 2983.33,
+        0.00, 2983.33, NULL, '待一级审批'),
+       ('GZD-20221231-00004', 6, '67', '2022-07-07 00:13:16', 'GM', 8000.00, 120014.00, 2000.00, 100.00, 125914.00,
+        39251.30, 86662.70, NULL, '待一级审批'),
+       ('GZD-20221231-00005', 7, 'xiaoshou', '2022-07-07 00:13:17', 'SALE_STAFF', 4500.00, 0.00, 1000.00, 200.00,
+        3300.00, 0.00, 3300.00, NULL, '待一级审批'),
+       ('GZD-20221231-00006', 8, 'Leone', '2022-07-07 00:13:17', 'GM', 8000.00, 131014.00, 2000.00, 100.00, 136914.00,
+        44201.30, 92712.70, NULL, '待一级审批'),
+       ('GZD-20221231-00007', 9, 'xiaoshoujingli', '2022-07-07 00:13:18', 'SALE_MANAGER', 4216.67, 0.00, 1500.00,
+        100.00, 2616.67, 0.00, 2616.67, NULL, '待一级审批'),
+       ('GZD-20221231-00008', 10, 'warehouse', '2022-07-07 00:13:19', 'INVENTORY_MANAGER', 3300.00, 2400.00, 2000.00,
+        100.00, 3600.00, 0.00, 3600.00, NULL, '待一级审批'),
+       ('GZD-20221231-00009', 11, 'hcx', '2022-07-07 00:13:19', 'FINANCIAL_STAFF', 3400.00, 1150.00, 1000.00, 100.00,
+        3450.00, 0.00, 3450.00, NULL, '待一级审批'),
+       ('GZD-20221231-00010', 19, 'ppw4', '2022-07-07 00:13:20', 'SALE_STAFF', 4500.00, 0.00, 1000.00, 200.00, 3300.00,
+        0.00, 3300.00, '234', '待一级审批'),
+       ('GZD-20221231-00011', 20, 'hr', '2022-07-07 00:13:20', 'HR', 3000.00, 5500.00, 2000.00, 100.00, 6400.00, 42.00,
+        6358.00, '123', '待一级审批');
 
 DROP TABLE IF EXISTS `sale_returns_sheet`;
 CREATE TABLE `sale_returns_sheet`
@@ -616,8 +760,8 @@ VALUES ('XSD-20220523-00000', 2, 'xiaoshoujingli', '卖卖卖', '审批失败', 
         0.80, 1039800.00, 200.00),
        ('XSD-20220524-00000', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:04:37', 'xiaoshoujingli', 4200000.00,
         0.80, 3359800.00, 200.00),
-       ('XSD-20220524-00001', 2, 'xiaoshoujingli', NULL, '审批完成', '2022-05-24 00:32:41', 'xiaoshoujingli', 620000.00,
-        0.80, 495800.00, 200.00),
+       ('XSD-20220524-00001', 2, 'ppw4', NULL, '审批完成', '2022-05-24 00:32:41', 'ppw4', 620000.00, 0.80, 495800.00,
+        200.00),
        ('XSD-20220524-00002', 2, 'ppw4', NULL, '审批完成', '2022-05-24 00:45:25', 'ppw4', 720000.00, 0.80, 575800.00,
         200.00),
        ('XSD-20220524-00003', 2, 'xiaoshoujingli', NULL, '待二级审批', '2022-05-24 01:05:15', 'xiaoshoujingli', 660000.00,
@@ -625,7 +769,10 @@ VALUES ('XSD-20220523-00000', 2, 'xiaoshoujingli', '卖卖卖', '审批失败', 
        ('XSD-20220524-00004', 2, 'xiaoshoujingli', NULL, '审批失败', '2022-05-24 01:07:23', 'xiaoshoujingli', 2900000.00,
         0.90, 2609800.00, 200.00),
        ('XSD-20220612-00000', 6, 'xiaoshou', 'df', '待一级审批', '2022-06-12 17:13:39', 'xiaoshou', 100.00, 0.90, -110.00,
-        200.00);
+        200.00),
+       ('XSD-20220705-00000', 2, 'sky', '11', '审批失败', '2022-07-05 21:49:31', 'sky', 1.00, 1.00, 1.00, 0.00),
+       ('XSD-20220705-00001', 2, 'sky', '11', '审批失败', '2022-07-05 21:50:19', 'sky', 1.00, 1.00, 1.00, 0.00),
+       ('XSD-20220705-00002', 2, 'sky', '11', '审批失败', '2022-07-05 21:52:22', 'sky', 0.00, 1.00, 0.00, 0.00);
 
 DROP TABLE IF EXISTS `sale_sheet_content`;
 CREATE TABLE `sale_sheet_content`
@@ -639,7 +786,7 @@ CREATE TABLE `sale_sheet_content`
     `remark`        varchar(255)   DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 47
+  AUTO_INCREMENT = 56
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -656,25 +803,30 @@ VALUES (26, 'XSD-20220523-00000', '0000000000400000', 100, 5000.00, 500000.00, '
        (35, 'XSD-20220524-00003', '0000000000400001', 100, 3800.00, 380000.00, NULL),
        (36, 'XSD-20220524-00004', '0000000000400000', 300, 3000.00, 900000.00, ''),
        (37, 'XSD-20220524-00004', '0000000000400001', 500, 4000.00, 2000000.00, NULL),
-       (38, 'XSD-20220612-00000', '0000000000400000', 1, 100.00, 100.00, 'dfas');
+       (38, 'XSD-20220612-00000', '0000000000400000', 1, 100.00, 100.00, 'dfas'),
+       (47, 'XSD-20220705-00000', '0000000000400000', 1, 1.00, 1.00, '11'),
+       (48, 'XSD-20220705-00001', '0000000000400000', 1, 1.00, 1.00, '11'),
+       (49, 'XSD-20220705-00002', '0000000000400000', 0, 0.00, 0.00, '11');
 
 DROP TABLE IF EXISTS `tax`;
 CREATE TABLE `tax`
 (
-    `base` decimal(10, 2) NOT NULL COMMENT '税前所得',
-    `rate` decimal(10, 2) NOT NULL COMMENT '税率',
+    `base`            decimal(10, 2) NOT NULL COMMENT '税前所得(减去起征点后)',
+    `rate`            decimal(10, 2) NOT NULL COMMENT '税率',
+    `quick_deduction` decimal(10, 2) DEFAULT '0.00' COMMENT '速算扣除数',
     PRIMARY KEY (`base`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = latin1;
 
-INSERT INTO `tax` (`base`, `rate`)
-VALUES (0.00, 3.00),
-       (3000.00, 10.00),
-       (12000.00, 20.00),
-       (25000.00, 25.00),
-       (35000.00, 30.00),
-       (55000.00, 35.00),
-       (80000.00, 45.00);
+INSERT INTO `tax` (`base`, `rate`, `quick_deduction`)
+VALUES (-5000.00, 0.00, 0.00),
+       (0.00, 0.03, 0.00),
+       (3000.00, 0.10, 210.00),
+       (12000.00, 0.20, 1410.00),
+       (25000.00, 0.25, 2660.00),
+       (35000.00, 0.30, 4410.00),
+       (55000.00, 0.35, 7160.00),
+       (80000.00, 0.45, 15160.00);
 
 DROP TABLE IF EXISTS `transfer_list_sheet`;
 CREATE TABLE `transfer_list_sheet`
@@ -687,7 +839,7 @@ CREATE TABLE `transfer_list_sheet`
     PRIMARY KEY (`id`),
     UNIQUE KEY `transfer_list_sheet_id_uindex` (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 21
+  AUTO_INCREMENT = 28
   DEFAULT CHARSET = utf8 COMMENT ='转账列表(适用于收款单和付款单)';
 
 INSERT INTO `transfer_list_sheet` (`id`, `company_account_id`, `transfer_amount`, `collection_sheet_id`, `remark`)
@@ -699,7 +851,14 @@ VALUES (1, 1, 100000, 'SKD-20220612-00000', '你好'),
        (9, 1, 40, 'SKD-20220612-00005', '我是万皮皮'),
        (10, 1, 50, 'SKD-20220612-00005', '我是wpp'),
        (11, 3, 100, 'SKD-20220627-00000', 'sfkjb'),
-       (12, 1, 10, 'SKD-20220627-00001', 'de');
+       (12, 1, 10, 'SKD-20220627-00001', 'de'),
+       (21, 1, 1, 'SKD-20220706-00000', ''),
+       (22, 1, 100000, 'SKD-20220706-00001', '你好'),
+       (23, 1, -100000, 'SKD-20220706-00002', '你好'),
+       (24, 1, -100000, 'SKD-20220706-00003', '你好'),
+       (25, 1, 0, 'SKD-20220706-00004', 'GG'),
+       (26, 1, 0, 'SKD-20220706-00005', 'gg'),
+       (27, 1, -100000, 'SKD-20220706-00006', '你好');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
@@ -718,25 +877,25 @@ CREATE TABLE `user`
   ROW_FORMAT = DYNAMIC;
 
 INSERT INTO `user` (`id`, `name`, `password`, `role`, `attendance`, `last_sign_in_time`, `employee_id`)
-VALUES (1, 'seecoder', '123456', 'INVENTORY_MANAGER', 0, NULL, 1),
-       (2, 'uncln', '123456', 'INVENTORY_MANAGER', 0, NULL, 2),
-       (3, 'kucun', '123456', 'INVENTORY_MANAGER', 0, NULL, 3),
-       (4, 'sky', '123456', 'ADMIN', 1, '2022-07-01', NULL),
-       (5, 'zxr', '123456', 'SALE_MANAGER', 0, NULL, 5),
-       (6, '67', '123456', 'GM', 1, '2022-07-02', 6),
-       (7, 'xiaoshou', '123456', 'SALE_STAFF', 0, NULL, 7),
-       (8, 'Leone', '123456', 'GM', 0, NULL, 8),
-       (9, 'xiaoshoujingli', '123456', 'SALE_MANAGER', 0, NULL, 9),
-       (12, 'warehouse', 'warehouse', 'INVENTORY_MANAGER', 2, '2022-06-30', 10),
-       (13, 'hcx', '123456', 'FINANCIAL_STAFF', 0, NULL, 11),
-       (14, 'bobby', '123456', 'ADMIN', 3, '2022-07-03', NULL),
-       (16, 'wpp', 'wpp', 'HR', 0, NULL, NULL),
-       (17, 'ppw', '123456', 'GM', 0, NULL, NULL),
-       (18, 'aaa', 'aaa', 'INVENTORY_MANAGER', 1, '2022-06-30', NULL),
-       (21, 'ppw4', '123456', 'SALE_STAFF', 1, '2022-06-30', 19),
-       (22, 'Joiffer', '123456', 'GM', 0, NULL, NULL),
-       (23, 'hr', '123456', 'HR', 0, NULL, 20),
-       (24, '123', '123', 'SALE_MANAGER', 0, NULL, NULL);
+VALUES (1, 'seecoder', '123456', 'INVENTORY_MANAGER', 24, '2022-07-06', 1),
+       (2, 'uncln', '123456', 'INVENTORY_MANAGER', 25, '2022-07-06', 2),
+       (3, 'kucun', '123456', 'INVENTORY_MANAGER', 25, '2022-07-06', 3),
+       (4, 'sky', '123456', 'ADMIN', 25, '2022-07-06', NULL),
+       (5, 'zxr', '123456', 'SALE_MANAGER', 25, '2022-07-06', 5),
+       (6, '67', '123456', 'GM', 26, '2022-07-06', 6),
+       (7, 'xiaoshou', '123456', 'SALE_STAFF', 27, '2022-07-06', 7),
+       (8, 'Leone', '123456', 'GM', 24, '2022-07-06', 8),
+       (9, 'xiaoshoujingli', '123456', 'SALE_MANAGER', 23, '2022-07-06', 9),
+       (12, 'warehouse', 'warehouse', 'INVENTORY_MANAGER', 22, '2022-07-06', 10),
+       (13, 'hcx', '123456', 'FINANCIAL_STAFF', 17, '2022-07-06', 11),
+       (14, 'bobby', '123456', 'ADMIN', 15, '2022-07-06', NULL),
+       (16, 'wpp', 'wpp', 'HR', 17, '2022-07-06', NULL),
+       (17, 'ppw', '123456', 'GM', 14, '2022-07-06', NULL),
+       (18, 'aaa', 'aaa', 'INVENTORY_MANAGER', 25, '2022-07-06', NULL),
+       (21, 'ppw4', '123456', 'SALE_STAFF', 27, '2022-07-06', 19),
+       (22, 'Joiffer', '123456', 'GM', 14, '2022-07-06', NULL),
+       (23, 'hr', '123456', 'HR', 15, '2022-07-06', 20),
+       (24, '123', '123', 'SALE_MANAGER', 20, '2022-07-06', NULL);
 
 DELIMITER ;;
 
@@ -796,7 +955,10 @@ VALUES ('RKD-20220523-00000', 0, 'kucun', '2022-05-23 23:17:41', '审批完成',
        ('RKD-20220523-00001', 1, 'kucun', '2022-05-23 23:17:42', '审批完成', 'JHD-20220523-00001'),
        ('RKD-20220523-00002', 2, 'kucun', '2022-05-23 23:17:44', '审批完成', 'JHD-20220523-00002'),
        ('RKD-20220524-00000', 3, 'kucun', '2022-05-24 01:02:31', '审批完成', 'JHD-20220524-00002'),
-       ('RKD-20220703-00000', 4, NULL, '2022-07-03 22:06:00', '草稿', 'JHD-20220524-00001');
+       ('RKD-20220703-00000', 4, NULL, '2022-07-03 22:06:00', '草稿', 'JHD-20220524-00001'),
+       ('RKD-20220706-00000', 5, NULL, '2022-07-06 21:50:41', '草稿', 'JHD-20220524-00001'),
+       ('RKD-20220706-00006', 6, NULL, '2022-07-06 21:53:19', '草稿', 'JHD-20220524-00000'),
+       ('RKD-20220706-00007', 7, NULL, '2022-07-06 21:53:44', '草稿', 'JHD-20220706-00000');
 
 DROP TABLE IF EXISTS `warehouse_input_sheet_content`;
 CREATE TABLE `warehouse_input_sheet_content`
@@ -810,7 +972,7 @@ CREATE TABLE `warehouse_input_sheet_content`
     `remark`                   varchar(255) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 56
+  AUTO_INCREMENT = 61
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -824,7 +986,12 @@ VALUES (47, 'RKD-20220523-00000', '0000000000400000', 1000, 1000.00, NULL, 'a'),
        (52, 'RKD-20220524-00000', '0000000000400000', 300, 1900.00, NULL, ''),
        (53, 'RKD-20220524-00000', '0000000000400001', 400, 2700.00, NULL, NULL),
        (54, 'RKD-20220703-00000', '0000000000400000', 600, 1900.00, NULL, ''),
-       (55, 'RKD-20220703-00000', '0000000000400001', 700, 3000.00, NULL, NULL);
+       (55, 'RKD-20220703-00000', '0000000000400001', 700, 3000.00, NULL, NULL),
+       (56, 'RKD-20220706-00000', '0000000000400000', 600, 1900.00, NULL, ''),
+       (57, 'RKD-20220706-00000', '0000000000400001', 700, 3000.00, NULL, NULL),
+       (58, 'RKD-20220706-00006', '0000000000400000', 500, 1500.00, NULL, ''),
+       (59, 'RKD-20220706-00006', '0000000000400001', 500, 2900.00, NULL, NULL),
+       (60, 'RKD-20220706-00007', '0000000000400000', 1, 1.00, NULL, 'ff');
 
 DROP TABLE IF EXISTS `warehouse_output_sheet`;
 CREATE TABLE `warehouse_output_sheet`
@@ -857,7 +1024,7 @@ CREATE TABLE `warehouse_output_sheet_content`
     `remark`                    varchar(255) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 55
+  AUTO_INCREMENT = 61
   DEFAULT CHARSET = utf8mb4
   ROW_FORMAT = DYNAMIC;
 
@@ -873,4 +1040,4 @@ VALUES (28, '0000000000400000', 'CKD-20220524-00000', 2, 600, 3500.00, ''),
        (45, '0000000000400000', 'CKD-20220603-00000', 3, 100, 2800.00, ''),
        (46, '0000000000400001', 'CKD-20220603-00000', 2, 100, 3800.00, NULL);
 
--- 2022-07-03 16:10:12
+-- 2022-07-06 16:22:09
