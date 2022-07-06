@@ -19,5 +19,5 @@ public interface EmployeeDao extends Dao {
 
     void deleteEmployeeById(int id);
 
-//    void generateSalarySheet();
+    int getGradeById(int id);
 }

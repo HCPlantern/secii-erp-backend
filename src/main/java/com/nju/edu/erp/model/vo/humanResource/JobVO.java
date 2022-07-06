@@ -47,4 +47,24 @@ public class JobVO {
      * 年终奖
      */
     private BigDecimal annualBonus;
+
+    /**
+     * 提成率
+     */
+    private BigDecimal deductRate;
+
+    /**
+     * 岗位级别加薪率
+     */
+    private BigDecimal gradeRate;
+
+    /**
+     * 失业保险金
+     */
+    private BigDecimal insurance;
+
+    /**
+     * 住房公积金
+     */
+    private BigDecimal housingFund;
 }

@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nju.edu.erp.dao.SalarySheetDao">
     <insert id="createSalarySheet" parameterType="com.nju.edu.erp.model.po.SalarySheetPO">
-        insert into salary_sheet(employee_id, create_time, base_wage, post_wage, total_salary, taxed_salary, state)
-        values (#{employeeId}, #{createTime}, #{baseWage}, #{postWage}, #{totalSalary}, #{taxedSalary}, #{state})
+        insert into salary_sheet(employee_id, employee_name, create_time, job, base_wage, post_wage, total_salary, tax,
+                                 insurance, housing_fund, taxed_salary, state)
+        values (#{employeeId}, #{employeeName}, #{createTime}, #{job}, #{baseWage}, #{postWage}, #{totalSalary}, #{tax},
+                #{insurance}, #{housingFund}, #{taxedSalary}, #{state})
     </insert>
 
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">

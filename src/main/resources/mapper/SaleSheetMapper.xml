@@ -114,7 +114,7 @@
         where ss.create_time between #{beginTime} and #{endTime}
     </select>
 
-    <select id="calTotalAmountOfSalesman" resultType="java.math.BigDecimal" parameterType="int">
+    <select id="calTotalAmountOfSalesman" resultType="java.math.BigDecimal">
         select sum(raw_total_amount)
         from sale_sheet
         where create_time between #{beginTime} and #{endTime}

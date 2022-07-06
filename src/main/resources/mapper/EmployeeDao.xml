@@ -11,6 +11,12 @@
         from employee
     </select>
 
+    <select id="getGradeById" resultType="java.lang.Integer">
+        select grade
+        from employee
+        where id = #{id}
+    </select>
+
     <update id="updateEmployeeInfo" parameterType="EmployeePO">
         update employee
         set name          = #{name},

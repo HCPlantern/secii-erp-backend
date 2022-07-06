@@ -24,6 +24,11 @@
         from user
         where `role` = #{role}
     </select>
+    <select id="getAttendanceByEmployeeId" resultType="java.lang.Integer">
+        select attendance
+        from user
+        where employee_id = #{employeeId}
+    </select>
 
     <update id="signInByUserName" parameterType="java.lang.String">
         update user

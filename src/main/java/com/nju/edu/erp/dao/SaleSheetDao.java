@@ -123,5 +123,5 @@ public interface SaleSheetDao extends Dao {
      * @param employeeId 员工id
      * @return 折扣前销售额
      */
-    BigDecimal calTotalAmountOfSalesman(int employeeId, @Param("beginTime") String beginTime, @Param("endTime") String endTime);
+    BigDecimal calTotalAmountOfSalesman(int employeeId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
 }

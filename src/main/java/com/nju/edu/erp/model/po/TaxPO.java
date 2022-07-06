@@ -21,4 +21,9 @@ public class TaxPO {
      * 税率
      */
     private BigDecimal rate;
+
+    /**
+     * 速算扣除数
+     */
+    private BigDecimal quickDeduction;
 }

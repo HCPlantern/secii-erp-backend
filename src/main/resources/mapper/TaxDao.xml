@@ -11,5 +11,6 @@
     <resultMap id="TaxPO" type="com.nju.edu.erp.model.po.TaxPO">
         <id column="base" property="base"></id>
         <result column="rate" property="rate"></result>
+        <result column="quick_deduction" property="quickDeduction"></result>
     </resultMap>
 </mapper>

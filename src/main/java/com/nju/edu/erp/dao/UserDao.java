@@ -20,4 +20,6 @@ public interface UserDao extends Dao {
     List<String> findUserNameByRole(String role);
 
     void signInByUserName(String name);
+
+    int getAttendanceByEmployeeId(int employeeId);
 }

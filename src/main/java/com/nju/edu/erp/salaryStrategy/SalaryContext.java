@@ -2,7 +2,6 @@ package com.nju.edu.erp.salaryStrategy;
 
 import com.nju.edu.erp.enums.SalaryCalculationMethod;
 import com.nju.edu.erp.enums.SalaryPaymentMethod;
-import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.salaryStrategy.Impl.AnnuallyStrategy;
 import com.nju.edu.erp.salaryStrategy.Impl.DeductStrategy;
@@ -31,7 +30,6 @@ public class SalaryContext {
         }
     }
 
-
     /**
      * 计算扣前工资
      *
@@ -40,11 +38,11 @@ public class SalaryContext {
      * @param beginDate
      * @param endDate
      */
-    public void getSalary(SalarySheetPO salarySheetPO, JobPO jobPO
+    public void getSalary(SalarySheetPO salarySheetPO
             , Date beginDate, Date endDate) {
         //先计算薪资
-        salaryCalculationStrategy.calculate(salarySheetPO, jobPO, beginDate, endDate);
+        salaryCalculationStrategy.calculate(salarySheetPO, beginDate, endDate);
         //再根据发放方式考虑年终奖等
-
+        salaryPaymentStrategy.calculate(salarySheetPO, beginDate, endDate);
     }
 }

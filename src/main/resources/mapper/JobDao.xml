@@ -19,7 +19,11 @@
             post_wage=#{postWage},
             salary_calculation_method=#{salaryCalculationMethod},
             salary_payment_method=#{salaryPaymentMethod},
-            annual_bonus=#{annualBonus}
+            annual_bonus=#{annualBonus},
+            deduct_rate=#{deductRate},
+            grade_rate=#{gradeRate},
+            insurance = #{insurance},
+            housing_fund=#{housingFund}
         where id = #{id}
     </update>
 
@@ -31,5 +35,9 @@
         <result column="salary_calculation_method" property="salaryCalculationMethod"></result>
         <result column="salary_payment_method" property="salaryPaymentMethod"></result>
         <result column="annual_bonus" property="annualBonus"></result>
+        <result column="deduct_rate" property="deductRate"></result>
+        <result column="grade_rate" property="gradeRate"></result>
+        <result column="insurance" property="insurance"></result>
+        <result column="housing_fund" property="housingFund"></result>
     </resultMap>
 </mapper>
