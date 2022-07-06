@@ -5,6 +5,7 @@ import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.SaleReturnsSheetContentPO;
 import com.nju.edu.erp.model.po.SaleReturnsSheetPO;
 import com.nju.edu.erp.model.po.SheetPO;
+import com.nju.edu.erp.model.queryObject.SaleReturnSheetQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -41,7 +42,15 @@ public interface SaleReturnsSheetDao extends Dao {
      *
      * @return 销售退货单列表
      */
-    List<SaleReturnsSheetPO> findAll();
+    List<SaleReturnsSheetPO> findAll(SaleReturnSheetQuery query);
+
+    /**
+     * 根据 purchaseReturnsSheetId 找到条目， 并更新其状态为state
+     *
+     * @param SaleReturnsSheetId 销售退货单id
+     * @param state              销售退货单状态
+     * @return 影响的条目数
+     */
 
     /**
      * 根据state返回销售退货单

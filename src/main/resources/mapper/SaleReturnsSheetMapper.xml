@@ -39,6 +39,32 @@
     <select id="findAll" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">
         SELECT *
         FROM sale_returns_sheet
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="saleSheetId != null">
+                AND sale_sheet_id = #{saleSheetId}
+            </if>
+            <if test="supplier != null">
+                AND supplier = #{supplier}
+            </if>
+            <if test="operator != null">
+                AND operator = #{operator}
+            </if>
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+            <if test="beginTime != null">
+                AND create_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;= #{endTime}
+            </if>
+            <if test="salesman != null">
+                AND salesman = #{salesman}
+            </if>
+        </where>
     </select>
 
     <select id="findAllByState" resultType="com.nju.edu.erp.model.po.SaleReturnsSheetPO">

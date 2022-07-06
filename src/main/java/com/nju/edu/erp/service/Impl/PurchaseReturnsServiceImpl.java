@@ -4,6 +4,8 @@ import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.PurchaseReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.queryObject.PurchaseReturnSheetQuery;
+import com.nju.edu.erp.model.queryObject.PurchaseSheetQuery;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchaseReturns.PurchaseReturnsSheetContentVO;
@@ -84,7 +86,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
         for (PurchaseReturnsSheetContentVO prscVO : purchaseReturnsSheetVO.getPurchaseReturnsSheetContent()) {
 
             // 防御式编程 单价和数量不能够<0
-            assert (prscVO.getQuantity()>=0 && prscVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能够小于零";
+            assert (prscVO.getQuantity() >= 0 && prscVO.getUnitPrice().compareTo(BigDecimal.ZERO) >= 0) : "单价和数量不能够小于零";
 
             // 新建 进货退货单内容PO
             PurchaseReturnsSheetContentPO prscPO = new PurchaseReturnsSheetContentPO();
@@ -115,12 +117,7 @@ public class PurchaseReturnsServiceImpl implements PurchaseReturnsService {
     @Override
     public List<PurchaseReturnsSheetVO> getPurchaseReturnsSheetByState(PurchaseReturnsSheetState state) {
         List<PurchaseReturnsSheetVO> res = new ArrayList<>();
-        List<PurchaseReturnsSheetPO> all;
-        if (state == null) {
-            all = purchaseReturnsSheetDao.findAll();
-        } else {
-            all = purchaseReturnsSheetDao.findAllByState(state);
-        }
+        List<PurchaseReturnsSheetPO> all = purchaseReturnsSheetDao.findAll(PurchaseReturnSheetQuery.builder().state(state).build());
         for (PurchaseReturnsSheetPO po : all) {
             PurchaseReturnsSheetVO vo = new PurchaseReturnsSheetVO();
             setVODetail(po, vo);

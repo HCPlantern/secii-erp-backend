@@ -4,6 +4,7 @@ package com.nju.edu.erp.dao;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.queryObject.SaleSheetQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -40,8 +41,11 @@ public interface SaleSheetDao extends Dao {
 
     /**
      * 查找所有销售单
+     *
+     * @return 满足查询条件的销售单列表
+     * @Param query 查询条件
      */
-    List<SaleSheetPO> findAllSheet();
+    List<SaleSheetPO> findAllSheet(SaleSheetQuery query);
 
     /**
      * 根据时间段查找销售单
@@ -52,9 +56,7 @@ public interface SaleSheetDao extends Dao {
      */
     List<SaleSheetPO> findAllSheetByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
-
     List<SaleSheetPO> findAllByState(@Param("state") SaleSheetState state);
-
 
     /**
      * 查找指定id的销售单
@@ -120,6 +122,7 @@ public interface SaleSheetDao extends Dao {
 
     /**
      * 获取某个销售员一段时间内审批完成的销售总额，用于计算提成
+     *
      * @param employeeId 员工id
      * @return 折扣前销售额
      */

@@ -9,6 +9,7 @@ import com.nju.edu.erp.model.po.CustomerPO;
 import com.nju.edu.erp.model.po.ProductPO;
 import com.nju.edu.erp.model.po.PurchaseSheetContentPO;
 import com.nju.edu.erp.model.po.PurchaseSheetPO;
+import com.nju.edu.erp.model.queryObject.PurchaseSheetQuery;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.purchase.PurchaseSheetContentVO;
@@ -43,7 +44,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     WarehouseService warehouseService;
 
     @Autowired
-    public PurchaseServiceImpl(PurchaseSheetDao purchaseSheetDao, ProductService productService, CustomerDao customerDao, WarehouseService warehouseService,ProductDao productDao) {
+    public PurchaseServiceImpl(PurchaseSheetDao purchaseSheetDao, ProductService productService, CustomerDao customerDao, WarehouseService warehouseService, ProductDao productDao) {
         this.purchaseSheetDao = purchaseSheetDao;
         this.productService = productService;
         this.customerDao = customerDao;
@@ -69,16 +70,16 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseSheetPO.setState(PurchaseSheetState.PENDING_LEVEL_1);
         BigDecimal totalAmount = BigDecimal.ZERO;
         List<PurchaseSheetContentPO> pContentPOList = new ArrayList<>();
-        for(PurchaseSheetContentVO content : purchaseSheetVO.getPurchaseSheetContent()) {
+        for (PurchaseSheetContentVO content : purchaseSheetVO.getPurchaseSheetContent()) {
             // 防御式编程 单价和数量不小于0
-            assert (content.getQuantity()>=0 && content.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"单价和数量不能小于0";
+            assert (content.getQuantity() >= 0 && content.getUnitPrice().compareTo(BigDecimal.ZERO) >= 0) : "单价和数量不能小于0";
 
             PurchaseSheetContentPO pContentPO = new PurchaseSheetContentPO();
-            BeanUtils.copyProperties(content,pContentPO);
+            BeanUtils.copyProperties(content, pContentPO);
 
             pContentPO.setPurchaseSheetId(id);
             BigDecimal unitPrice = pContentPO.getUnitPrice();
-            if(unitPrice == null) {
+            if (unitPrice == null) {
                 ProductPO product = productDao.findById(content.getPid());
                 unitPrice = product.getPurchasePrice();
                 pContentPO.setUnitPrice(unitPrice);
@@ -102,12 +103,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<PurchaseSheetVO> getPurchaseSheetByState(PurchaseSheetState state) {
         List<PurchaseSheetVO> res = new ArrayList<>();
         List<PurchaseSheetPO> all;
-        if(state == null) {
-            all = purchaseSheetDao.findAll();
-        } else {
-            all = purchaseSheetDao.findAllByState(state);
-        }
-        for(PurchaseSheetPO po: all) {
+        all = purchaseSheetDao.findAll(PurchaseSheetQuery.builder().state(state).build());
+        for (PurchaseSheetPO po : all) {
             PurchaseSheetVO vo = new PurchaseSheetVO();
             BeanUtils.copyProperties(po, vo);
             List<PurchaseSheetContentPO> alll = purchaseSheetDao.findContentByPurchaseSheetId(po.getId());
@@ -133,30 +130,30 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional
     public void approval(String purchaseSheetId, BaseEnum state) {
-        if(state.equals(PurchaseSheetState.FAILURE)) {
+        if (state.equals(PurchaseSheetState.FAILURE)) {
             PurchaseSheetPO purchaseSheet = purchaseSheetDao.findOneById(purchaseSheetId);
-            if(purchaseSheet.getState() == PurchaseSheetState.SUCCESS) throw new RuntimeException("状态更新失败");
+            if (purchaseSheet.getState() == PurchaseSheetState.SUCCESS) throw new RuntimeException("状态更新失败");
             int effectLines = purchaseSheetDao.updateState(purchaseSheetId, state);
-            if(effectLines == 0) throw new RuntimeException("状态更新失败");
+            if (effectLines == 0) throw new RuntimeException("状态更新失败");
         } else {
             PurchaseSheetState prevState;
-            if(state.equals(PurchaseSheetState.SUCCESS)) {
+            if (state.equals(PurchaseSheetState.SUCCESS)) {
                 prevState = PurchaseSheetState.PENDING_LEVEL_2;
-            } else if(state.equals(PurchaseSheetState.PENDING_LEVEL_2)) {
+            } else if (state.equals(PurchaseSheetState.PENDING_LEVEL_2)) {
                 prevState = PurchaseSheetState.PENDING_LEVEL_1;
             } else {
                 throw new RuntimeException("状态更新失败");
             }
             int effectLines = purchaseSheetDao.updateStateV2(purchaseSheetId, prevState, state);
-            if(effectLines == 0) throw new RuntimeException("状态更新失败");
-            if(state.equals(PurchaseSheetState.SUCCESS)) {
+            if (effectLines == 0) throw new RuntimeException("状态更新失败");
+            if (state.equals(PurchaseSheetState.SUCCESS)) {
                 // 更新商品表的最新进价
-                    // 根据purchaseSheetId查到对应的content -> 得到商品id和单价
-                    // 根据商品id和单价更新商品最近进价recentPp
-                List<PurchaseSheetContentPO> purchaseSheetContent =  purchaseSheetDao.findContentByPurchaseSheetId(purchaseSheetId);
+                // 根据purchaseSheetId查到对应的content -> 得到商品id和单价
+                // 根据商品id和单价更新商品最近进价recentPp
+                List<PurchaseSheetContentPO> purchaseSheetContent = purchaseSheetDao.findContentByPurchaseSheetId(purchaseSheetId);
                 List<WarehouseInputFormContentVO> warehouseInputFormContentVOS = new ArrayList<>();
 
-                for(PurchaseSheetContentPO content : purchaseSheetContent) {
+                for (PurchaseSheetContentPO content : purchaseSheetContent) {
                     ProductInfoVO productInfoVO = new ProductInfoVO();
                     productInfoVO.setId(content.getPid());
                     productInfoVO.setRecentPp(content.getUnitPrice());
@@ -170,16 +167,16 @@ public class PurchaseServiceImpl implements PurchaseService {
                     warehouseInputFormContentVOS.add(wiContentVO);
                 }
                 // 更新客户表(更新应付字段)
-                    // 更新应付 payable
+                // 更新应付 payable
                 PurchaseSheetPO purchaseSheet = purchaseSheetDao.findOneById(purchaseSheetId);
                 CustomerPO customerPO = customerDao.findOneById(purchaseSheet.getSupplier());
                 customerPO.setPayable(customerPO.getPayable().add(purchaseSheet.getTotalAmount()));
                 customerDao.updateOne(customerPO);
 
                 // 制定入库单草稿(在这里关联进货单)
-                    // 调用创建入库单的方法
+                // 调用创建入库单的方法
                 WarehouseInputFormVO warehouseInputFormVO = new WarehouseInputFormVO();
-                warehouseInputFormVO.setOperator(null); // 暂时不填操作人(确认草稿单的时候填写)
+                warehouseInputFormVO.setOperator(purchaseSheet.getOperator()); // 暂时不填操作人(确认草稿单的时候填写)
                 warehouseInputFormVO.setPurchaseSheetId(purchaseSheetId);
                 warehouseInputFormVO.setList(warehouseInputFormContentVOS);
                 warehouseService.productWarehousing(warehouseInputFormVO);
@@ -189,19 +186,20 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     /**
      * 根据进货单Id搜索进货单信息
+     *
      * @param purchaseSheetId 进货单Id
      * @return 进货单全部信息
      */
     @Override
     public PurchaseSheetVO getPurchaseSheetById(String purchaseSheetId) {
         PurchaseSheetPO purchaseSheetPO = purchaseSheetDao.findOneById(purchaseSheetId);
-        if(purchaseSheetPO == null) return null;
+        if (purchaseSheetPO == null) return null;
         List<PurchaseSheetContentPO> contentPO = purchaseSheetDao.findContentByPurchaseSheetId(purchaseSheetId);
         PurchaseSheetVO pVO = new PurchaseSheetVO();
         BeanUtils.copyProperties(purchaseSheetPO, pVO);
         List<PurchaseSheetContentVO> purchaseSheetContentVOList = new ArrayList<>();
-        for (PurchaseSheetContentPO content:
-             contentPO) {
+        for (PurchaseSheetContentPO content :
+                contentPO) {
             PurchaseSheetContentVO pContentVO = new PurchaseSheetContentVO();
             BeanUtils.copyProperties(content, pContentVO);
             purchaseSheetContentVOList.add(pContentVO);
