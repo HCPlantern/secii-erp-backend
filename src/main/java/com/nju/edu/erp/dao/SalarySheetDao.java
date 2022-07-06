@@ -16,11 +16,13 @@ public interface SalarySheetDao extends Dao {
 
     List<SalarySheetPO> getSalarySheetByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
-    SalarySheetPO getSalarySheetById(Integer id);
+    SalarySheetPO getSalarySheetById(String id);
 
     List<SheetPO> findAllBasicSheetInfo(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
     List<SalarySheetPO> getSalarySheetByState(SalarySheetState state);
 
     List<SalarySheetPO> getAllSalarySheet();
+
+    SalarySheetPO getLatestSheet();
 }

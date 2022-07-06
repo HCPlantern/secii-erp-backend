@@ -19,14 +19,18 @@ public class SalaryContext {
         switch (calculationMethod) {
             case DEDUCT:
                 this.salaryCalculationStrategy = new DeductStrategy();
+                break;
             case POST:
                 this.salaryCalculationStrategy = new PostStrategy();
+                break;
         }
         switch (paymentMethod) {
             case MONTHLY:
                 this.salaryPaymentStrategy = new MonthlyStrategy();
+                break;
             case ANNUALLY:
                 this.salaryPaymentStrategy = new AnnuallyStrategy();
+                break;
         }
     }
 

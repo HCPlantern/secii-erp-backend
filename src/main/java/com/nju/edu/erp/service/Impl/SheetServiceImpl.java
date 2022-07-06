@@ -19,7 +19,10 @@ public class SheetServiceImpl implements SheetService {
     Map<Dao, SheetType> typeMap = new HashMap<>();
 
     @Autowired
-    public SheetServiceImpl(SaleSheetDao saleSheetDao, SaleReturnsSheetDao saleReturnsSheetDao, PurchaseSheetDao purchaseSheetDao, PurchaseReturnsSheetDao purchaseReturnsSheetDao, PaymentSheetDao paymentSheetDao, CollectionDao collectionDao, SalarySheetDao salarySheetDao, WarehouseInputSheetDao warehouseInputSheetDao, WarehouseOutputSheetDao warehouseOutputSheetDao) {
+    public SheetServiceImpl(SaleSheetDao saleSheetDao, SaleReturnsSheetDao saleReturnsSheetDao,
+                            PurchaseSheetDao purchaseSheetDao, PurchaseReturnsSheetDao purchaseReturnsSheetDao,
+                            PaymentSheetDao paymentSheetDao, CollectionDao collectionDao, SalarySheetDao salarySheetDao,
+                            WarehouseInputSheetDao warehouseInputSheetDao, WarehouseOutputSheetDao warehouseOutputSheetDao) {
         this.typeMap.put(saleSheetDao, SheetType.SALE_SHEET);
         this.typeMap.put(saleReturnsSheetDao, SheetType.SALE_RETURN_SHEET);
         this.typeMap.put(purchaseSheetDao, SheetType.PURCHASE_SHEET);

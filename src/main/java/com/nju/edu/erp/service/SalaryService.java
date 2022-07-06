@@ -6,7 +6,6 @@ import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
 
-import java.util.Date;
 import java.util.List;
 
 public interface SalaryService {
@@ -24,13 +23,14 @@ public interface SalaryService {
      */
     void updateJobById(JobVO jobVO);
 
-    /***
-     * 生成工资单
+    /**
+     * 生成工资单，时间间隔为一个月
+     * @param beginDateStr 起始时间
+     * @param endDateStr 截止时间
      */
     void generateSalarySheet(String beginDateStr, String endDateStr);
 
     List<SalarySheetPO> getSalarySheetByTime(String beginTime, String endTime);
-
 
     /**
      * 根据id查询工资单
@@ -38,7 +38,7 @@ public interface SalaryService {
      * @param id 工资单id
      * @return 工资单
      */
-    SalarySheetPO getSalarySheetById(Integer id);
+    SalarySheetPO getSalarySheetById(String id);
 
     List<SalarySheetPO> getSalarySheetByState(SalarySheetState state);
 }

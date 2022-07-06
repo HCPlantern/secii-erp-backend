@@ -36,7 +36,7 @@ public class SalaryController {
     @GetMapping(path = "/getSalarySheetById")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.FINANCIAL_STAFF})
     @ApiOperation(value = "根据id查询工资单")
-    public Response getSalarySheetById(@Param("id") Integer id) {
+    public Response getSalarySheetById(@Param("id") String id) {
         return Response.buildSuccess(salaryService.getSalarySheetById(id));
     }
 

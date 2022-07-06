@@ -19,7 +19,7 @@ public class SalarySheetPO {
     /**
      * 单据编号
      */
-    private Integer id;
+    private String id;
 
     /**
      * 员工id（与系统用户id相同）
@@ -76,6 +76,11 @@ public class SalarySheetPO {
      * 税后工资
      */
     private BigDecimal taxedSalary;
+
+    /**
+     * 工资卡账户
+     */
+    private String salaryAccount;
 
     /**
      * 审批状态

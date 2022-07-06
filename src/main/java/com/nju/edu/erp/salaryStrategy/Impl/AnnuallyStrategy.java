@@ -5,13 +5,15 @@ import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.salaryStrategy.SalaryPaymentStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class AnnuallyStrategy implements SalaryPaymentStrategy {
 
-    private JobDao jobDao;
+    private static JobDao jobDao;
 
     @Autowired
     public void setDao(JobDao jobDao) {

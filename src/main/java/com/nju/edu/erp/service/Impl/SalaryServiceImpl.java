@@ -11,6 +11,7 @@ import com.nju.edu.erp.model.vo.humanResource.EmployeeVO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
 import com.nju.edu.erp.salaryStrategy.SalaryContext;
 import com.nju.edu.erp.service.SalaryService;
+import com.nju.edu.erp.utils.IdGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,34 +83,40 @@ public class SalaryServiceImpl implements SalaryService {
             BeanUtils.copyProperties(employeePO, employeeVO);
             JobPO jobPO = jobDao.findJobByName(employeePO.getJob());
             SalarySheetPO salarySheetPO = new SalarySheetPO(); //对应该员工待生成的一条工资单
+            //设置id,其中日期字段为endDate
+            SalarySheetPO latest = salarySheetDao.getLatestSheet();
+            salarySheetPO.setId(IdGenerator.generateSheetIdWithTime(latest == null ? null : latest.getId(), "GZD", endDate));
+            //设置员工、工作相关信息
             salarySheetPO.setEmployeeId(employeePO.getId());
             salarySheetPO.setEmployeeName(employeePO.getName());
             salarySheetPO.setJob(employeePO.getJob());
             salarySheetPO.setState(SalarySheetState.PENDING_LEVEL_1);
             salarySheetPO.setCreateTime(new Date());
-            //策略模式
+            salarySheetPO.setSalaryAccount(employeePO.getSalaryAccount());
+            //策略模式计算基本工资和岗位工资（或提成）
             salaryContext.setSalaryStrategy(jobPO.getSalaryCalculationMethod(), jobPO.getSalaryPaymentMethod());
             salaryContext.getSalary(salarySheetPO, beginDate, endDate);
-            //扣除缺勤基本工资
+            //缺勤扣除基本工资
             if (employeePO.getJob() != Role.GM) {
                 int attendance = userDao.getAttendanceByEmployeeId(employeePO.getId());
                 salarySheetPO.setBaseWage(salarySheetPO.getBaseWage().multiply(
                         BigDecimal.valueOf(attendance)).divide(BigDecimal.valueOf(30), RoundingMode.HALF_UP));
             }
-            //失业保险，公积金
+            //失业保险，住房公积金
             salarySheetPO.setInsurance(jobPO.getInsurance());
             salarySheetPO.setHousingFund(jobPO.getHousingFund());
-            //计算税前总工资
+            //计算税前总工资=基本工资+岗位工资（或提成）-失业保险-住房公积金
             BigDecimal unTaxedSalary = salarySheetPO.getBaseWage().add(salarySheetPO.getPostWage()
                     .subtract(salarySheetPO.getInsurance()).subtract(salarySheetPO.getHousingFund()));
             salarySheetPO.setTotalSalary(unTaxedSalary);
-            //表驱动计算税款
-            List<TaxPO> taxTable = taxDao.findTax(); //已升序过,第0个的base取正数是起征点
-            BigDecimal netUnTaxedSalary = unTaxedSalary.add(taxTable.get(0).getBase()); //减去起征点
-            int level = 0;
-            for (; level < taxTable.size() - 1; ++level) {
-                if (netUnTaxedSalary.compareTo(taxTable.get(level).getBase()) < 0)
-                    break;
+            //表驱动计算税款 = 减去起征点的未税工资*税率-速算扣除数
+            List<TaxPO> taxTable = taxDao.findTax(); //已升序过,第0个的base是起征点（负数）
+            BigDecimal netUnTaxedSalary = unTaxedSalary.add(taxTable.get(0).getBase()); //减去起征点的未税工资
+            int level = -1; //在for循环中,由于工资>=0, level一定会>=0
+            for (TaxPO taxPO : taxTable) {
+                if (netUnTaxedSalary.compareTo(taxPO.getBase()) >= 0)
+                    level++; //达该级税前所得基线
+                else break;
             }
             BigDecimal tax = netUnTaxedSalary.multiply(taxTable.get(level).getRate())
                     .subtract(taxTable.get(level).getQuickDeduction());
@@ -137,7 +144,8 @@ public class SalaryServiceImpl implements SalaryService {
      * @param id 工资单id
      * @return 工资单
      */
-    public SalarySheetPO getSalarySheetById(Integer id) {
+    @Override
+    public SalarySheetPO getSalarySheetById(String id) {
         return salarySheetDao.getSalarySheetById(id);
     }
 

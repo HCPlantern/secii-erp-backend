@@ -1,7 +1,6 @@
 package com.nju.edu.erp.dao;
 
 import com.nju.edu.erp.model.po.EmployeePO;
-import com.nju.edu.erp.model.vo.humanResource.EmployeeVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
