@@ -5,7 +5,9 @@ import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public interface SalaryCalculationStrategy {
-    public BigDecimal calculate(SalarySheetPO salarySheetPO, JobPO jobPO);
+    public BigDecimal calculate(SalarySheetPO salarySheetPO, JobPO jobPO,
+                                Date beginDate, Date endDate);
 }

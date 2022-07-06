@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nju.edu.erp.dao.SalarySheetDao">
     <insert id="createSalarySheet" parameterType="com.nju.edu.erp.model.po.SalarySheetPO">
-        insert into salary_sheet(create_time, base_wage, post_wage, total_salary, taxed_salary, state)
-        values (#{createTime}, #{baseWage}, #{postWage}, #{totalSalary}, #{taxedSalary}, #{state})
+        insert into salary_sheet(employee_id, create_time, base_wage, post_wage, total_salary, taxed_salary, state)
+        values (#{employeeId}, #{createTime}, #{baseWage}, #{postWage}, #{totalSalary}, #{taxedSalary}, #{state})
     </insert>
 
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
@@ -23,9 +23,11 @@
     </select>
     <select id="getSalarySheetByState" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *
-        from salary_sheet where state=#{state};
+        from salary_sheet
+        where state = #{state};
     </select>
     <select id="getAllSalarySheet" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
-        select * from salary_sheet
+        select *
+        from salary_sheet
     </select>
 </mapper>

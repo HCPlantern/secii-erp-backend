@@ -6,6 +6,7 @@ import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SalaryService {
@@ -26,7 +27,7 @@ public interface SalaryService {
     /***
      * 生成工资单
      */
-    void generateSalarySheet();
+    void generateSalarySheet(String beginDateStr, String endDateStr);
 
     List<SalarySheetPO> getSalarySheetByTime(String beginTime, String endTime);
 

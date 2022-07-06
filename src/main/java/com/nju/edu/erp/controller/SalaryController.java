@@ -43,8 +43,15 @@ public class SalaryController {
     @GetMapping(path = "/getSalarySheetByState")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.FINANCIAL_STAFF})
     @ApiOperation(value = "根据状态查询工资单")
-    public Response getSalarySheetByState(@RequestParam(value = "state", required = false)SalarySheetState state){
+    public Response getSalarySheetByState(@RequestParam(value = "state", required = false) SalarySheetState state) {
         return Response.buildSuccess(salaryService.getSalarySheetByState(state));
     }
 
+    @GetMapping(path = "/generateSalarySheet")
+    @Authorized(roles = {Role.HR})
+    @ApiOperation(value = "生成一个工作周期内的工资单")
+    public Response generateSalarySheet(@Param("beginTime") String beginTimeStr, @Param("endTime") String endTimeStr) {
+        salaryService.generateSalarySheet(beginTimeStr, endTimeStr);
+        return Response.buildSuccess();
+    }
 }
