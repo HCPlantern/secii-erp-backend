@@ -11,7 +11,7 @@
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *
         from salary_sheet
-        where create_time between #{startTime} and #{endTime}
+        where create_time between #{beginTime} and #{endTime}
     </select>
     <select id="getSalarySheetById" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *
@@ -21,7 +21,7 @@
     <select id="findAllBasicSheetInfo" resultType="com.nju.edu.erp.model.po.SheetPO">
         select ss.id as id, ss.create_time as date, NULL, NULL
         from salary_sheet ss
-        where create_time between #{startTime} and #{endTime}
+        where create_time between #{beginTime} and #{endTime}
     </select>
     <select id="getSalarySheetByState" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *

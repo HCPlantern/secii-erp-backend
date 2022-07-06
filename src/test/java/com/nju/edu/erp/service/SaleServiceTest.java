@@ -10,9 +10,10 @@ import com.nju.edu.erp.enums.sheetState.WarehouseOutputSheetState;
 import com.nju.edu.erp.model.po.SaleSheetContentPO;
 import com.nju.edu.erp.model.po.SaleSheetPO;
 import com.nju.edu.erp.model.po.WarehouseOutputSheetPO;
+import com.nju.edu.erp.model.queryObject.SaleSheetQuery;
+import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.sale.SaleSheetContentVO;
 import com.nju.edu.erp.model.vo.sale.SaleSheetVO;
-import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.utils.IdGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,12 +48,11 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
     WarehouseOutputSheetDao warehouseOutputSheetDao;
 
 
-
     @Test
-    public void warehouseServiceTest(){
-        if(warehouseService==null){
+    public void warehouseServiceTest() {
+        if (warehouseService == null) {
             System.out.println("service也是空的");
-        }else{
+        } else {
             System.out.println("service不是空的");
         }
     }
@@ -135,7 +135,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
     public void approval_exceptions_1() { // 一级审批不能直接到审批完成 (提示：可以以抛出异常的方式终止流程，这样就能触发事务回滚)
         try {
             saleService.approval("XSD-20220524-00004", SaleSheetState.SUCCESS);
-        } catch (Exception ignore){
+        } catch (Exception ignore) {
         } finally {
             SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220524-00004");
             Assertions.assertEquals(SaleSheetState.PENDING_LEVEL_1,sheet.getState());
@@ -148,7 +148,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
     public void approval_exceptions_2() { // 二级审批不能回到一级审批
         try {
             saleService.approval("XSD-20220524-00003", SaleSheetState.PENDING_LEVEL_1);
-        } catch (Exception ignore){
+        } catch (Exception ignore) {
         } finally {
             SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220524-00003");
             Assertions.assertEquals(SaleSheetState.PENDING_LEVEL_2,sheet.getState());
@@ -195,12 +195,13 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
         Assertions.assertEquals(1, draftSheets.size());
         WarehouseOutputSheetPO draftSheet = draftSheets.get(0);
         Assertions.assertNotNull(draftSheet);
-        Assertions.assertEquals("XSD-20220524-00003",draftSheet.getSaleSheetId());
+        Assertions.assertEquals("XSD-20220524-00003", draftSheet.getSaleSheetId());
     }
+
     @Test
     @Transactional
     @Rollback
-    public void testFindAllSaleDetailByTime(){
-        
+    public void testFindAllSaleDetailByTime() {
+
     }
 }

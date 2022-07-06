@@ -14,11 +14,11 @@ import java.util.List;
 public interface SalarySheetDao extends Dao {
     void createSalarySheet(SalarySheetPO salarySheetPO);
 
-    List<SalarySheetPO> getSalarySheetByTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SalarySheetPO> getSalarySheetByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
     SalarySheetPO getSalarySheetById(String id);
 
-    List<SheetPO> findAllBasicSheetInfo(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<SheetPO> findAllBasicSheetInfo(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
     List<SalarySheetPO> getSalarySheetByState(SalarySheetState state);
 

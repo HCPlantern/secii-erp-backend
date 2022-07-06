@@ -4,6 +4,8 @@ import com.nju.edu.erp.dao.*;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleReturnsSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.queryObject.SaleReturnSheetQuery;
+import com.nju.edu.erp.model.queryObject.SaleSheetQuery;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
 import com.nju.edu.erp.model.vo.UserVO;
 import com.nju.edu.erp.model.vo.saleReturns.SaleReturnsSheetContentVO;
@@ -39,7 +41,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
 
 
     @Autowired
-    SaleReturnsServiceImpl (SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, WarehouseOutputSheetDao wosDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService, CustomerDao customerDao) {
+    SaleReturnsServiceImpl(SaleReturnsSheetDao srsDao, SaleSheetDao ssDao, WarehouseOutputSheetDao wosDao, ProductService productService, WarehouseDao warehouseDao, CustomerService customerService, CustomerDao customerDao) {
         this.srsDao = srsDao;
         this.ssDao = ssDao;
         this.wosDao = wosDao;
@@ -55,8 +57,9 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
      * 具体销售退货单内容中的单价设定和总金额设定需要结合对应销售单中的商品单价和商品数量<br>
      * 因为前端VO传进来的销售退货单内容不一定可靠，需要这里再查询销售单<br>
      * 优惠券部分，因为支持部分退货，所以优惠券也要按照比例考虑
-     * @param userVO             操作人员
-     * @param srsVO 销售退货单
+     *
+     * @param userVO 操作人员
+     * @param srsVO  销售退货单
      */
     @Override
     @Transactional
@@ -95,7 +98,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         // 挨个创建 srscPO
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (SaleReturnsSheetContentVO srscVO : srscVOLIst) {
-            assert (srscVO.getQuantity()>=0 && srscVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0):"销售退货单的数量和单价必须大于等于0";
+            assert (srscVO.getQuantity() >= 0 && srscVO.getUnitPrice().compareTo(BigDecimal.ZERO) >= 0) : "销售退货单的数量和单价必须大于等于0";
             SaleReturnsSheetContentPO srscPO = new SaleReturnsSheetContentPO();
             // 这里传进来的的 srscVO 中可能单价和总金额不一定对，需要参考 sscPO
             // 传进来的数量不能改，退多少货需要参考这个
@@ -112,7 +115,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         }
         srsPO.setRawTotalAmount(totalAmount);
         // 计算该退货单的商品在销售时占销售单所使用优惠券的金额大小
-        srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount(),6, RoundingMode.HALF_DOWN)));
+        srsPO.setVoucherAmount(ssPO.getVoucherAmount().multiply(srsPO.getRawTotalAmount().divide(ssPO.getRawTotalAmount(), 6, RoundingMode.HALF_DOWN)));
         srsPO.setFinalAmount(totalAmount.multiply(srsPO.getDiscount()).subtract(srsPO.getVoucherAmount()));
         srsDao.save(srsPO);
         srsDao.saveBatch(srscPOList);
@@ -195,11 +198,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
     public List<SaleReturnsSheetVO> getSaleReturnsSheetByState(SaleReturnsSheetState state) {
         List<SaleReturnsSheetVO> srsVOList = new ArrayList<>();
         List<SaleReturnsSheetPO> srsPOList;
-        if (state == null) {
-            srsPOList = srsDao.findAll();
-        } else {
-            srsPOList = srsDao.findAllByState(state);
-        }
+        srsPOList = srsDao.findAll(SaleReturnSheetQuery.builder().state(state).build());
         for (SaleReturnsSheetPO srsPO : srsPOList) {
             SaleReturnsSheetVO srsVO = new SaleReturnsSheetVO();
             setVODetail(srsPO, srsVO);

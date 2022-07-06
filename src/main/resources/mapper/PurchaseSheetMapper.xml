@@ -25,8 +25,29 @@
     </select>
     <select id="findAll" resultType="com.nju.edu.erp.model.po.PurchaseSheetPO">
         select *
-        from purchase_sheet;
+        from purchase_sheet
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="supplier != null">
+                and supplier = #{supplier}
+            </if>
+            <if test="operator != null">
+                and operator = #{operator}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="beginTime != null">
+                and create_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and create_time &lt;= #{endTime}
+            </if>
+        </where>
     </select>
+
     <select id="findAllByState" resultType="com.nju.edu.erp.model.po.PurchaseSheetPO">
         select *
         from purchase_sheet

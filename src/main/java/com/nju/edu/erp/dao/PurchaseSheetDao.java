@@ -5,6 +5,7 @@ import com.nju.edu.erp.enums.sheetState.PurchaseSheetState;
 import com.nju.edu.erp.model.po.PurchaseSheetContentPO;
 import com.nju.edu.erp.model.po.PurchaseSheetPO;
 import com.nju.edu.erp.model.po.SheetPO;
+import com.nju.edu.erp.model.queryObject.PurchaseSheetQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -39,8 +40,9 @@ public interface PurchaseSheetDao extends Dao {
      * 返回所有进货单
      *
      * @return 进货单列表
+     * @Param query 查询条件
      */
-    List<PurchaseSheetPO> findAll();
+    List<PurchaseSheetPO> findAll(PurchaseSheetQuery query);
 
     /**
      * 根据state返回进货单

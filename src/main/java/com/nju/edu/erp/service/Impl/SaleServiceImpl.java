@@ -1,11 +1,11 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.CustomerDao;
-import com.nju.edu.erp.dao.ProductDao;
 import com.nju.edu.erp.dao.SaleSheetDao;
 import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SaleSheetState;
 import com.nju.edu.erp.model.po.*;
+import com.nju.edu.erp.model.queryObject.SaleSheetQuery;
 import com.nju.edu.erp.model.vo.CustomerPurchaseAmountVO;
 import com.nju.edu.erp.model.vo.CustomerVO;
 import com.nju.edu.erp.model.vo.ProductInfoVO;
@@ -77,7 +77,7 @@ public class SaleServiceImpl implements SaleService {
         List<SaleSheetContentPO> saleSheetContentPOS = new ArrayList<>();
         for (SaleSheetContentVO saleSheetContentVO : saleSheetContentVOS) {
             // 防御式编程
-            assert saleSheetContentVO.getQuantity()>=0 && saleSheetContentVO.getUnitPrice().compareTo(BigDecimal.ZERO)>=0:"销售单内容的数量和单价必须大于等于0";
+            assert saleSheetContentVO.getQuantity() >= 0 && saleSheetContentVO.getUnitPrice().compareTo(BigDecimal.ZERO) >= 0 : "销售单内容的数量和单价必须大于等于0";
             SaleSheetContentPO saleSheetContentPO = new SaleSheetContentPO();
             BeanUtils.copyProperties(saleSheetContentVO, saleSheetContentPO);
             saleSheetContentPO.setSaleSheetId(id);
@@ -101,11 +101,7 @@ public class SaleServiceImpl implements SaleService {
         // 依赖的dao层部分方法未提供，需要自己实现
         List<SaleSheetVO> res = new ArrayList<>();
         List<SaleSheetPO> all;
-        if (state == null) {
-            all = saleSheetDao.findAllSheet();
-        } else {
-            all = saleSheetDao.findAllByState(state);
-        }
+        all = saleSheetDao.findAllSheet(SaleSheetQuery.builder().state(state).build());
         for (SaleSheetPO saleSheetPO : all) {
             SaleSheetVO saleSheetVO = new SaleSheetVO();
             BeanUtils.copyProperties(saleSheetPO, saleSheetVO);
@@ -193,7 +189,7 @@ public class SaleServiceImpl implements SaleService {
 //                新建出库草稿
                 WarehouseOutputFormVO warehouseOutputFormVO = new WarehouseOutputFormVO();
                 warehouseOutputFormVO.setList(warehouseOutputFormContentVOS);
-                warehouseOutputFormVO.setOperator(null);
+                warehouseOutputFormVO.setOperator(saleSheetPO.getOperator());
                 warehouseOutputFormVO.setSaleSheetId(saleSheetId);
                 warehouseService.productOutOfWarehouse(warehouseOutputFormVO);
             }
