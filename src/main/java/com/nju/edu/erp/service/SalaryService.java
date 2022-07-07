@@ -14,14 +14,14 @@ public interface SalaryService {
      *
      * @return 岗位信息列表
      */
-    List<JobPO> queryAllJobs();
+    List<JobPO> queryAllSalaryRules();
 
     /**
      * 根据岗位id更新岗位信息
      *
      * @param jobVO 岗位信息
      */
-    void updateJobById(JobVO jobVO);
+    void updateSalaryRuleById(JobVO jobVO);
 
     /**
      * 生成工资单，时间间隔为一个月

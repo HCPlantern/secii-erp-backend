@@ -48,7 +48,7 @@ public class SalaryServiceImpl implements SalaryService {
      *
      * @return 岗位信息列表
      */
-    public List<JobPO> queryAllJobs() {
+    public List<JobPO> queryAllSalaryRules() {
         return jobDao.queryAllJobs();
     }
 
@@ -57,7 +57,7 @@ public class SalaryServiceImpl implements SalaryService {
      *
      * @param jobVO 岗位信息
      */
-    public void updateJobById(JobVO jobVO) {
+    public void updateSalaryRuleById(JobVO jobVO) {
         JobPO jobPO = new JobPO();
         BeanUtils.copyProperties(jobVO, jobPO);
         jobDao.updateJobById(jobPO);

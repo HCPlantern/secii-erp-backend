@@ -22,7 +22,7 @@
             annual_bonus=#{annualBonus},
             deduct_rate=#{deductRate},
             grade_rate=#{gradeRate},
-            insurance = #{insurance},
+            insurance=#{insurance},
             housing_fund=#{housingFund}
         where id = #{id}
     </update>
