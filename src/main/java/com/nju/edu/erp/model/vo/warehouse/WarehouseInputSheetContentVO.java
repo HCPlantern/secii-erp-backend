@@ -36,6 +36,7 @@ public class WarehouseInputSheetContentVO {
      */
     private BigDecimal purchasePrice;
     /**
+     * 这个 不知道拿来干嘛的，暂且忽略吧<br>
      * 出厂日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
