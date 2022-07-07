@@ -42,7 +42,7 @@ public class EmployeeController {
 
     @ApiOperation("根据员工id删除员工")
     @GetMapping("/deleteEmployeeById")
-    public Response deleteEmployeeById(@RequestParam int id) {
+    public Response deleteEmployeeById(@RequestParam(value = "id") int id) {
         employeeService.deleteEmployeeById(id);
         return Response.buildSuccess();
     }
