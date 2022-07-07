@@ -4,18 +4,15 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.nju.edu.erp.auth.Authorized;
+import com.nju.edu.erp.common.Response;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.enums.sheetState.WarehouseInputSheetState;
 import com.nju.edu.erp.enums.sheetState.WarehouseOutputSheetState;
 import com.nju.edu.erp.exception.MyServiceException;
 import com.nju.edu.erp.model.po.*;
 import com.nju.edu.erp.model.vo.UserVO;
-import com.nju.edu.erp.model.vo.warehouse.GetWareProductInfoParamsVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseCountingVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseInputSheetVO;
-import com.nju.edu.erp.model.vo.warehouse.WarehouseOutputSheetVO;
+import com.nju.edu.erp.model.vo.warehouse.*;
 import com.nju.edu.erp.service.WarehouseService;
-import com.nju.edu.erp.common.Response;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -43,23 +40,29 @@ public class WarehouseController {
         this.warehouseService = warehouseService;
     }
 
-//    // 已废弃, 出库入库现在与销售进货关联
-//    @PostMapping("/input")
-//    @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
-//    public Response warehouseInput(@RequestBody WarehouseInputFormVO warehouseInputFormVO){
-//        log.info(warehouseInputFormVO.toString());
-//        warehouseService.productWarehousing(warehouseInputFormVO);
-//        return Response.buildSuccess();
-//    }
+    /**
+     * 入库，仅用于红冲，注意入库单没有审批
+     * @param warehouseInputFormVO 入库单表单
+     * @return 结果
+     */
+    @PostMapping("/input")
+    @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    public Response warehouseInput(@RequestBody WarehouseInputFormVO warehouseInputFormVO) {
+        warehouseService.productWarehousing(warehouseInputFormVO);
+        return Response.buildSuccess();
+    }
 
-//    //已废弃
-//    @PostMapping("/output")
-//    @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
-//    public Response warehouseOutput(@RequestBody WarehouseOutputFormVO warehouseOutputFormVO){
-//        log.info(warehouseOutputFormVO.toString());
-//        warehouseService.productOutOfWarehouse(warehouseOutputFormVO);
-//        return Response.buildSuccess();
-//    }
+    /**
+     * 出库，仅用于红冲，注意出库单没有审批
+     * @param warehouseOutputFormVO 出库单表单
+     * @return 结果
+     */
+    @PostMapping("/output")
+    @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
+    public Response warehouseOutput(@RequestBody WarehouseOutputFormVO warehouseOutputFormVO){
+        warehouseService.productOutOfWarehouse(warehouseOutputFormVO);
+        return Response.buildSuccess();
+    }
 
     @PostMapping("/product/count")
     @Authorized(roles = {Role.ADMIN, Role.GM, Role.INVENTORY_MANAGER})
