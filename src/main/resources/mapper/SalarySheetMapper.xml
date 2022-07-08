@@ -8,10 +8,15 @@
                 #{tax}, #{insurance}, #{housingFund}, #{taxedSalary}, #{state}, #{salaryAccount})
     </insert>
     <update id="updateSalaryStateById">
-        update salary_sheet set state=#{state} where id=#{sheetId}
+        update salary_sheet
+        set state=#{state}
+        where id = #{sheetId}
     </update>
     <update id="updateSheetStateOnPrev">
-        update salary_sheet set state=#{state} where id=#{sheetId} and state=#{prev}
+        update salary_sheet
+        set state=#{state}
+        where id = #{sheetId}
+          and state = #{prev}
     </update>
 
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
@@ -45,5 +50,32 @@
         where id like #{idPrefix}
         order by id desc
         limit 0,1;
+    </select>
+    <select id="find" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
+        select *
+        from salary_sheet
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="employeeId != null">
+                and employee_id = #{employeeId}
+            </if>
+            <if test="beginTime != null">
+                and create_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and create_time &lt;= #{endTime}
+            </if>
+            <if test="job != null">
+                and job = #{job}
+            </if>
+            <if test="salaryAccount != null">
+                and salary_account = #{salaryAccount}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
     </select>
 </mapper>

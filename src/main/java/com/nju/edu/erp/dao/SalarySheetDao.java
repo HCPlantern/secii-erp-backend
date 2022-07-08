@@ -4,6 +4,7 @@ import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.po.SheetPO;
+import com.nju.edu.erp.model.queryObject.SalarySheetQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import java.util.List;
 public interface SalarySheetDao extends Dao {
     void createSalarySheet(SalarySheetPO salarySheetPO);
 
+    List<SalarySheetPO> find(SalarySheetQuery query);
     List<SalarySheetPO> getSalarySheetByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime);
 
     SalarySheetPO getSalarySheetById(String id);
