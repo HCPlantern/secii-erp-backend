@@ -6,8 +6,8 @@ package com.nju.edu.erp.promotionStrategy;
 public class PromotionContext {
   private PromotionStrategy promotionStrategy;
 
-  public PromotionContext( PromotionStrategy promotionStrategy ) {
-    this.promotionStrategy = promotionStrategy;
+  public PromotionContext(String strategy) {
+    this.promotionStrategy = PromotionStrategyFactory.getPromotionStrtety(strategy);
   }
 
   public void execute(){
