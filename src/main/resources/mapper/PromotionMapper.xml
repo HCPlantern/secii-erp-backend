@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.PromotionDao">
+
+  <insert id="createPromotion" parameterType="PromotionPO">
+    insert into promotion_sheet (customer_level, `gift`, discount, `coupon`, beginDate, endDate, )
+    values (#{customer_level}, #{gift}, #{discount}, #{coupon}, 0, #{beginDate}, #{endDate})
+  </insert>
+
+
+  <resultMap id="PromotionPO" type="com.nju.edu.erp.model.po.PromotionPO">
+    <id column="customer_level" property="customer_level"></id>
+    <result column="gift" property="gift"></result>
+    <result column="discount" property="discount"></result>
+    <result column="coupon" property="coupon"></result>
+    <result column="beginDate" property="beginDate"></result>
+    <result column="endDate" property="endDate"></result>
+  </resultMap>
+</mapper>

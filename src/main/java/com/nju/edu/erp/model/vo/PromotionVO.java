@@ -39,13 +39,13 @@ public class PromotionVO {
    * 折扣
    */
   @JsonProperty("discount")
-  private Double discount;
+  private Float discount;
 
   /**
    * 代金券
    */
   @JsonProperty("coupon")
-  private String coupon;
+  private Integer coupon;
 
   /**
    * 商品

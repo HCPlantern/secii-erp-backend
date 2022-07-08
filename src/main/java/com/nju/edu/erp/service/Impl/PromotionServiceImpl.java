@@ -13,5 +13,6 @@ public class PromotionServiceImpl implements PromotionService {
   @Override
   public void addPromotionStrategy(PromotionVO promotionVO){
     PromotionContext promotionContext = new PromotionContext(promotionVO.getPromotionStrategy());
+    promotionContext.execute(promotionVO);
   }
 }

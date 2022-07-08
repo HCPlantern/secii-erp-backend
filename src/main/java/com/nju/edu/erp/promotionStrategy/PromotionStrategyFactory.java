@@ -15,20 +15,21 @@ public class PromotionStrategyFactory {
     String GROUPBUY = "GROUPBUY";
     String DISCOUNT = "DISCOUNT";
     String GIFT = "GIFT";
+    String CUSTOMER = "CUSTOMER";
+    String PACKET = "PACKET";
+    String PRICE = "PRICE";
   }
   private static Map<String,PromotionStrategy> PROMOTION_STRATEGY_MAP =new HashMap<String,PromotionStrategy>();
 
   static {
-    PROMOTION_STRATEGY_MAP.put(PromotionKey.COUPON,new CouponStrategy());
-    PROMOTION_STRATEGY_MAP.put(PromotionKey.CASHBACK,new CashbackStrategy());
-    PROMOTION_STRATEGY_MAP.put(PromotionKey.GROUPBUY,new GroupbuyStrategy());
-    PROMOTION_STRATEGY_MAP.put(PromotionKey.DISCOUNT,new DiscountStrategy());
-    PROMOTION_STRATEGY_MAP.put(PromotionKey.GIFT,new GiftStrategy());
+    PROMOTION_STRATEGY_MAP.put(PromotionKey.CUSTOMER,new CustomerStrategy());
+    PROMOTION_STRATEGY_MAP.put(PromotionKey.PACKET,new PacketStrategy());
+    PROMOTION_STRATEGY_MAP.put(PromotionKey.PRICE,new PriceStrategy());
   }
 
-  private static final PromotionStrategy NON_PROMOTION = new EmptyStrategy();
+  private static final PromotionStrategy NON_PROMOTION = null;
 
-  public static PromotionStrategy getPromotionStrtety(String promotionKey){
+  public static PromotionStrategy getPromotionStrategy(String promotionKey){
     PromotionStrategy promotionStrategy = PROMOTION_STRATEGY_MAP.get(promotionKey);
     return promotionStrategy == null ? NON_PROMOTION:promotionStrategy;
   }
