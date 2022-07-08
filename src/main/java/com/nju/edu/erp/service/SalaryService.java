@@ -1,10 +1,12 @@
 package com.nju.edu.erp.service;
 
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.JobPO;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.vo.humanResource.JobVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -41,4 +43,9 @@ public interface SalaryService {
     SalarySheetPO getSalarySheetById(String id);
 
     List<SalarySheetPO> getSalarySheetByState(SalarySheetState state);
+
+
+    void approval(String salarySheetId, BaseEnum state);
+
+
 }

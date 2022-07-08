@@ -7,6 +7,12 @@
         values (#{id}, #{employeeId}, #{employeeName}, #{createTime}, #{job}, #{baseWage}, #{postWage}, #{totalSalary},
                 #{tax}, #{insurance}, #{housingFund}, #{taxedSalary}, #{state}, #{salaryAccount})
     </insert>
+    <update id="updateSalaryStateById">
+        update salary_sheet set state=#{state} where id=#{sheetId}
+    </update>
+    <update id="updateSheetStateOnPrev">
+        update salary_sheet set state=#{state} where id=#{sheetId} and state=#{prev}
+    </update>
 
     <select id="getSalarySheetByTime" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
         select *

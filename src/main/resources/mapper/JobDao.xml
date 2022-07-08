@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nju.edu.erp.dao.JobDao">
+    <insert id="createDepartmentSalaryRule" parameterType="com.nju.edu.erp.model.po.JobPO" useGeneratedKeys="true" keyProperty="id">
+        insert into job(name,base_wage,post_wage,salary_calculation_method,salary_payment_method,annual_bonus)
+        values (#{name},#{baseWage},#{postWage},#{salaryCalculationMethod},#{salaryPaymentMethod},#{annualBonus})
+    </insert>
 
     <select id="findJobByName" resultMap="JobPO" parameterType="com.nju.edu.erp.enums.Role">
         select *

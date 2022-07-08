@@ -57,7 +57,9 @@ public class MockCategoryControllerTest {
     @Transactional
     @Rollback
     public void testDelete() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/category/delete").param("id","4")).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/category/delete")
+                        .param("id","4"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     /**

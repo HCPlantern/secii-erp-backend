@@ -1,5 +1,6 @@
 package com.nju.edu.erp.dao;
 
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.SalarySheetPO;
 import com.nju.edu.erp.model.po.SheetPO;
@@ -25,4 +26,9 @@ public interface SalarySheetDao extends Dao {
     List<SalarySheetPO> getAllSalarySheet();
 
     SalarySheetPO getLatestSheet();
+
+    int updateSalaryStateById(String sheetId, BaseEnum state);
+
+    int updateSheetStateOnPrev(String sheetId, BaseEnum prev, BaseEnum state);
+
 }

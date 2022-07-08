@@ -35,6 +35,11 @@ public class MockCustomerControllerTest {
     @Resource
     private ObjectMapper objectMapper;
 
+
+    /**
+     * 测试根据状态查询用户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -44,6 +49,10 @@ public class MockCustomerControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_API).param("type","销售商")).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试创建用户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -55,7 +64,7 @@ public class MockCustomerControllerTest {
                 .name("djhfdks")
                 .phone("123123123")
                 .address("dkfjbdjfb")
-                .zipcode("djsfgjdhfbsv")
+                .zipcode("djs")
                 .email("shdgvms")
                 .lineOfCredit(BigDecimal.valueOf(13423))
                 .receivable(BigDecimal.valueOf(823749))
@@ -66,6 +75,10 @@ public class MockCustomerControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mockCustomerVOJSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试更新客户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -77,7 +90,7 @@ public class MockCustomerControllerTest {
                 .name("djdskf")
                 .phone("12312131314245123")
                 .address("dskdnvslkdnv")
-                .zipcode("flgkfkmgf")
+                .zipcode("flgk")
                 .email("sfskvlbm")
                 .lineOfCredit(BigDecimal.valueOf(134540))
                 .receivable(BigDecimal.valueOf(8423749))
@@ -88,11 +101,17 @@ public class MockCustomerControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(UPDATE_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mockCustomerVOJSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试删除指定客户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testDeleteCustomer() throws Exception {
         Integer id=10;
-        mockMvc.perform(MockMvcRequestBuilders.get(DELETE_API).param("id",String.valueOf(id))).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get(DELETE_API)
+                .param("id",String.valueOf(id)))
+                .andDo(MockMvcResultHandlers.print());
     }
 }

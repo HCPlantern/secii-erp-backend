@@ -1,6 +1,7 @@
 package com.nju.edu.erp.service.Impl;
 
 import com.nju.edu.erp.dao.*;
+import com.nju.edu.erp.enums.BaseEnum;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.enums.sheetState.SalarySheetState;
 import com.nju.edu.erp.model.po.EmployeePO;
@@ -12,6 +13,7 @@ import com.nju.edu.erp.model.vo.humanResource.JobVO;
 import com.nju.edu.erp.salaryStrategy.SalaryContext;
 import com.nju.edu.erp.service.SalaryService;
 import com.nju.edu.erp.utils.IdGenerator;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,6 +157,31 @@ public class SalaryServiceImpl implements SalaryService {
             return salarySheetDao.getAllSalarySheet();
         } else {
             return salarySheetDao.getSalarySheetByState(state);
+        }
+    }
+
+    @Override
+    public void approval(String salarySheetId, BaseEnum state) {
+        SalarySheetPO salarySheetPO=salarySheetDao.getSalarySheetById(salarySheetId);
+        if(state.equals(SalarySheetState.FAILURE)){
+            if(salarySheetPO.getState().equals(SalarySheetState.SUCCESS)){
+                throw new RuntimeException("状态更新失败");
+            }
+            int effectLine=salarySheetDao.updateSalaryStateById(salarySheetId,state);
+            if (effectLine == 0) throw new RuntimeException("状态更新失败");
+        }else {
+            SalarySheetState prev;
+            if(state.equals(SalarySheetState.SUCCESS)){
+                prev=SalarySheetState.PENDING_LEVEL_2;
+            } else if (state.equals(SalarySheetState.PENDING_LEVEL_2)) {
+                prev=SalarySheetState.PENDING_LEVEL_1;
+            }else {
+                throw new RuntimeException("状态更新失败");
+            }
+            int effectLine=salarySheetDao.updateSheetStateOnPrev(salarySheetId,prev,state);
+            if(effectLine==0){
+                throw new RuntimeException("状态更新失败");
+            }
         }
     }
 }

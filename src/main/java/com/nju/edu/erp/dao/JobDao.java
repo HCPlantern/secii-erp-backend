@@ -16,4 +16,7 @@ public interface JobDao extends Dao {
     void updateJobById(JobPO jobPO);
 
     List<JobPO> queryAllJobs();
+
+    void createDepartmentSalaryRule(JobPO jobPO);
+
 }

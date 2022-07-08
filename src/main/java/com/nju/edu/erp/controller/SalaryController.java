@@ -66,4 +66,30 @@ public class SalaryController {
         salaryService.generateSalarySheet(beginTimeStr, endTimeStr);
         return Response.buildSuccess();
     }
+
+
+    @GetMapping("/salary-first-approval")
+    public Response fistApproval(@RequestParam("salarySheetId") String salarySheetId,@RequestParam("state") SalarySheetState state){
+        if(state.equals(SalarySheetState.FAILURE)||state.equals(SalarySheetState.PENDING_LEVEL_2)){
+            salaryService.approval(salarySheetId,state);
+            return Response.buildSuccess();
+        }else {
+            return Response.buildFailed("000000", "操作失败");
+        }
+    }
+
+    @GetMapping("/salary-second-approval")
+    public Response secondApproval(@RequestParam("salarySheetId") String salarySheetId,@RequestParam("state") SalarySheetState state){
+        if(state.equals(SalarySheetState.FAILURE)||state.equals(SalarySheetState.SUCCESS)){
+            salaryService.approval(salarySheetId,state);
+            return Response.buildSuccess();
+        }else {
+            return Response.buildFailed("000000", "操作失败");
+        }
+    }
+
+
+
+
+
 }

@@ -34,9 +34,10 @@ public class MockCompanyAccountControllerTest {
     @Resource
     private ObjectMapper objectMapper;
 
-    @MockBean
-    private CompanyAccountService companyAccountService;
-
+    /**
+     * 测试创建公司账户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -48,21 +49,35 @@ public class MockCompanyAccountControllerTest {
                 .amount(BigDecimal.valueOf(34324))
                 .build();
         String mockCompanyAmountVOJSON=objectMapper.writeValueAsString(mockCompanyAmountVO);
-        mockMvc.perform(MockMvcRequestBuilders.post("/accountManage/createCompanyAccount").contentType(MediaType.APPLICATION_JSON).content(mockCompanyAmountVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.post("/accountManage/createCompanyAccount")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mockCompanyAmountVOJSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据名称查询对应的银行账户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testFindCompanyAccountByName() throws Exception {
         String accountName="wash";
         // 先查询所有 再查询name
-        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/findCompanyAccountByName")).andDo(MockMvcResultHandlers.print());
-        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/findCompanyAccountByName").param("name",accountName))
+        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/findCompanyAccountByName"))
                 .andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/findCompanyAccountByName")
+                        .param("name",accountName))
+                        .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据编号删除对应的公司银行账户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -70,16 +85,20 @@ public class MockCompanyAccountControllerTest {
         // /accountManage/deleteCompanyAccountById
         // /accountManage/updateCompanyAccount
         Integer id=1;
-        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/deleteCompanyAccountById").param("id",String.valueOf(id)))
-                .andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/accountManage/deleteCompanyAccountById")
+                        .param("id",String.valueOf(id)))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("操作成功"))
+                        .andDo(MockMvcResultHandlers.print());
     }
+
+    /**
+     * 测试更新对应的银行账户
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testUpdateCompanyAccount() throws Exception {
-        // /accountManage/deleteCompanyAccountById
-        // /accountManage/updateCompanyAccount
-
         // mock
         CompanyAccountVO mockCompanyAmountVO= CompanyAccountVO.builder()
                 .id(1)
@@ -89,6 +108,7 @@ public class MockCompanyAccountControllerTest {
         String mockCompanyAmountVOJSON=objectMapper.writeValueAsString(mockCompanyAmountVO);
         // 更新
         mockMvc.perform(MockMvcRequestBuilders.post("/accountManage/updateCompanyAccount").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mockCompanyAmountVOJSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("操作成功"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andDo(MockMvcResultHandlers.print());
     }

@@ -59,7 +59,7 @@ public class MockSaleReturnsControllerTest {
         SaleReturnsSheetVO mockSaleReturnsSheetVO= SaleReturnsSheetVO.builder()
                 .id("jdacfsdhf")
                 .saleSheetId("dcjhbd")
-                .supplier(2)
+                .supplier(7)
                 .salesman("dsjhfvsd")
                 .operator("dkfjbd")
                 .remark("dkcfbd")
