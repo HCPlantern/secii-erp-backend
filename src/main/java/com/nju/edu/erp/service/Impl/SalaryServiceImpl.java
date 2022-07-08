@@ -84,7 +84,8 @@ public class SalaryServiceImpl implements SalaryService {
             JobPO jobPO = jobDao.findJobByName(employeePO.getJob());
             SalarySheetPO salarySheetPO = new SalarySheetPO(); //对应该员工待生成的一条工资单
             //设置id,其中日期字段为endDate
-            SalarySheetPO latest = salarySheetDao.getLatestSheet();
+            String idPrefix = new SimpleDateFormat("yyyyMMdd").format(endDate);
+            SalarySheetPO latest = salarySheetDao.getLatestSheet("%"+idPrefix+"%");
             salarySheetPO.setId(IdGenerator.generateSheetIdWithTime(latest == null ? null : latest.getId(), "GZD", endDate));
             //设置员工、工作相关信息
             salarySheetPO.setEmployeeId(employeePO.getId());

@@ -32,9 +32,11 @@
         select *
         from salary_sheet
     </select>
-    <select id="getLatestSheet" resultType="com.nju.edu.erp.model.po.SalarySheetPO">
+    <select id="getLatestSheet" resultType="com.nju.edu.erp.model.po.SalarySheetPO"
+    parameterType="java.lang.String">
         select *
         from salary_sheet
+        where id like #{idPrefix}
         order by id desc
         limit 0,1;
     </select>

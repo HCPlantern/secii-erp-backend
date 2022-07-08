@@ -62,7 +62,7 @@ public class SalaryController {
     @GetMapping(path = "/generateSalarySheet")
     @Authorized(roles = {Role.ADMIN, Role.HR})
     @ApiOperation(value = "生成一个工作周期内的工资单")
-    public Response generateSalarySheet(@Param("beginTime") String beginTimeStr, @Param("endTime") String endTimeStr) {
+    public Response generateSalarySheet(@RequestParam(value = "beginTime") String beginTimeStr, @RequestParam(value = "endTime") String endTimeStr) {
         salaryService.generateSalarySheet(beginTimeStr, endTimeStr);
         return Response.buildSuccess();
     }

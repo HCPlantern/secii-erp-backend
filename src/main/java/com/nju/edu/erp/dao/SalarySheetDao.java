@@ -24,5 +24,5 @@ public interface SalarySheetDao extends Dao {
 
     List<SalarySheetPO> getAllSalarySheet();
 
-    SalarySheetPO getLatestSheet();
+    SalarySheetPO getLatestSheet(String idPrefix);
 }
