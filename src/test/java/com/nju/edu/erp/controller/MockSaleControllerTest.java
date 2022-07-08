@@ -40,67 +40,94 @@ public class MockSaleControllerTest {
     @Resource
     private ObjectMapper objectMapper;
 
+    /**
+     * 测试生成销售单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testMakeSheet() throws Exception {
         List<SaleSheetContentVO> mockSaleSheetContentVOList=new ArrayList<>();
         SaleSheetContentVO mockSaleSheetContentVO= SaleSheetContentVO.builder()
-                .id(10)
-                .saleSheetId("dkjkhfsdf")
-                .pid("dkjfgdskf")
+                .id(100)
+                .saleSheetId("XSD-20220707-00001")
+                .pid("0000000000500001")
                 .quantity(131)
                 .unitPrice(BigDecimal.valueOf(324))
                 .remark("kdfvhsf")
                 .build();
         mockSaleSheetContentVOList.add(mockSaleSheetContentVO);
         SaleSheetVO mockSaleSheetVO= SaleSheetVO.builder()
-                .id("dkjfgsf")
+                .id("XSD-20220707-00001")
                 .supplier(2)
                 .salesman("dkfdfnd")
                 .operator("kdvcjbdv")
                 .remark("djbfdfbdv")
                 .voucherAmount(BigDecimal.valueOf(200))
+                .discount(BigDecimal.valueOf(0.9))
                 .saleSheetContent(mockSaleSheetContentVOList)
                 .build();
         String mockSaleSheetVOJSON= objectMapper.writeValueAsString(mockSaleSheetVO);
         mockMvc.perform(MockMvcRequestBuilders.post(MAKE_SHEET_API).contentType(MediaType.APPLICATION_JSON).content(mockSaleSheetVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试一级审批
+     * @throws Exception
+     */
     @Test
     @Transactional
     @Rollback
     public void testFirstApproval() throws Exception {
-        String saleSheetId="djvfmvbf";
+        String saleSheetId="XSD-20220707-00000";
         SaleSheetState state=SaleSheetState.FAILURE;
         mockMvc.perform(MockMvcRequestBuilders.get(FIRST_APPROVAL_API).param("saleSheetId",saleSheetId).param("state",String.valueOf(state))).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试二级审批
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testSecondApproval() throws Exception {
-        String saleSheetId="djvfmvbf";
+        String saleSheetId="XSD-20220524-00003";
         SaleSheetState state=SaleSheetState.SUCCESS;
         mockMvc.perform(MockMvcRequestBuilders.get(SECOND_APPROVAL_API).param("saleSheetId",saleSheetId).param("state",String.valueOf(state))).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据状态查找销售单
+     * @throws Exception
+     */
     @Test
     @Transactional
     @Rollback
     public void testFindByState() throws Exception {
         SaleSheetState state=SaleSheetState.PENDING_LEVEL_1;
-        mockMvc.perform(MockMvcRequestBuilders.get(FIND_BY_STATE_API).param("state",String.valueOf(state))).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get(FIND_BY_STATE_API)
+                .param("state",String.valueOf(state)))
+                .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据编号查询
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testFindById() throws Exception {
-        String id="dkhfbdv";
+        String id="XSD-20220524-00003";
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_BY_ID_API).param("id",id)).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试
+     * @throws Exception
+     */
     @Test
     @Transactional
     @Rollback

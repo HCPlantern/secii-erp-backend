@@ -34,12 +34,21 @@ public class MockProductControllerTest {
     @Resource
     private ObjectMapper objectMapper;
 
+    /**
+     * 测试查询所有商品
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testFindAllProduct() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(FIND_API)).andDo(MockMvcResultHandlers.print());
     }
+
+    /**
+     * 测试创建商品
+     * @throws Exception
+     */
     @Test
     @Transactional
     @Rollback
@@ -58,6 +67,11 @@ public class MockProductControllerTest {
         String mockProductVOJSON=objectMapper.writeValueAsString(productVO);
         mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
+
+    /**
+     * 测试创建商品
+     * @throws Exception
+     */
     @Test
     @Transactional
     @Rollback
@@ -77,6 +91,11 @@ public class MockProductControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(UPDATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
 
     }
+
+    /**
+     * 测试删除商品
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback

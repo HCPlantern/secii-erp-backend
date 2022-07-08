@@ -37,6 +37,10 @@ public class MockPaymentControllerTest {
     @Resource
     private ObjectMapper objectMapper;
 
+    /**
+     * 测试创建付款单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -45,7 +49,7 @@ public class MockPaymentControllerTest {
         PaymentSheetContentVO mockPaymentSheetContent= PaymentSheetContentVO.builder()
                 .id(29)
                 .companyAccountId(1)
-                .transferAmount(BigDecimal.valueOf(31423))
+                .transferAmount(BigDecimal.valueOf(0))
                 .paymentSheetId("XJFYD-20220627-00001")
                 .remark("dkjfhsnkbnv")
                 .build();
@@ -63,6 +67,10 @@ public class MockPaymentControllerTest {
     }
 
 
+    /**
+     * 测试审批付款单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -72,6 +80,10 @@ public class MockPaymentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get(APPROVE_API).param("paymentSheetId",paymentSheetId).param("state",String.valueOf(state))).andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试查询付款单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback

@@ -30,10 +30,14 @@ public class MockCollectionControllerTest {
     @Resource
     private MockMvc mockMvc;
 
-    // 使用jackson
+    //使用jackson
     @Resource
     private ObjectMapper objectMapper;
 
+    /**
+     * 测试创建收款单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
@@ -75,7 +79,12 @@ public class MockCollectionControllerTest {
     public void testApproveCollectionSheet() throws Exception {
         String collectionSheetId="SKD-20220627-00001";
         CollectionSheetState state=CollectionSheetState.SUCCESS;
-        mockMvc.perform(MockMvcRequestBuilders.get("/collection/approve-collection-sheet").param("collectionSheetId",collectionSheetId).param("state", String.valueOf(state))).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/collection/approve-collection-sheet")
+                .param("collectionSheetId",collectionSheetId)
+                .param("state", String.valueOf(state)))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("操作成功"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     /**
@@ -85,14 +94,23 @@ public class MockCollectionControllerTest {
     @Transactional
     @Rollback
     public void testFindAllCollectionSheet() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/collection/sheet-show")).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/collection/sheet-show"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(15))
+                .andDo(MockMvcResultHandlers.print());
     }
 
+    /**
+     * 测试根据状态查询收款单
+     * @throws Exception 异常
+     */
     @Test
     @Transactional
     @Rollback
     public void testFindAllCollectionSheetByState() throws Exception {
         CollectionSheetState state=CollectionSheetState.PENDING;
-        mockMvc.perform(MockMvcRequestBuilders.get("/collection/sheet-show").param("state",String.valueOf(state))).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/collection/sheet-show")
+                .param("state",String.valueOf(state)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(3))
+                .andDo(MockMvcResultHandlers.print());
     }
 }
