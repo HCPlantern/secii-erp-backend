@@ -38,7 +38,7 @@ public class SalaryContext {
      * 计算扣前工资
      *
      * @param salarySheetPO 需更写入的工资单
-     * @param jobPO
+     * @param
      * @param beginDate
      * @param endDate
      */

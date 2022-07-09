@@ -95,6 +95,7 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
         for (SaleSheetContentPO item : sscPOList) {
             map.put(item.getPid(), item);
         }
+        System.out.println(map.toString());
         // 挨个创建 srscPO
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (SaleReturnsSheetContentVO srscVO : srscVOLIst) {
@@ -104,7 +105,9 @@ public class SaleReturnsServiceImpl implements SaleReturnsService {
             // 传进来的数量不能改，退多少货需要参考这个
             BeanUtils.copyProperties(srscVO, srscPO);
             srscPO.setSaleReturnsSheetId(id);
+            System.out.println(srscPO.getPid());
             SaleSheetContentPO sscPO = map.get(srscPO.getPid());
+            System.out.println(sscPO);
             // 获取ssc中的单价
             BigDecimal unitPrice = sscPO.getUnitPrice();
             BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(srscPO.getQuantity()));

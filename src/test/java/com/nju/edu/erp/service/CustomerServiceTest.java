@@ -51,7 +51,7 @@ public class CustomerServiceTest {
     public void testGetCustomersByType(){
         CustomerType type=CustomerType.SELLER;
         List<CustomerPO> res=customerService.getCustomersByType(type);
-        Assert.assertEquals(4,res.size());
+        Assert.assertEquals(5,res.size());
     }
 
     @Test

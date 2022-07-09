@@ -49,17 +49,17 @@ public class MockSaleReturnsControllerTest {
         List<SaleReturnsSheetContentVO> mockSaleReturnsSheetContentVOList=new ArrayList<>();
         SaleReturnsSheetContentVO mockSaleReturnsSheetContentVO= SaleReturnsSheetContentVO.builder()
                 .id(13)
-                .saleReturnsSheetId("dkjvfdv")
-                .pid("idshvsudv")
+                .saleReturnsSheetId("XSTHD-20220524-00000")
+                .pid("0000000000400001")
                 .quantity(12)
                 .unitPrice(BigDecimal.valueOf(34))
                 .remark("dkjfbdf")
                 .build();
         mockSaleReturnsSheetContentVOList.add(mockSaleReturnsSheetContentVO);
         SaleReturnsSheetVO mockSaleReturnsSheetVO= SaleReturnsSheetVO.builder()
-                .id("jdacfsdhf")
-                .saleSheetId("dcjhbd")
-                .supplier(7)
+                .id("XSTHD-20220524-00000")
+                .saleSheetId("XSD-20220524-00000")
+                .supplier(3)
                 .salesman("dsjhfvsd")
                 .operator("dkfjbd")
                 .remark("dkcfbd")

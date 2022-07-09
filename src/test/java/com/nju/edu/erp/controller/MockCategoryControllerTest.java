@@ -18,6 +18,7 @@ import javax.annotation.Resource;
  * 测试API
  * 集成测试
  * 可以配合打桩
+ * Mockito
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,7 +35,7 @@ public class MockCategoryControllerTest {
     @Rollback
     public void testQueryAll() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/category/queryAll"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(4))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(5))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -58,7 +59,7 @@ public class MockCategoryControllerTest {
     @Rollback
     public void testDelete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/category/delete")
-                        .param("id","4"))
+                        .param("id","6"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
