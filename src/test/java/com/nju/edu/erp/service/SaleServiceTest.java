@@ -114,7 +114,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
     public void getSaleSheetByState() { // 测试按照状态获取销售单及其content是否成功
         List<SaleSheetVO> saleSheetByState = saleService.getSaleSheetByState(SaleSheetState.PENDING_LEVEL_2);
         Assertions.assertNotNull(saleSheetByState);
-        Assertions.assertEquals(1, saleSheetByState.size());
+        Assertions.assertEquals(2, saleSheetByState.size());
         SaleSheetVO sheet1 = saleSheetByState.get(0);
         Assertions.assertNotNull(sheet1);
         Assertions.assertEquals("XSD-20220524-00003", sheet1.getId());
@@ -138,7 +138,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
         } catch (Exception ignore) {
         } finally {
             SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220612-00000");
-            Assertions.assertEquals(SaleSheetState.PENDING_LEVEL_1,sheet.getState());
+            Assertions.assertEquals(SaleSheetState.SUCCESS,sheet.getState());
         }
     }
 
@@ -168,8 +168,8 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
     @Transactional
     @Rollback()
     public void approval_1() { // 测试一级审批
-        saleService.approval("XSD-20220612-00000", SaleSheetState.PENDING_LEVEL_2);
-        SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220612-00000");
+        saleService.approval("XSD-20220707-00000", SaleSheetState.PENDING_LEVEL_2);
+        SaleSheetPO sheet = saleSheetDao.findSheetById("XSD-20220707-00000");
         Assertions.assertEquals(SaleSheetState.PENDING_LEVEL_2,sheet.getState());
     }
 
@@ -192,7 +192,7 @@ public class SaleServiceTest { // 该测试为集成测试，需要用到数据�
         Assertions.assertEquals(0, customerDao.findOneById(2).getReceivable().compareTo(BigDecimal.valueOf(5476800.00)));
         List<WarehouseOutputSheetPO> draftSheets = warehouseOutputSheetDao.getDraftSheets(WarehouseOutputSheetState.DRAFT);
         Assertions.assertNotNull(draftSheets);
-        Assertions.assertEquals(1, draftSheets.size());
+        Assertions.assertEquals(4, draftSheets.size());
         WarehouseOutputSheetPO draftSheet = draftSheets.get(0);
         Assertions.assertNotNull(draftSheet);
         Assertions.assertEquals("XSD-20220524-00003", draftSheet.getSaleSheetId());

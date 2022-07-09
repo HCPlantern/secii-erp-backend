@@ -79,33 +79,6 @@ public class MockSalaryControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(UPDATE_API).contentType(MediaType.APPLICATION_JSON).content(mockJobVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
-    /**
-     * 测试生成薪资规则
-     */
-    @Test
-    @Transactional
-    @Rollback
-    public void testGenerateSalarySheet() throws Exception {
-        SalarySheetVO salarySheetVO= SalarySheetVO.builder()
-                .id("dsfvsv")
-                .employeeId(3)
-                .employeeName("djfs")
-                .createTime(new Date())
-                .job(Role.GM)
-                .baseWage(BigDecimal.valueOf(2948))
-                .postWage(BigDecimal.valueOf(258442))
-                .totalSalary(BigDecimal.valueOf(343))
-                .tax(BigDecimal.valueOf(34234))
-                .insurance(BigDecimal.valueOf(42542))
-                .housingFund(BigDecimal.valueOf(234))
-                .taxedSalary(BigDecimal.valueOf(4242))
-                .salaryAccount("324")
-                .state(SalarySheetState.PENDING_LEVEL_1)
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.get(GENERATE_API).param("beginTime","2022-07-08 21:28:32").param("endTime","2022-07-09 21:28:32")).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
-    }
-
 
 
 
