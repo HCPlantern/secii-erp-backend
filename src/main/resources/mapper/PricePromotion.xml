@@ -3,13 +3,13 @@
 <mapper namespace="com.nju.edu.erp.dao.PricePromotionDao">
 
   <insert id="createPromotion" parameterType="PricePromotionPO">
-    insert into price_promotion (gift, price,coupon beginDate, endDate, )
-    values (#{gift}, #{price},#{coupon>, #{beginDate}, #{endDate})
+    insert into price_promotion (gift, price,coupon, beginDate, endDate)
+    values (#{gift}, #{price},#{coupon}, #{beginDate}, #{endDate})
   </insert>
 
   <resultMap id="PricePromotionPO" type="com.nju.edu.erp.model.po.PricePromotionPO">
+    <result column="all_price" property="price"></result>
     <result column="gift" property="gift"></result>
-    <id column="price" property="price"></id>
     <result column="coupon" property="coupon"></result>
     <result column="beginDate" property="beginDate"></result>
     <result column="endDate" property="endDate"></result>

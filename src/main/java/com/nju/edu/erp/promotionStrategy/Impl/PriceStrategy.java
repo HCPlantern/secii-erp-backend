@@ -9,10 +9,12 @@ import com.nju.edu.erp.model.po.PromotionPO;
 import com.nju.edu.erp.model.vo.PromotionVO;
 import com.nju.edu.erp.promotionStrategy.PromotionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author hua
  */
+@Component
 public class PriceStrategy implements PromotionStrategy {
   PricePromotionDao pricePromotionDao;
   @Autowired

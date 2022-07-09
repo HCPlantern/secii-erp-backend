@@ -3,14 +3,13 @@
 <mapper namespace="com.nju.edu.erp.dao.PacketPromotionDao">
 
   <insert id="createPromotion" parameterType="PacketPromotionPO">
-    insert into promotion_sheet (commodity, `gift`, price,  beginDate, endDate, )
-    values (#{commodity}, #{gift}, #{price}, #{beginDate}, #{endDate})
+    insert into packet_promotion (commodity,  price,  beginDate, endDate )
+    values (#{commodity},#{price}, #{beginDate}, #{endDate})
   </insert>
 
   <resultMap id="PacketPromotionPO" type="com.nju.edu.erp.model.po.PacketPromotionPO">
-    <id column="commodity" property="commodity"></id>
-    <result column="gift" property="gift"></result>
-    <id column="price" property="price"></id>
+    <result column="commodity" property="commodity"></result>
+    <result column="price" property="price"></result>
     <result column="beginDate" property="beginDate"></result>
     <result column="endDate" property="endDate"></result>
   </resultMap>

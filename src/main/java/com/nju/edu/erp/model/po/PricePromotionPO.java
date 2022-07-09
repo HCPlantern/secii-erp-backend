@@ -1,10 +1,18 @@
 package com.nju.edu.erp.model.po;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author hua
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PricePromotionPO {
   /**
    * 总价
