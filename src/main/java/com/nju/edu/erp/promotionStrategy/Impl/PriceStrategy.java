@@ -24,11 +24,11 @@ public class PriceStrategy implements PromotionStrategy {
   @Override
   public void doPromotion(PromotionVO promotionVO){
     PricePromotionPO pricePromotionPO = new PricePromotionPO();
-    pricePromotionPO.setBeginDate(promotionVO.getBeginDate());
+    //pricePromotionPO.setBeginDate(promotionVO.getBeginDate());
     pricePromotionPO.setCoupon(promotionVO.getCoupon());
-    pricePromotionPO.setGift(promotionVO.getGift());
+    //pricePromotionPO.setGift(promotionVO.getGift());
     pricePromotionPO.setPrice(promotionVO.getPrice());
-    pricePromotionPO.setEndDate(promotionVO.getEndDate());
+    //pricePromotionPO.setEndDate(promotionVO.getEndDate());
     pricePromotionDao.createPromotion(pricePromotionPO);
   }
 }

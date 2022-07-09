@@ -11,10 +11,10 @@ public class PromotionVOtoPO {
     PromotionPO promotionPO = new PromotionPO();
     promotionPO.setCoupon(promotionVO.getCoupon());
     promotionPO.setCustomer_level(promotionVO.getCustomerLevel());
-    promotionPO.setGift(promotionVO.getGift());
+    //promotionPO.setGift(promotionVO.getGift());
     promotionPO.setDiscount(promotionVO.getDiscount());
-    promotionPO.setBeginDate(promotionVO.getBeginDate());
-    promotionPO.setEndDate(promotionVO.getEndDate());
+   // promotionPO.setBeginDate(promotionVO.getBeginDate());
+   // promotionPO.setEndDate(promotionVO.getEndDate());
     return promotionPO;
   }
 }

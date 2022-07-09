@@ -21,10 +21,10 @@ public class PacketStrategy implements PromotionStrategy {
   @Override
   public void doPromotion(PromotionVO promotionVO) {
     PacketPromotionPO packetPromotionPO = new PacketPromotionPO();
-    packetPromotionPO.setBeginDate(promotionVO.getBeginDate());
-    packetPromotionPO.setCommodity(promotionVO.getCommodity());
+    //packetPromotionPO.setBeginDate(promotionVO.getBeginDate());
+    //packetPromotionPO.setCommodity(promotionVO.getCommodity());
     packetPromotionPO.setPrice(promotionVO.getPrice());
-    packetPromotionPO.setEndDate(promotionVO.getEndDate());
+   // packetPromotionPO.setEndDate(promotionVO.getEndDate());
     packetPromotionDao.createPromotion(packetPromotionPO);
   }
 }
