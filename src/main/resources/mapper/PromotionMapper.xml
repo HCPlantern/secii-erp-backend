@@ -3,17 +3,20 @@
 <mapper namespace="com.nju.edu.erp.dao.PromotionDao">
 
   <insert id="createPromotion" parameterType="PromotionPO">
-    insert into promotion_sheet (customer_level, `gift`, discount, `coupon`, beginDate, endDate, )
-    values (#{customer_level}, #{gift}, #{discount}, #{coupon}, 0, #{beginDate}, #{endDate})
+    insert into promotion (id, `promotionStrategy`, customerLevel, discount, coupon, price,beginTime )
+    values (#{id}, #{promotionStrategy}, #{customerLevel}, #{discount}, coupon, #{price}, #{beginTime},#{endTime})
   </insert>
 
+  <select id="getPromotionStrategyByTime" resultType="com.nju.edu.erp.model.po.PromotionPO">
+    select *
+    from promotion
+    where (beginTime between #{beginTime} and #{endTime}) and (endTime between #{beginTime} and #{endTime})
+  </select>
 
-  <resultMap id="PromotionPO" type="com.nju.edu.erp.model.po.PromotionPO">
-    <id column="customer_level" property="customer_level"></id>
-    <result column="gift" property="gift"></result>
-    <result column="discount" property="discount"></result>
-    <result column="coupon" property="coupon"></result>
-    <result column="beginDate" property="beginDate"></result>
-    <result column="endDate" property="endDate"></result>
-  </resultMap>
+  <select id="getLatestSheet" resultType="com.nju.edu.erp.model.po.PromotionPO">
+    select *
+    from promotion
+    order by id desc
+      limit 0,1;
+  </select>
 </mapper>

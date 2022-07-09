@@ -123,7 +123,7 @@ public interface SaleSheetDao extends Dao {
     /**
      * 获取某个销售员一段时间内审批完成的销售总额，用于计算提成
      *
-     * @param employeeId 员工id
+     * @param
      * @return 折扣前销售额
      */
     BigDecimal calTotalAmountOfSalesman(String employeeName, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);

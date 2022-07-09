@@ -6,7 +6,6 @@ import com.nju.edu.erp.model.po.PromotionPO;
 import com.nju.edu.erp.model.po.SheetPO;
 import com.nju.edu.erp.model.vo.PromotionVO;
 import com.nju.edu.erp.promotionStrategy.PromotionStrategy;
-import com.nju.edu.erp.utils.PromotionVOtoPO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +25,6 @@ public class CustomerStrategy implements PromotionStrategy {
 
   @Override
   public void doPromotion(PromotionVO promotionVO) {
-    PromotionPO promotionPO = PromotionVOtoPO.convert(promotionVO);
-    promotionDao.createPromotion(promotionPO);
+
   }
 }

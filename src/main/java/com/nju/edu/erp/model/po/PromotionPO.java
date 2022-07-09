@@ -1,10 +1,15 @@
 package com.nju.edu.erp.model.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nju.edu.erp.model.vo.GiftVO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author hua
@@ -15,62 +20,54 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PromotionPO {
   /**
-   * 用户级别
+   * 策略方案ID
    */
-  @JsonProperty("customer_level")
-  private int customer_level;
+  private String id;
+  /**
+   * 策略方案
+   */
+  private String promotionStrategy;
 
-  public void setCustomer_level(int customer_level) {
-    this.customer_level = customer_level;
-  }
+  /**
+   * 用户等级
+   */
+  @JsonProperty("customerLevel")
+  private Integer customerLevel;
 
   /**
    * 赠品
    */
   @JsonProperty("gift")
-  private String gift;
-
-  public void setGift(String gift) {
-    this.gift = gift;
-  }
+  private List<GiftPO> gift;
 
   /**
    * 折扣
    */
   @JsonProperty("discount")
-  private float discount;
-
-  public void setCoupon(int coupon) {
-    this.coupon = coupon;
-  }
+  private Float discount;
 
   /**
    * 代金券
    */
   @JsonProperty("coupon")
-  private int coupon;
+  private Integer coupon;
 
-  public void setDiscount(float discount) {
-    this.discount = discount;
-  }
+  /**
+   * 价格
+   */
+  @JsonProperty("price")
+  private Integer price;
 
   /**
    * 开始日期
    */
-  @JsonProperty("beginDate")
-  private String beginDate;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date beginTime;
+
 
   /**
    * 结束日期
    */
-  @JsonProperty("endDate")
-  private String endDate;
-
-  public void setBeginDate(String beginDate) {
-    this.beginDate = beginDate;
-  }
-
-  public void setEndDate(String endDate) {
-    this.endDate = endDate;
-  }
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date endTime;
 }

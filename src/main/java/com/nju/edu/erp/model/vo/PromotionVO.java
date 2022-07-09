@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 public class PromotionVO {
   /**
-   * 策略方案ID
+   * 策略方案ID格式为：XSD-yyyyMMdd-xxxxx), 新建单据时前端传null
    */
   private String id;
   /**
