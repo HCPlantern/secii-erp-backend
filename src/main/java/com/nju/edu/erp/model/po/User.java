@@ -34,17 +34,6 @@ public class User {
     private Role role;
 
     /**
-     * 打卡数量
-     */
-    private int attendance;
-
-    /**
-     * 上一次打卡的时间
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date lastSignInTime;
-
-    /**
      * 关联的员工id
      */
     private int employeeId;

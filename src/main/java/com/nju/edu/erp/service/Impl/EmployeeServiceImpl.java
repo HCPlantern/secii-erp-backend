@@ -35,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeePO employeePO = new EmployeePO();
         BeanUtils.copyProperties(employeeVO, employeePO);
         employeeDAO.addEmployee(employeePO);
-        User user = new User(null, employeeVO.getName(), "123456", employeeVO.getJob(), 0, null, employeePO.getId());
+        User user = new User(null, employeeVO.getName(), "123456", employeeVO.getJob(), employeePO.getId());
         userDAO.createUser(user);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user, userVO);

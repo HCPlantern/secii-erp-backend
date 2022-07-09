@@ -28,9 +28,10 @@ class SalaryServiceTest {
     }
 
     @Test
-//    @Transactional
+    @Transactional
+    @Rollback
     void generateSalarySheet() {
-        salaryService.generateSalarySheet("2022-12-01 00:00:00",
-                "2022-12-31 23:59:59");
+        salaryService.generateSalarySheet("2022-06-01 00:00:00",
+                "2022-06-30 23:59:59");
     }
 }

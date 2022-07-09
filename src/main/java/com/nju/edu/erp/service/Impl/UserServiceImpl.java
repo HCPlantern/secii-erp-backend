@@ -2,6 +2,7 @@ package com.nju.edu.erp.service.Impl;
 
 import com.auth0.jwt.interfaces.Claim;
 import com.nju.edu.erp.config.JwtConfig;
+import com.nju.edu.erp.dao.AttendanceDao;
 import com.nju.edu.erp.dao.UserDao;
 import com.nju.edu.erp.enums.Role;
 import com.nju.edu.erp.exception.MyServiceException;
@@ -21,12 +22,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 
+    private final AttendanceDao attendanceDao;
+
     private final JwtConfig jwtConfig;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, JwtConfig jwtConfig) {
+    public UserServiceImpl(UserDao userDao, JwtConfig jwtConfig, AttendanceDao attendanceDao) {
         this.userDao = userDao;
         this.jwtConfig = jwtConfig;
+        this.attendanceDao = attendanceDao;
     }
 
 
@@ -99,11 +103,11 @@ public class UserServiceImpl implements UserService {
         Map<String, Claim> claims = jwtConfig.parseJwt(token);
         String name = claims.get("name").as(String.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        User user = userDao.findByUsername(name);
-        if (user.getLastSignInTime() != null &&
-                sdf.format(user.getLastSignInTime()).equals(sdf.format(new Date())))
+        String todayStr = sdf.format(new Date());
+        //已打卡返回0，未打卡返回1
+        if (attendanceDao.getAttendanceByUsernameAndDate(name, todayStr) != 0)
             return 0;
-        else userDao.signInByUserName(name);
+        else attendanceDao.signInByUserName(name, todayStr);
         return 1;
     }
 }

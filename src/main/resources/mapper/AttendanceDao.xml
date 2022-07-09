@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nju.edu.erp.dao.AttendanceDao">
+    <insert id="signInByUserName">
+        insert into attendance(date, user_name)
+        values (#{dateStr}, #{userName})
+    </insert>
+
+    <select id="getAttendanceByIdAndDate" resultType="int">
+        select count(*)
+        from attendance,
+             user
+        where user.name = attendance.user_name
+          and user.employee_id = #{employeeId}
+          and date like #{dateStr}
+    </select>
+    <select id="getAttendanceByUsernameAndDate" resultType="int">
+        select count(*)
+        from attendance
+        where user_name = #{userName}
+          and date = #{dateStr}
+    </select>
+
+</mapper>

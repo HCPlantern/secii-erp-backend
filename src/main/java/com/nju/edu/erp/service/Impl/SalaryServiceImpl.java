@@ -22,7 +22,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -33,16 +35,18 @@ public class SalaryServiceImpl implements SalaryService {
     private final EmployeeDao employeeDao;
     private final UserDao userDao;
     private final TaxDao taxDao;
-
+    private final AttendanceDao attendanceDao;
 
     @Autowired
     public SalaryServiceImpl(JobDao jobDao, SalarySheetDao salarySheetDao
-            , EmployeeDao employeeDao, UserDao userDao, TaxDao taxDao) {
+            , EmployeeDao employeeDao, UserDao userDao,
+                             TaxDao taxDao, AttendanceDao attendanceDao) {
         this.jobDao = jobDao;
         this.salarySheetDao = salarySheetDao;
         this.employeeDao = employeeDao;
         this.userDao = userDao;
         this.taxDao = taxDao;
+        this.attendanceDao = attendanceDao;
     }
 
     /**
@@ -62,6 +66,7 @@ public class SalaryServiceImpl implements SalaryService {
     public void updateSalaryRuleById(JobVO jobVO) {
         JobPO jobPO = new JobPO();
         BeanUtils.copyProperties(jobVO, jobPO);
+        //前端负责检查工资非负，防御式编程
         jobDao.updateJobById(jobPO);
     }
 
@@ -80,6 +85,10 @@ public class SalaryServiceImpl implements SalaryService {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        //求该月有多少天，用于计算缺勤
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(endDate);
+        int dayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         //对每个员工计算薪资
         for (EmployeePO employeePO : allEmployees) {
             BeanUtils.copyProperties(employeePO, employeeVO);
@@ -87,7 +96,7 @@ public class SalaryServiceImpl implements SalaryService {
             SalarySheetPO salarySheetPO = new SalarySheetPO(); //对应该员工待生成的一条工资单
             //设置id,其中日期字段为endDate
             String idPrefix = new SimpleDateFormat("yyyyMMdd").format(endDate);
-            SalarySheetPO latest = salarySheetDao.getLatestSheet("%"+idPrefix+"%");
+            SalarySheetPO latest = salarySheetDao.getLatestSheet("%" + idPrefix + "%");
             salarySheetPO.setId(IdGenerator.generateSheetIdWithTime(latest == null ? null : latest.getId(), "GZD", endDate));
             //设置员工、工作相关信息
             salarySheetPO.setEmployeeId(employeePO.getId());
@@ -99,11 +108,12 @@ public class SalaryServiceImpl implements SalaryService {
             //策略模式计算基本工资和岗位工资（或提成）
             salaryContext.setSalaryStrategy(jobPO.getSalaryCalculationMethod(), jobPO.getSalaryPaymentMethod());
             salaryContext.getSalary(salarySheetPO, beginDate, endDate);
-            //缺勤扣除基本工资
+            //缺勤扣除基本工资,总经理不参与打卡
             if (employeePO.getJob() != Role.GM) {
-                int attendance = userDao.getAttendanceByEmployeeId(employeePO.getId());
+                String dateStr = new SimpleDateFormat("yyyyMM").format(endDate);
+                int attendance = attendanceDao.getAttendanceByIdAndDate(salarySheetPO.getEmployeeId(), dateStr + "%");
                 salarySheetPO.setBaseWage(salarySheetPO.getBaseWage().multiply(
-                        BigDecimal.valueOf(attendance)).divide(BigDecimal.valueOf(30), RoundingMode.HALF_UP));
+                        BigDecimal.valueOf(attendance)).divide(BigDecimal.valueOf(dayOfMonth), RoundingMode.HALF_UP));
             }
             //失业保险，住房公积金
             salarySheetPO.setInsurance(jobPO.getInsurance());
@@ -111,6 +121,7 @@ public class SalaryServiceImpl implements SalaryService {
             //计算税前总工资=基本工资+岗位工资（或提成）-失业保险-住房公积金
             BigDecimal unTaxedSalary = salarySheetPO.getBaseWage().add(salarySheetPO.getPostWage()
                     .subtract(salarySheetPO.getInsurance()).subtract(salarySheetPO.getHousingFund()));
+            assert (unTaxedSalary.compareTo(BigDecimal.ZERO) >= 0) : "税前工资不能为负！"; //防御式编程
             salarySheetPO.setTotalSalary(unTaxedSalary);
             //表驱动计算税款 = 减去起征点的未税工资*税率-速算扣除数
             List<TaxPO> taxTable = taxDao.findTax(); //已升序过,第0个的base是起征点（负数）
@@ -163,24 +174,24 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public void approval(String salarySheetId, BaseEnum state) {
-        SalarySheetPO salarySheetPO=salarySheetDao.getSalarySheetById(salarySheetId);
-        if(state.equals(SalarySheetState.FAILURE)){
-            if(salarySheetPO.getState().equals(SalarySheetState.SUCCESS)){
+        SalarySheetPO salarySheetPO = salarySheetDao.getSalarySheetById(salarySheetId);
+        if (state.equals(SalarySheetState.FAILURE)) {
+            if (salarySheetPO.getState().equals(SalarySheetState.SUCCESS)) {
                 throw new RuntimeException("状态更新失败");
             }
-            int effectLine=salarySheetDao.updateSalaryStateById(salarySheetId,state);
+            int effectLine = salarySheetDao.updateSalaryStateById(salarySheetId, state);
             if (effectLine == 0) throw new RuntimeException("状态更新失败");
-        }else {
+        } else {
             SalarySheetState prev;
-            if(state.equals(SalarySheetState.SUCCESS)){
-                prev=SalarySheetState.PENDING_LEVEL_2;
+            if (state.equals(SalarySheetState.SUCCESS)) {
+                prev = SalarySheetState.PENDING_LEVEL_2;
             } else if (state.equals(SalarySheetState.PENDING_LEVEL_2)) {
-                prev=SalarySheetState.PENDING_LEVEL_1;
-            }else {
+                prev = SalarySheetState.PENDING_LEVEL_1;
+            } else {
                 throw new RuntimeException("状态更新失败");
             }
-            int effectLine=salarySheetDao.updateSheetStateOnPrev(salarySheetId,prev,state);
-            if(effectLine==0){
+            int effectLine = salarySheetDao.updateSheetStateOnPrev(salarySheetId, prev, state);
+            if (effectLine == 0) {
                 throw new RuntimeException("状态更新失败");
             }
         }
