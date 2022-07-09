@@ -6,6 +6,9 @@
     insert into promotion (id, `promotionStrategy`, customerLevel, discount, coupon, price,beginTime )
     values (#{id}, #{promotionStrategy}, #{customerLevel}, #{discount}, coupon, #{price}, #{beginTime},#{endTime})
   </insert>
+  <select id="findAll" resultType="com.nju.edu.erp.model.po.PromotionPO">
+    select * from promotion_sheet
+  </select>
 
   <select id="getPromotionStrategyByTime" resultType="com.nju.edu.erp.model.po.PromotionPO">
     select *

@@ -49,48 +49,48 @@ public class MockProductControllerTest {
      * 测试创建商品
      * @throws Exception
      */
-    @Test
-    @Transactional
-    @Rollback
-    public void testCreateProduct() throws Exception {
-        ProductInfoVO productVO= ProductInfoVO.builder()
-                .id("32908")
-                .name("sfkvjhskfv")
-                .categoryId(2)
-                .type("dkfhdv")
-                .quantity(13)
-                .purchasePrice(BigDecimal.valueOf(31946))
-                .retailPrice(BigDecimal.valueOf(34878923))
-                .recentPp(BigDecimal.valueOf(34234))
-                .recentRp(BigDecimal.valueOf(3423))
-                .build();
-        String mockProductVOJSON=objectMapper.writeValueAsString(productVO);
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void testCreateProduct() throws Exception {
+//        ProductInfoVO productVO= ProductInfoVO.builder()
+//                .id("32908")
+//                .name("sfkvjhskfv")
+//                .categoryId(2)
+//                .type("dkfhdv")
+//                .quantity(13)
+//                .purchasePrice(BigDecimal.valueOf(31946))
+//                .retailPrice(BigDecimal.valueOf(34878923))
+//                .recentPp(BigDecimal.valueOf(34234))
+//                .recentRp(BigDecimal.valueOf(3423))
+//                .build();
+//        String mockProductVOJSON=objectMapper.writeValueAsString(productVO);
+//        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
+//    }
 
     /**
      * 测试创建商品
      * @throws Exception
      */
-    @Test
-    @Transactional
-    @Rollback
-    public void testUpdateProduct() throws Exception {
-        ProductInfoVO productVO= ProductInfoVO.builder()
-                .id("32908")
-                .name("sfkvjhskfv")
-                .categoryId(2)
-                .type("dkfhdv")
-                .quantity(13)
-                .purchasePrice(BigDecimal.valueOf(31946))
-                .retailPrice(BigDecimal.valueOf(34878923))
-                .recentPp(BigDecimal.valueOf(34234))
-                .recentRp(BigDecimal.valueOf(3423))
-                .build();
-        String mockProductVOJSON=objectMapper.writeValueAsString(productVO);
-        mockMvc.perform(MockMvcRequestBuilders.post(UPDATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
-
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void testUpdateProduct() throws Exception {
+//        ProductInfoVO productVO= ProductInfoVO.builder()
+//                .id("32908")
+//                .name("sfkvjhskfv")
+//                .categoryId(2)
+//                .type("dkfhdv")
+//                .quantity(13)
+//                .purchasePrice(BigDecimal.valueOf(31946))
+//                .retailPrice(BigDecimal.valueOf(34878923))
+//                .recentPp(BigDecimal.valueOf(34234))
+//                .recentRp(BigDecimal.valueOf(3423))
+//                .build();
+//        String mockProductVOJSON=objectMapper.writeValueAsString(productVO);
+//        mockMvc.perform(MockMvcRequestBuilders.post(UPDATE_API).contentType(MediaType.APPLICATION_JSON).content(mockProductVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
+//
+//    }
 
     /**
      * 测试删除商品

@@ -30,11 +30,18 @@ public class PromotionController {
     promotionService.addPromotionStrategy(promotionStrategyForm);
     return Response.buildSuccess();
   }
-  @GetMapping(path = "findPromotionStrategyByTime")
+  @GetMapping(path = "/findPromotionStrategyByTime")
   @Authorized(roles = {Role.GM})
   @ApiOperation(value = "根据时间查询促销规则")
   public Response findPromotionStrategyByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime) {
 
     return Response.buildSuccess(promotionService.getPromotionStrategyByTime(beginTime, endTime));
   }
+
+  @GetMapping(path = "/getAllPromotionStrategy")
+  public Response getAllPromotionStrategy(){
+
+    return Response.buildSuccess();
+  }
+
 }
