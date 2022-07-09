@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nju.edu.erp.dao.GiftDao">
 
-  <insert id="addGift" parameterType="GiftPO">
-    insert into gift ('pid', quantity, 'remark', promotionSheetId)
+  <insert id="addGift" parameterType="com.nju.edu.erp.model.po.GiftPO">
+    insert into gift (pid, quantity, remark, promotionSheetId)
     values (#{pid}, #{quantity}, #{remark}, #{promotionSheetId})
   </insert>
 
