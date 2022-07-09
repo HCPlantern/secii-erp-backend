@@ -44,7 +44,7 @@ public class MockJobControllerTest {
     public void testCreateDepartmentSalaryRule() throws Exception {
         JobVO jobVO= JobVO.builder()
                 .id(100)
-                .name(Role.GM)
+                .name(Role.ADMIN)
                 .baseWage(BigDecimal.valueOf(3784))
                 .salaryCalculationMethod(SalaryCalculationMethod.POST)
                 .salaryPaymentMethod(SalaryPaymentMethod.ANNUALLY)
@@ -56,7 +56,7 @@ public class MockJobControllerTest {
                 .housingFund(BigDecimal.valueOf(34234))
                 .build();
         String mockSalaryVOJSON=objectMapper.writeValueAsString(jobVO);
-        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).contentType(mockSalaryVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(MockMvcRequestBuilders.post(CREATE_API).contentType(MediaType.APPLICATION_JSON).content(mockSalaryVOJSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
 

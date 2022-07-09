@@ -41,6 +41,7 @@ public class PromotionController {
   @GetMapping(path = "/getAllPromotionStrategy")
   public Response getAllPromotionStrategy(){
 
+
     return Response.buildSuccess();
   }
 

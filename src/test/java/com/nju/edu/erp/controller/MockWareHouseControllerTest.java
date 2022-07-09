@@ -39,7 +39,7 @@ public class MockWareHouseControllerTest {
     @Transactional
     @Rollback
     public void testWarehouseInputSheetApprove() throws Exception {
-        String sheetId="djkhshvsmfd";
+        String sheetId="RKD-20220706-00000";
         WarehouseInputSheetState warehouseInputSheetState=WarehouseInputSheetState.SUCCESS;
         mockMvc.perform(MockMvcRequestBuilders.get(APPROVE_INPUT_API).param("sheetId",sheetId).param("state",String.valueOf(warehouseInputSheetState))).andDo(MockMvcResultHandlers.print());
     }

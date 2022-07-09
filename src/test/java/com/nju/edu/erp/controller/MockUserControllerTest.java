@@ -41,8 +41,8 @@ public class MockUserControllerTest {
     public void testLogin() throws Exception {
         UserVO mockUserVO= UserVO.builder()
                 .name("hcx")
-                .role(Role.INVENTORY_MANAGER)
-                .password("djhfgdsbvks")
+                .role(Role.FINANCIAL_STAFF)
+                .password("123456")
                 .build();
         String mockUserVOJSON=objectMapper.writeValueAsString(mockUserVO);
         mockMvc.perform(MockMvcRequestBuilders.post(LOGIN_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mockUserVOJSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
@@ -54,7 +54,7 @@ public class MockUserControllerTest {
     @Rollback
     public void testRegister() throws Exception {
         UserVO mockUserVO= UserVO.builder()
-                .name("hcx")
+                .name("sdjfhg")
                 .role(Role.INVENTORY_MANAGER)
                 .password("djhfgdsbvks")
                 .build();
@@ -62,12 +62,6 @@ public class MockUserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(REGISTER_API).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mockUserVOJSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andDo(MockMvcResultHandlers.print());
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void testAuth() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(AUTH_API).param("token", "uydafgjdsfvushdi")).andDo(MockMvcResultHandlers.print());
-    }
     @Test
     @Transactional
     @Rollback
