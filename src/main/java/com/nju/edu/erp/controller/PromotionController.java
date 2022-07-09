@@ -7,6 +7,7 @@ import com.nju.edu.erp.model.vo.PromotionVO;
 import com.nju.edu.erp.service.PromotionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,13 @@ public class PromotionController {
   @ApiOperation(value = "创建促销规则")
   public Response createPromotionStrategy(@RequestBody PromotionVO promotionStrategyForm) {
     promotionService.addPromotionStrategy(promotionStrategyForm);
+    return Response.buildSuccess();
+  }
+  @GetMapping(path = "findPromotionStrategyByTime")
+  @Authorized(roles = {Role.GM})
+  @ApiOperation(value = "查询促销规则")
+  public Response findPromotionStrategyByTime(@Param("beginTime") String beginTime, @Param("endTime") String endTime) {
+
     return Response.buildSuccess();
   }
 }

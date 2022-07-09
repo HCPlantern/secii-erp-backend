@@ -1,13 +1,14 @@
 package com.nju.edu.erp.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nju.edu.erp.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author hua
@@ -18,9 +19,12 @@ import java.math.BigDecimal;
 @Builder
 public class PromotionVO {
   /**
+   * 策略方案ID
+   */
+  private String id;
+  /**
    * 策略方案
    */
-  @JsonProperty("promotionStrategy")
   private String promotionStrategy;
 
   /**
@@ -33,7 +37,7 @@ public class PromotionVO {
    * 赠品
    */
   @JsonProperty("gift")
-  private String gift;
+  private List<GiftVO> gift;
 
   /**
    * 折扣
@@ -48,12 +52,6 @@ public class PromotionVO {
   private Integer coupon;
 
   /**
-   * 商品
-   */
-  @JsonProperty("commodity")
-  private String commodity;
-
-  /**
    * 价格
    */
   @JsonProperty("price")
@@ -62,13 +60,14 @@ public class PromotionVO {
   /**
    * 开始日期
    */
-  @JsonProperty("beginDate")
-  private String beginDate;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date beginTime;
+
 
   /**
    * 结束日期
    */
-  @JsonProperty("endDate")
-  private String endDate;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+  private Date endTime;
 
 }
