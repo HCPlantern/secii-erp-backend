@@ -95,7 +95,7 @@ public class MockCollectionControllerTest {
     @Rollback
     public void testFindAllCollectionSheet() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/collection/sheet-show"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(15))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.length()").value(16))
                 .andDo(MockMvcResultHandlers.print());
     }
 
